@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hakdog/pages/home.dart';
+import 'package:ICTC_Website/pages/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Ateneo ICTC',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
