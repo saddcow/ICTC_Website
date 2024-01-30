@@ -1,9 +1,16 @@
 import 'package:ICTC_Website/pages/about.dart';
 import 'package:ICTC_Website/pages/home.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
-  runApp(const MyApp());
+
+void main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(const MainApp());
 }
 
 class MyApp extends StatelessWidget {
