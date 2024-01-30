@@ -45,6 +45,72 @@ class AppBarContent extends StatelessWidget {
   }
 }
 
+Widget _buildWideContainers(context) {
+  final ButtonStyle style = TextButton.styleFrom(
+    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+  );
+
+  final ButtonStyle filledStyle = FilledButton.styleFrom(
+    foregroundColor: Theme.of(context).colorScheme.onSecondary,
+    backgroundColor: Theme.of(context).colorScheme.onPrimary,
+  );
+  return Scaffold(
+    appBar: AppBar(
+      automaticallyImplyLeading: false,
+      toolbarHeight: 70,
+      backgroundColor: Colors.transparent,
+      elevation: 0.5,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: Image.asset('assets/images/ictc_logo.png',
+                width: 60, height: 70),
+          ),
+          // Your widgets here
+        ],
+      ),
+      actions: <Widget>[
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            TextButton(
+              style: style,
+              onPressed: () {},
+              child: const Text('About Us'),
+            ),
+            TextButton(
+              style: style,
+              onPressed: () {},
+              child: const Text('Programs'),
+            ),
+            ElevatedButton(
+              style: filledStyle,
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const HomePage(),
+                  ),
+                );
+              },
+              child: Text(
+                "Sign Up",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).colorScheme.onSecondary,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
 Widget _buildNormalContainer(context) {
   final ButtonStyle style = TextButton.styleFrom(
     foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -54,7 +120,6 @@ Widget _buildNormalContainer(context) {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
         elevation: 0.5,
         title: const Text('Ateneo ICTC'),
       ),
@@ -88,54 +153,4 @@ Widget _buildNormalContainer(context) {
           ],
         ),
       ));
-}
-
-Widget _buildWideContainers(context) {
-  final ButtonStyle style = TextButton.styleFrom(
-    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-  );
-
-  final ButtonStyle filledStyle = FilledButton.styleFrom(
-    foregroundColor: Theme.of(context).colorScheme.onSecondary,
-    backgroundColor: Theme.of(context).colorScheme.onPrimary,
-  );
-  return Scaffold(
-    appBar: AppBar(
-      automaticallyImplyLeading: false,
-      toolbarHeight: 90,
-      backgroundColor: Colors.white,
-      elevation: 0.5,
-      title: const Text('Ateneo ICTC'),
-      actions: <Widget>[
-        TextButton(
-          style: style,
-          onPressed: () {},
-          child: const Text('About Us'),
-        ),
-        TextButton(
-          style: style,
-          onPressed: () {},
-          child: const Text('Programs'),
-        ),
-        ElevatedButton(
-          style: filledStyle,
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const HomePage(),
-              ),
-            );
-          },
-          child: Text(
-            "Sign Up",
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              color: Theme.of(context).colorScheme.onSecondary,
-              fontSize: 14,
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
 }
