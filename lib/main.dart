@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:ICTC_Website/pages/about.dart';
 import 'package:ICTC_Website/pages/home.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,11 +15,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Ateneo ICTC',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color(0xff153faa),
+              onPrimary: const Color(0xff153faa),
+              onSecondary: Colors.white,
+              onPrimaryContainer: const Color(0xff153faa),
+              onSecondaryContainer: Colors.white),
           useMaterial3: true,
         ),
         routes: {
           '/home': (context) => const HomePage(),
+          '/about': (context) => const AboutPage(),
         },
         home: const MainApp());
   }
