@@ -9,7 +9,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(MaterialApp(home: const MainApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -21,12 +21,24 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Ateneo ICTC',
         theme: ThemeData(
+          fontFamily: "Montserrat",
           colorScheme: ColorScheme.fromSeed(
               seedColor: const Color(0xff153faa),
               onPrimary: const Color(0xff153faa),
               onSecondary: Colors.white,
               onPrimaryContainer: const Color(0xff153faa),
               onSecondaryContainer: Colors.white),
+          textTheme: TextTheme(
+            displayLarge: TextStyle(
+                fontSize: 64, fontWeight: FontWeight.w800, color: Colors.white),
+            titleLarge: TextStyle(
+                fontSize: 64,
+                fontWeight: FontWeight.w800,
+                color: Color(0xffF9CE69)),
+            displayMedium: TextStyle(fontSize: 40, fontWeight: FontWeight.w400),
+            labelSmall: TextStyle(
+                fontSize: 20, fontWeight: FontWeight.w300, color: Colors.white),
+          ),
           useMaterial3: true,
         ),
         routes: {

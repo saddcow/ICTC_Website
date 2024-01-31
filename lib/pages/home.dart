@@ -166,9 +166,72 @@ Widget _buildNormalContainer(context) {
 
 Widget _hero(context) {
   return Container(
-      width: MediaQuery.of(context).size.width,
-      height: 750,
-      color: Color(0xff153faa));
+    alignment: Alignment.topLeft,
+    width: MediaQuery.of(context).size.width,
+    height: 750,
+    color: Color(0xff153faa),
+    child: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  "BE A ",
+                  style: Theme.of(context).textTheme.displayLarge,
+                ),
+                Text(
+                  "CERTIFIED",
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ],
+            ),
+            Text(
+              "PROFESSIONAL.",
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Seize the opportunity to gain a competitive edge by mastering",
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  "essential skills. Unlock new horizons of expertise, from hands-on",
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  "learning experiences to industry-relevant skills. Delve into",
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  "specialized courses with Ateneo ICTC.",
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+              ],
+            ),
+          ]),
+    ),
+  );
 }
 
 // Widget _tabBar(_tabController) {
