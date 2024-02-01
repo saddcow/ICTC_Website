@@ -9,32 +9,73 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
-  late final _tabController = TabController(length: 3, vsync: this);
+class _HomePageState extends State<HomePage> {
+  // with SingleTickerProviderStateMixin {
+  // late final _tabController = TabController(length: 3, vsync: this);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
-        child: Container(
-          child: const AppBarContent(),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _hero(context),
-            // _tabBar(_tabController),
-          ],
-        ),
-      ),
-    );
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      double availWidth = constraints.maxWidth;
+
+      if (availWidth >= 600) {
+        return _buildWideScreen(context);
+      } else {
+        //small screens
+        return _buildSmallScreen(context);
+      }
+    });
+    // return Scaffold(
+    //   resizeToAvoidBottomInset: false,
+    //   appBar: PreferredSize(
+    //     preferredSize: const Size.fromHeight(kToolbarHeight),
+    //     child: Container(
+    //       child: const AppBarContent(),
+    //     ),
+    //   ),
+    //   body:
+    //   SingleChildScrollView(
+    //     child: Column(
+    //       children: [
+    //         _hero(context),
+    //         // _tabBar(_tabController),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }
 
+Widget _buildWideScreen(context) {
+  const double toolBarHeight = 60;
+  return Scaffold(
+    resizeToAvoidBottomInset: false,
+    appBar: PreferredSize(
+      preferredSize: const Size.fromHeight(toolBarHeight),
+      child: Container(
+        child: const AppBarContent(),
+      ),
+    ),
+    body: _heroWide(context),
+  );
+}
+
+Widget _buildSmallScreen(context) {
+  const double toolBarHeight = 60;
+  return Scaffold(
+    resizeToAvoidBottomInset: false,
+    appBar: PreferredSize(
+      preferredSize: const Size.fromHeight(toolBarHeight),
+      child: Container(
+        child: const AppBarContent(),
+      ),
+    ),
+    body: _heroSmall(context),
+  );
+}
+
+// NAV BAR app content (ALL)
 class AppBarContent extends StatelessWidget {
   const AppBarContent({super.key});
 
@@ -43,17 +84,18 @@ class AppBarContent extends StatelessWidget {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         if (constraints.maxWidth > 600) {
-          return _buildWideContainers(context);
+          return _buildWideNavBar(context);
         } else {
-          return _buildNormalContainer(context);
+          return _buildSmallNavBar(context);
         }
       },
     );
   }
 }
 
+// NAV BAR = WIDE (PC)
 /////////////////////////////////////////
-Widget _buildWideContainers(context) {
+Widget _buildWideNavBar(context) {
   final ButtonStyle style = TextButton.styleFrom(
     foregroundColor: Theme.of(context).colorScheme.onPrimary,
   );
@@ -119,7 +161,8 @@ Widget _buildWideContainers(context) {
   );
 }
 
-Widget _buildNormalContainer(context) {
+// NAV BAR = NORMAL (CP)
+Widget _buildSmallNavBar(context) {
   final ButtonStyle style = TextButton.styleFrom(
     foregroundColor: Theme.of(context).colorScheme.onPrimary,
   );
@@ -129,7 +172,18 @@ Widget _buildNormalContainer(context) {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0.5,
-        title: const Text('Ateneo ICTC'),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: Image.asset('assets/images/ictc_logo.png',
+                  width: 60, height: 70),
+            ),
+            // Your widgets here
+          ],
+        ),
       ),
       endDrawer: Drawer(
         surfaceTintColor: Colors.black,
@@ -143,7 +197,7 @@ Widget _buildNormalContainer(context) {
           children: [
             const DrawerHeader(
               decoration: BoxDecoration(color: Colors.white),
-              child: Text('Ateneo ICTC'),
+              child: Text('Ateneo ICTC', style: TextStyle(fontSize: 12)),
             ),
             ListTile(
                 title: const Text('Home'),
@@ -164,13 +218,149 @@ Widget _buildNormalContainer(context) {
 }
 /////////////////////////////////////////
 
-Widget _hero(context) {
+// HERO HEADER (PC)
+Widget _heroWide(context) {
   return Container(
-      width: MediaQuery.of(context).size.width,
-      height: 750,
-      color: Color(0xff153faa));
+    alignment: Alignment.topLeft,
+    width: MediaQuery.of(context).size.width,
+    height: 750,
+    color: Color(0xff153faa),
+    child: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  "BE A ",
+                  style: Theme.of(context).textTheme.displayLarge,
+                ),
+                Text(
+                  "CERTIFIED",
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ],
+            ),
+            Text(
+              "PROFESSIONAL.",
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Seize the opportunity to gain a competitive edge by mastering",
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  "essential skills. Unlock new horizons of expertise, from hands-on",
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  "learning experiences to industry-relevant skills. Delve into",
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  "specialized courses with Ateneo ICTC.",
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+              ],
+            ),
+          ]),
+    ),
+  );
 }
+// HERO HEADER (PC)
 
+Widget _heroSmall(context) {
+  return Container(
+    alignment: Alignment.topLeft,
+    width: MediaQuery.of(context).size.width,
+    height: 750,
+    color: Color(0xff153faa),
+    child: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "BE A ",
+                  style: Theme.of(context).textTheme.displayMedium,
+                ),
+                Text(
+                  "CERTIFIED",
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ],
+            ),
+            Text(
+              "PROFESSIONAL.",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Seize the opportunity to gain a competitive edge by mastering",
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  "essential skills. Unlock new horizons of expertise, from hands-on",
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  "learning experiences to industry-relevant skills. Delve into",
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  "specialized courses with Ateneo ICTC.",
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+              ],
+            ),
+          ]),
+    ),
+  );
+}
+// TAB BAR (PC)
 // Widget _tabBar(_tabController) {
 //   return Container(
 //     margin: EdgeInsets.symmetric(vertical: 0, horizontal: 160),
