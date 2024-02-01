@@ -1,34 +1,27 @@
-import 'package:ICTC_Website/pages/about.dart';
+import 'package:ICTC_Website/pages/home.dart';
 import 'package:ICTC_Website/pages/programs.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class MainNavigationBar extends StatefulWidget {
+  const MainNavigationBar({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MainNavigationBar> createState() => _MainNavigationBarState();
 }
 
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
-  late final _tabController = TabController(length: 3, vsync: this);
+class _MainNavigationBarState extends State<MainNavigationBar> {
+  int currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    final ButtonStyle style = TextButton.styleFrom(
+      backgroundColor: Theme.of(context).colorScheme.onSecondary,
+    );
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
+        preferredSize: const Size.fromHeight(490.0),
         child: Container(
           child: const AppBarContent(),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _hero(context),
-            // _tabBar(_tabController),
-          ],
         ),
       ),
     );
@@ -52,7 +45,6 @@ class AppBarContent extends StatelessWidget {
   }
 }
 
-/////////////////////////////////////////
 Widget _buildWideContainers(context) {
   final ButtonStyle style = TextButton.styleFrom(
     foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -162,55 +154,3 @@ Widget _buildNormalContainer(context) {
         ),
       ));
 }
-/////////////////////////////////////////
-
-Widget _hero(context) {
-  return Container(
-      width: MediaQuery.of(context).size.width,
-      height: 750,
-      color: Color(0xff153faa));
-}
-
-// Widget _tabBar(_tabController) {
-//   return Container(
-//     margin: EdgeInsets.symmetric(vertical: 0, horizontal: 160),
-//     height: 70,
-//     color: Colors.white,
-//     child: Column(
-//       crossAxisAlignment: CrossAxisAlignment.center,
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: [
-//         TabBar(
-//           unselectedLabelColor: Colors.black,
-//           labelColor: Colors.red,
-//           tabs: [
-//             Tab(
-//               text: "Latest Programs",
-//             ),
-//             Tab(
-//               text: "Popular Courses",
-//             ),
-//             Tab(
-//               text: "New Courses",
-//             )
-//           ],
-//           controller: _tabController,
-//           indicatorSize: TabBarIndicatorSize.tab,
-//         ),
-//         Expanded(
-//           flex: 1,
-//           child: TabBarView(
-//             viewportFraction: 3.0,
-//             physics: NeverScrollableScrollPhysics(),
-//             children: [
-//               Container(height: 500, color: Colors.grey),
-//               Container(color: Colors.grey),
-//               Container(color: Colors.grey),
-//             ],
-//             controller: _tabController,
-//           ),
-//         ),
-//       ],
-//     ),
-//   );
-// }
