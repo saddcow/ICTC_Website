@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ProgramCard extends StatelessWidget {
-  const ProgramCard({super.key});
+class ProgramCardWidget extends StatelessWidget {
+  const ProgramCardWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -72,20 +72,7 @@ class ProgramCard extends StatelessWidget {
                 ),
               ],
             )
-
-            //   SizedBox(
-            //     height: 10,
-            //   ),
-            //   Text("Micro Credentials",
-            //       style:
-            //           TextStyle(fontSize: 40, fontWeight: FontWeight.w700)),
-            //   SizedBox(
-            //     height: 10,
-            //   ),
-            //   Text("Description here",
-            //       style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400))
-            // ]
-            ),
+          ),
       ),
     );
   }

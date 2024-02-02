@@ -1,4 +1,4 @@
-import 'package:ICTC_Website/pages/home.dart';
+import 'package:ICTC_Website/pages/desktop/home.dart';
 import 'package:flutter/material.dart';
 
 class AboutPage extends StatelessWidget {
