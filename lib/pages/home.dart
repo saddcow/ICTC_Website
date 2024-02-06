@@ -1,4 +1,4 @@
-import 'package:ICTC_Website/pages/about.dart';
+import 'package:ICTC_Website/pages/desktop/about.dart';
 import 'package:ICTC_Website/pages/programs.dart';
 import 'package:flutter/material.dart';
 
@@ -224,3 +224,4 @@ Widget _hero(context) {
 //     ),
 //   );
 // }
+
