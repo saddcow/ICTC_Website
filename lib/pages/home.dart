@@ -86,12 +86,22 @@ Widget _buildWideContainers(context) {
           children: [
             TextButton(
               style: style,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AboutPage())
+                );
+              },
               child: const Text('About Us'),
             ),
             TextButton(
               style: style,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProgramsPage())
+                );
+              },
               child: const Text('Programs'),
             ),
             ElevatedButton(
