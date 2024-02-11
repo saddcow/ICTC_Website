@@ -1,5 +1,7 @@
+import 'package:ICTC_Website/main.dart';
 import 'package:ICTC_Website/pages/auth/login_page.dart';
 import 'package:ICTC_Website/pages/auth/signup_page.dart';
+import 'package:ICTC_Website/pages/desktop/home.dart';
 import 'package:ICTC_Website/pages/desktop/programs/google_certified_educators.dart';
 import 'package:ICTC_Website/pages/desktop/programs/microcredentials.dart';
 import 'package:ICTC_Website/pages/desktop/programs/skillup.dart';
@@ -30,30 +32,41 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
     );
     return Scaffold(
       appBar: AppBar(
+        primary: true,
         automaticallyImplyLeading: false,
+        toolbarHeight: 70,
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         elevation: 0.5,
         title: Padding(
-          padding: const EdgeInsets.only(left: 155.0),
+          padding: const EdgeInsets.only(left: 36.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              IconButton(
-                onPressed: () => Navigator.pop(context),
+              TextButton.icon(
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const MainApp(),
+                  ),
+                ),
                 icon: Image.asset('assets/images/logo_ictc.png',
-                    width: 60, height: 70),
-              ),
-              Text("Ateneo ICTC",
-                  style: TextStyle(fontSize: 20, color: Color(0xff153faa)))
+                    width: 45, height: 45),
+                label: Text(
+                  "Ateneo ICTC",
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xff19306B)),
+                ),
+              )
               // Your widgets here
             ],
           ),
         ),
         actions: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(right: 155.0),
+            padding: const EdgeInsets.only(right: 36.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -87,7 +100,7 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
                               style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
-                                  color: Color(0xff153faa)),
+                                  color: Color(0xff19306B)),
                             ),
                             SizedBox(
                               width: 4,
@@ -95,7 +108,7 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
                             Icon(
                               CupertinoIcons.chevron_down,
                               size: 9,
-                              color: Color(0xff153faa),
+                              color: Color(0xff19306B),
                             ),
                           ],
                         ),
@@ -152,26 +165,26 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
                     ),
                   ],
                 ),
-                SizedBox(width: 20),
-                ElevatedButton(
-                  style: outlinedStyle,
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const LoginPage(),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    "Login",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-                SizedBox(width: 8),
+                SizedBox(width: 16),
+                // ElevatedButton(
+                //   style: outlinedStyle,
+                //   onPressed: () {
+                //     Navigator.of(context).push(
+                //       MaterialPageRoute(
+                //         builder: (context) => const LoginPage(),
+                //       ),
+                //     );
+                //   },
+                //   child: Text(
+                //     "Login",
+                //     style: TextStyle(
+                //       fontWeight: FontWeight.w500,
+                //       color: Theme.of(context).colorScheme.onPrimary,
+                //       fontSize: 14,
+                //     ),
+                //   ),
+                // ),
+                // SizedBox(width: 8),
                 OutlinedButton(
                   style: filledStyle,
                   onPressed: () {
@@ -195,7 +208,6 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
           ),
         ],
       ),
-
     );
   }
 }
