@@ -1,3 +1,4 @@
+import 'package:ICTC_Website/widgets/appBarDesktop.dart';
 import 'package:flutter/material.dart';
 import 'package:ICTC_Website/pages/desktop/home.dart';
 
@@ -11,6 +12,9 @@ class SkillUpPage extends StatefulWidget {
 class _SkillUpPageState extends State<SkillUpPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBarDesktop(),
+
+    );
   }
 }

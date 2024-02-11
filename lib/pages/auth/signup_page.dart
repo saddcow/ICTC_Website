@@ -1,6 +1,7 @@
 import 'package:ICTC_Website/pages/auth/login_page.dart';
 import 'package:ICTC_Website/pages/desktop/footer.dart';
 import 'package:ICTC_Website/pages/desktop/home.dart';
+import 'package:ICTC_Website/widgets/appBarDesktop.dart';
 import 'package:flutter/material.dart';
 
 class SignupPage extends StatelessWidget {
@@ -9,36 +10,7 @@ class SignupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        toolbarHeight: 70,
-        backgroundColor: Colors.transparent,
-        surfaceTintColor: Colors.white,
-        elevation: 0.5,
-        title: Padding(
-          padding: const EdgeInsets.only(left: 155.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const HomeDesktopPage(),
-                      ));
-                },
-                icon: Image.asset('assets/images/logo_ictc.png',
-                    width: 60, height: 70),
-              ),
-              Text("Ateneo ICTC",
-                  style: TextStyle(fontSize: 20, color: Color(0xff153faa)))
-              // Your widgets here
-            ],
-          ),
-        ),
-      ),
+      appBar: AppBarDesktop(),
       body: SingleChildScrollView(
           child: Column(
             children: [
