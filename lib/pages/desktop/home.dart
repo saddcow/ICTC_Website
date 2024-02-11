@@ -1,5 +1,6 @@
 import 'package:ICTC_Website/pages/auth/login_page.dart';
 import 'package:ICTC_Website/pages/auth/signup_page.dart';
+import 'package:ICTC_Website/pages/desktop/footer.dart';
 import 'package:ICTC_Website/pages/desktop/programs/google_certified_educators.dart';
 import 'package:ICTC_Website/pages/desktop/programs/microcredentials.dart';
 import 'package:ICTC_Website/pages/desktop/programs/skillup.dart';
@@ -24,8 +25,9 @@ class _HomeDesktopPageState extends State<HomeDesktopPage> {
           flex: 1,
           child: Column(
             children: [
-              _hero(context),
-              _programs(context),
+              _buildHero(context),
+              _buildPrograms(context),
+              FooterWidget(),
             ],
           ),
         ),
@@ -34,12 +36,12 @@ class _HomeDesktopPageState extends State<HomeDesktopPage> {
   }
 }
 
-Widget _hero(context) {
+Widget _buildHero(context) {
   return Container(
     alignment: Alignment.topLeft,
     width: MediaQuery.of(context).size.width,
-    height: 750,
-    color: Color(0xff153faa),
+    height: MediaQuery.of(context).size.height * 0.7,
+    color: Color(0xff19306B),
     child: Padding(
       padding: EdgeInsets.fromLTRB(180, 15, 15, 15),
       child: Column(
@@ -104,27 +106,30 @@ Widget _hero(context) {
   );
 }
 
-Widget _programs(context) {
+Widget _buildPrograms(context) {
   return Container(
-    color: Color(0xfffff0),
-      padding: const EdgeInsets.symmetric(vertical: 180.0),
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text("Featured Programs",
-                style: Theme.of(context).textTheme.bodyLarge),
-                SizedBox(height: 50),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _buildMicroCard(context),
-                _buildGoogleCard(context),
-                _buildSkillCard(context),
-              ],
-            ),
-          ]));
+      height: MediaQuery.of(context).size.height * 0.8,
+      color: Color(0xfffff0),
+      child: Padding(
+      padding: EdgeInsets.fromLTRB(180, 15, 15, 15),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Featured Programs",
+                  style: Theme.of(context).textTheme.bodyLarge),
+              SizedBox(height: 50),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _buildMicroCard(context),
+                  _buildGoogleCard(context),
+                  _buildSkillCard(context),
+                ],
+              ),
+            ]),
+      ));
 }
 
 Widget _buildMicroCard(context) {
@@ -162,7 +167,8 @@ Widget _buildMicroCard(context) {
               SizedBox(height: 20),
               Row(
                 children: [
-                  Icon(Icons.school_rounded, size: 14, color: Color(0xff153faa)),
+                  Icon(Icons.school_rounded,
+                      size: 14, color: Color(0xff153faa)),
                   SizedBox(width: 5),
                   Text(
                     "12 courses",
@@ -175,7 +181,13 @@ Widget _buildMicroCard(context) {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     FilledButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const MicrocredentialsPage(),
+                          ),
+                        );
+                      },
                       child: Text("Explore Courses",
                           style: TextStyle(
                               color: Colors.white,
@@ -234,7 +246,8 @@ Widget _buildGoogleCard(context) {
               SizedBox(height: 20),
               Row(
                 children: [
-                  Icon(Icons.school_rounded, size: 14, color: Color(0xff153faa)),
+                  Icon(Icons.school_rounded,
+                      size: 14, color: Color(0xff153faa)),
                   SizedBox(width: 5),
                   Text(
                     "12 courses",
@@ -247,7 +260,14 @@ Widget _buildGoogleCard(context) {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     FilledButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const GoogleCertifiedEducatorsPage(),
+                          ),
+                        );
+                      },
                       child: Text("Explore Courses",
                           style: TextStyle(
                               color: Colors.white,
@@ -306,7 +326,8 @@ Widget _buildSkillCard(context) {
               SizedBox(height: 20),
               Row(
                 children: [
-                  Icon(Icons.school_rounded, size: 14, color: Color(0xff153faa)),
+                  Icon(Icons.school_rounded,
+                      size: 14, color: Color(0xff153faa)),
                   SizedBox(width: 5),
                   Text(
                     "12 courses",
@@ -319,7 +340,13 @@ Widget _buildSkillCard(context) {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     FilledButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const SkillUpPage(),
+                          ),
+                        );
+                      },
                       child: Text("Explore Courses",
                           style: TextStyle(
                               color: Colors.white,
@@ -341,3 +368,4 @@ Widget _buildSkillCard(context) {
     ),
   );
 }
+

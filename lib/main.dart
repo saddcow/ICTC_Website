@@ -26,14 +26,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
         title: 'Ateneo ICTC',
         theme: ThemeData(
+           pageTransitionsTheme: const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
+            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+          },
+        ),
           fontFamily: "Montserrat",
           colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color(0xff153faa),
-              onPrimary: const Color(0xff153faa),
+              seedColor: const Color(0xff19306B),
+              onPrimary: const Color(0xff19306B),
               onSecondary: Colors.white,
-              onPrimaryContainer: const Color(0xff153faa),
+              onPrimaryContainer: const Color(0xff19306B),
               onSecondaryContainer: Colors.white),
           textTheme: TextTheme(
             displayLarge: TextStyle(
@@ -53,7 +60,7 @@ class MyApp extends StatelessWidget {
             labelSmall: TextStyle(
                 fontSize: 12, fontWeight: FontWeight.w300, color: Colors.white),
             bodyLarge: TextStyle(
-                fontSize: 64, fontWeight: FontWeight.w600, color: Color(0xff153faa)),
+                fontSize: 32, fontWeight: FontWeight.w600, color: Color(0xff19306B)),
             bodyMedium: TextStyle(
                 fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black),
             ),

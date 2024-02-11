@@ -15,7 +15,34 @@ class _MicrocredentialsPageState extends State<MicrocredentialsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarDesktop(),
-
+      body: SingleChildScrollView(
+        child: Expanded(
+          flex: 1,
+          child: Column(
+            children: [
+              _buildHero(context),
+            ],
+          ),
+        ),
+      ),
     );
   }
+}
+
+Widget _buildHero(context) {
+  return Container(
+    alignment: Alignment.topCenter,
+    width: MediaQuery.of(context).size.width,
+    height: MediaQuery.of(context).size.height*0.6,
+    color: Color(0xff19306B),
+    child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text( 
+            "MICRO-CREDENTIALS PROGRAM",
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white, fontSize: 45),
+          ),
+        ]),
+  );
 }
