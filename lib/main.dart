@@ -26,19 +26,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: false,
         title: 'Ateneo ICTC',
         theme: ThemeData(
-           pageTransitionsTheme: const PageTransitionsTheme(
-          builders: <TargetPlatform, PageTransitionsBuilder>{
-            TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
-            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-          },
-        ),
+          pageTransitionsTheme: const PageTransitionsTheme(
+            builders: <TargetPlatform, PageTransitionsBuilder>{
+              TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
+              TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+            },
+          ),
           fontFamily: "Montserrat",
           colorScheme: ColorScheme.fromSeed(
               seedColor: const Color(0xff19306B),
-              onPrimary: const Color(0xff19306B),
+              onPrimary: Color(0xFF19306B),
               onSecondary: Colors.white,
               onPrimaryContainer: const Color(0xff19306B),
               onSecondaryContainer: Colors.white),
@@ -60,10 +60,12 @@ class MyApp extends StatelessWidget {
             labelSmall: TextStyle(
                 fontSize: 12, fontWeight: FontWeight.w300, color: Colors.white),
             bodyLarge: TextStyle(
-                fontSize: 32, fontWeight: FontWeight.w600, color: Color(0xff19306B)),
+                fontSize: 32,
+                fontWeight: FontWeight.w600,
+                color: Color(0xff19306B)),
             bodyMedium: TextStyle(
                 fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black),
-            ),
+          ),
           useMaterial3: true,
         ),
         routes: {
@@ -73,7 +75,8 @@ class MyApp extends StatelessWidget {
           '/about': (context) => const AboutPage(),
           '/microcredentials': (context) => const MicrocredentialsPage(),
           '/skillup': (context) => const SkillUpPage(),
-          '/google_certified_educators': (context) => const GoogleCertifiedEducatorsPage(),
+          '/google_certified_educators': (context) =>
+              const GoogleCertifiedEducatorsPage(),
         },
         home: const MainApp());
   }
@@ -87,8 +90,8 @@ class MainApp extends StatelessWidget {
     return ScreenTypeLayout.builder(
       desktop: (BuildContext context) => HomeDesktopPage(),
       mobile: (BuildContext context) => HomeMobilePage(),
-    // tablet: (BuildContext context) => Container(color:Colors.yellow),
-    // watch: (BuildContext context) => Container(color:Colors.purple),
+      // tablet: (BuildContext context) => Container(color:Colors.yellow),
+      // watch: (BuildContext context) => Container(color:Colors.purple),
     );
   }
 }

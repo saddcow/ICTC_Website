@@ -105,21 +105,18 @@ Widget buildBody(context) {
                   const Padding(
                     padding: EdgeInsets.only(top: 35, bottom: 30),
                     child: Image(
-                        image:
-                            AssetImage("assets/images/logo_ictc.png"),
+                        image: AssetImage("assets/images/logo_ictc.png"),
                         height: 100),
                   ),
                   const Text(
                     "Log in to Ateneo ICTC",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 24),
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   Container(
-                      margin:
-                          const EdgeInsets.symmetric(horizontal: 25),
+                      margin: const EdgeInsets.symmetric(horizontal: 25),
                       child: buildForm(context)),
                 ],
               ),
@@ -205,7 +202,7 @@ Form buildForm(context) {
         child: Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.symmetric(vertical: 8),
-          width: 350,
+          width: MediaQuery.sizeOf(context).width * 0.4,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             // adding color will hide the splash effect

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:ICTC_Website/pages/desktop/footer.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
 import 'package:flutter/material.dart';
 import 'package:ICTC_Website/pages/desktop/home.dart';
@@ -15,9 +16,11 @@ class GoogleCertifiedEducatorsPage extends StatelessWidget {
         child: Expanded(
           flex: 1,
           child: Column(
-            children: [_buildHero(context),
-             _buildLevels(context)
-             ],
+            children: [
+              _buildHero(context),
+              _buildLevels(context),
+              FooterWidget(),
+            ],
           ),
         ),
       ),
@@ -38,7 +41,10 @@ Widget _buildHero(context) {
         children: [
           Text(
             "Google Certified Educator",
-            style: Theme.of(context).textTheme.displayLarge?.copyWith(color:Colors.white),
+            style: Theme.of(context)
+                .textTheme
+                .displayLarge
+                ?.copyWith(color: Colors.white),
           ),
           SizedBox(
             height: 40,
@@ -86,7 +92,7 @@ Widget _buildLevels(context) {
       height: MediaQuery.of(context).size.height * 0.8,
       color: Color(0xfffff0),
       child: Padding(
-      padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+        padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -108,7 +114,7 @@ Widget _buildLevels(context) {
 
 Widget _buildCard(context) {
   return Container(
-    width:  MediaQuery.of(context).size.width * 0.7,
+    width: MediaQuery.of(context).size.width * 0.7,
     height: 300,
     child: Card(
       clipBehavior: Clip.antiAlias,
@@ -180,4 +186,3 @@ Widget _buildCard(context) {
     ),
   );
 }
-

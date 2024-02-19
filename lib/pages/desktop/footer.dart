@@ -11,7 +11,12 @@ class FooterWidget extends StatelessWidget {
       height: 300,
       color: Color(0xff153faa),
       child: Row(
-        children: [Column(children:[]), Column(children:[]), Column(children:[]),],
+        children: [
+          Column(
+            children:[
+              Icon(),
+          ]
+        ), Column(children:[]), Column(children:[]),],
 
       )
 
