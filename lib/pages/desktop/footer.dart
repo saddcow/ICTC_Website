@@ -14,7 +14,7 @@ class FooterWidget extends StatelessWidget {
         children: [
           Column(
             children:[
-              Icon(),
+            //  Icon(),
           ]
         ), Column(children:[]), Column(children:[]),],
 

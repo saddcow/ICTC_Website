@@ -38,7 +38,7 @@ Widget _buildHero(context) {
     alignment: Alignment.topCenter,
     width: MediaQuery.of(context).size.width,
     height: MediaQuery.of(context).size.height * 0.6,
-    color: Color(0xff19306B),
+    color: Color(0xFF19306B),
     child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -50,6 +50,8 @@ Widget _buildHero(context) {
                 .titleLarge
                 ?.copyWith(color: Colors.white, fontSize: 45),
           ),
+          SizedBox(height: 50),
+          characteristicsChips()
         ]),
   );
 }
@@ -68,6 +70,100 @@ Widget _buildList(context) {
       ),
       children: <Widget>[
         CourseCard(),
+      ],
+    ),
+  );
+}
+
+Widget characteristicsChips() {
+  return Container(
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+       Chip(
+          backgroundColor: Color(0xFF19306B),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: Colors.white, width: 1), // White border
+            borderRadius: BorderRadius.circular(50),
+          ),
+          label: Text(
+            "Focused Content",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+        SizedBox(width: 20),
+        Chip(
+          backgroundColor: Color(0xFF19306B),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: Colors.white, width: 1), // White border
+            borderRadius: BorderRadius.circular(50),
+          ),
+          label: Text(
+            "Short Duration",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          )
+        ),
+        SizedBox(width: 20),
+        Chip(
+          backgroundColor: Color(0xFF19306B),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: Colors.white, width: 1), // White border
+            borderRadius: BorderRadius.circular(50),
+          ),
+          label: Text(
+            "Flixible Learning Options",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          )
+        ),
+        SizedBox(width: 20),
+        Chip(
+          backgroundColor: Color(0xFF19306B),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: Colors.white, width: 1), // White border
+            borderRadius: BorderRadius.circular(50),
+          ),
+          label: Text(
+            "Stackable and Modular",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          )
+        ),
+        SizedBox(width: 20),
+        Chip(
+          backgroundColor: Color(0xFF19306B),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: Colors.white, width: 1), // White border
+            borderRadius: BorderRadius.circular(50),
+          ),
+          label: Text(
+            "Employer Recognition",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          )
+        ),
+        SizedBox(width: 20),
+        Chip(
+          backgroundColor: Color(0xFF19306B),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: Colors.white, width: 1), // White border
+            borderRadius: BorderRadius.circular(50),
+          ),
+          label: Text(
+            "Continuos Learning",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        )
       ],
     ),
   );
