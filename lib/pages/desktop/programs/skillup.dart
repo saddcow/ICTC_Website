@@ -17,7 +17,7 @@ class _SkillUpPageState extends State<SkillUpPage> {
       appBar: AppBarDesktop(),
       body: SingleChildScrollView(
         child: Column(
-          children: [_buildHero(context), _buildList(context),FooterWidget()],
+          children: [_buildHero(context), _buildList(context), FooterWidget()],
         ),
       ),
     );
@@ -84,25 +84,37 @@ Widget _buildHero(context) {
 }
 
 Widget _buildList(context) {
-  return SizedBox(
-    height: MediaQuery.of(context).size.height*0.6,
-    child: GridView(
-      physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      padding: const EdgeInsets.all(8),
-      gridDelegate: 
-      SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 16,
-        childAspectRatio: 2,
-        ),
-      children: <Widget>[
-        _buildCard(context),
-        _buildCard(context),
-        _buildCard(context),
+  return Container(
+      color: Color(0xfffff0),
+      padding: const EdgeInsets.symmetric(vertical: 180.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            //height: MediaQuery.of(context).size.height * 0.6,
+            padding: EdgeInsets.only(left: 350, right: 350),
+            child: GridView(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(8),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 16,
+                childAspectRatio: 1.5,
+              ),
+              children: <Widget>[
+                _buildCard(context),
+                _buildCard(context),
+                _buildCard(context),
+                _buildCard(context),
+                _buildCard(context),
+                _buildCard(context),
+              ],
+            ),
+          ),
         ],
-    ),
-  );
+      ));
 }
 
 Widget _buildKeyCharacteristics(context) {
@@ -132,8 +144,8 @@ Widget _buildKeyCharacteristics(context) {
 
 Widget _buildCard(context) {
   return Container(
-    width: 400,
-    height: 500,
+    //width: 400,
+    //height: 500,
     child: Card(
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),

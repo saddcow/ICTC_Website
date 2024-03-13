@@ -108,10 +108,10 @@ Widget _buildHero(context) {
 
 Widget _buildPrograms(context) {
   return Container(
-      height: MediaQuery.of(context).size.height * 0.8,
+      //height: MediaQuery.of(context).size.height * 0.8,
       color: Color(0xfffff0),
       child: Padding(
-      padding: EdgeInsets.fromLTRB(180, 15, 15, 15),
+      padding: const EdgeInsets.symmetric(vertical: 180.0),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,

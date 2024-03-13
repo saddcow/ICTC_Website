@@ -92,7 +92,7 @@ Widget _buildLevels(context) {
       height: MediaQuery.of(context).size.height * 0.8,
       color: Color(0xfffff0),
       child: Padding(
-        padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+        padding: EdgeInsets.fromLTRB(350, 15, 350, 15),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
