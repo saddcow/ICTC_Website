@@ -114,13 +114,13 @@ Widget _buildPrograms(context) {
       padding: EdgeInsets.fromLTRB(180, 15, 15, 15),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text("Featured Programs",
                   style: Theme.of(context).textTheme.bodyLarge),
               SizedBox(height: 50),
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   _buildMicroCard(context),
