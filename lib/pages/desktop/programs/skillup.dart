@@ -101,7 +101,7 @@ Widget _buildList(context) {
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 crossAxisSpacing: 16,
-                childAspectRatio: 1.5,
+                childAspectRatio: 1.4,
               ),
               children: <Widget>[
                 _buildCard(context),
@@ -158,13 +158,13 @@ Widget _buildCard(context) {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("COURSE",
+              Text("Skill-Up",
                   style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w400,
                       decoration: TextDecoration.underline)),
               SizedBox(height: 30),
-              Text("Google Certified Educators",
+              Text("Advance Figma",
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
               SizedBox(height: 20),
               Text(
