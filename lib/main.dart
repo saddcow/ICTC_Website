@@ -2,6 +2,7 @@ import 'package:ICTC_Website/pages/auth/login_page.dart';
 import 'package:ICTC_Website/pages/auth/signup_page.dart';
 import 'package:ICTC_Website/pages/desktop/about.dart';
 import 'package:ICTC_Website/pages/desktop/home.dart';
+import 'package:ICTC_Website/pages/desktop/profiles.dart';
 import 'package:ICTC_Website/pages/mobile/home.dart';
 import 'package:ICTC_Website/pages/desktop/programs/google_certified_educators.dart';
 import 'package:ICTC_Website/pages/desktop/programs/microcredentials.dart';
@@ -78,7 +79,7 @@ class MyApp extends StatelessWidget {
           '/google_certified_educators': (context) =>
               const GoogleCertifiedEducatorsPage(),
         },
-        home: const MainApp());
+        home: ProfilesPage());
   }
 }
 
