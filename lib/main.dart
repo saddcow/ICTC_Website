@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
           '/google_certified_educators': (context) =>
               const GoogleCertifiedEducatorsPage(),
         },
-        home: ProfilesPage());
+        home: HomeDesktopPage());
   }
 }
 

@@ -2,6 +2,7 @@ import 'package:ICTC_Website/main.dart';
 import 'package:ICTC_Website/pages/auth/login_page.dart';
 import 'package:ICTC_Website/pages/auth/signup_page.dart';
 import 'package:ICTC_Website/pages/desktop/home.dart';
+import 'package:ICTC_Website/pages/desktop/profiles.dart';
 import 'package:ICTC_Website/pages/desktop/programs/google_certified_educators.dart';
 import 'package:ICTC_Website/pages/desktop/programs/microcredentials.dart';
 import 'package:ICTC_Website/pages/desktop/programs/skillup.dart';
@@ -203,6 +204,39 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
                     ),
                   ),
                 ),
+
+                SizedBox(width: 16),
+                //TODO: show this part only when user is logged in/registered
+
+                PopupMenuButton(
+                  padding: EdgeInsets.all(0),
+                  surfaceTintColor: Colors.white,
+                  elevation: 4,
+                  offset: Offset.fromDirection(90, 10),
+                  position: PopupMenuPosition.under,
+                  icon: Icon(
+                    Icons.more_vert,
+                    color: Color(0xff19306B),
+                  ),
+                  itemBuilder: (BuildContext context) {
+                    return [
+                      PopupMenuItem(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const ProfilesPage(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          "Profile",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 14),
+                        ),
+                      )
+                    ];
+                  }
+                )
               ],
             ),
           ),
