@@ -5,6 +5,7 @@ import 'package:ICTC_Website/pages/programs/microcredentials.dart';
 import 'package:ICTC_Website/pages/programs/skillup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeDesktopPage extends StatefulWidget {
   const HomeDesktopPage({super.key});
@@ -18,17 +19,6 @@ class _HomeDesktopPageState extends State<HomeDesktopPage> {
   Widget build(BuildContext context) {
     final ButtonStyle style = TextButton.styleFrom(
       foregroundColor: Theme.of(context).colorScheme.onPrimary,
-    );
-    final ButtonStyle filledStyle = FilledButton.styleFrom(
-      foregroundColor: Theme.of(context).colorScheme.onSecondary,
-      backgroundColor: Theme.of(context).colorScheme.onPrimary,
-    );
-    final ButtonStyle outlinedStyle = OutlinedButton.styleFrom(
-      surfaceTintColor: Colors.white,
-      elevation: 0,
-      side: BorderSide(width: 1, color: Color(0xff153faa)),
-      foregroundColor: Theme.of(context).colorScheme.onPrimary,
-      backgroundColor: Theme.of(context).colorScheme.onSecondary,
     );
 
     return Scaffold(
@@ -157,43 +147,7 @@ class _HomeDesktopPageState extends State<HomeDesktopPage> {
                   ],
                 ),
                 SizedBox(width: 20),
-                ElevatedButton(
-                  style: outlinedStyle,
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const LoginPage(),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    "Login",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-                SizedBox(width: 8),
-                OutlinedButton(
-                  style: filledStyle,
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const SignupPage(),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    "Sign Up",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.onSecondary,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
+                buildButtons()
               ],
             ),
           ),
@@ -210,6 +164,110 @@ class _HomeDesktopPageState extends State<HomeDesktopPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildButtons() {
+    final ButtonStyle filledStyle = FilledButton.styleFrom(
+      foregroundColor: Theme.of(context).colorScheme.onSecondary,
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+    );
+    final ButtonStyle outlinedStyle = OutlinedButton.styleFrom(
+      surfaceTintColor: Colors.white,
+      elevation: 0,
+      side: BorderSide(width: 1, color: Color(0xff153faa)),
+      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+      backgroundColor: Theme.of(context).colorScheme.onSecondary,
+    );
+
+    return StreamBuilder(
+      stream: Supabase.instance.client.auth.onAuthStateChange,
+      builder: (context, snapshot) {
+        final data = snapshot.data;
+
+        if (data?.session?.user != null) {
+          return Row(
+            children: [
+              ElevatedButton(
+                style: outlinedStyle,
+                onPressed: () {
+                  // TODO: route to user profile
+                },
+                child: Text(
+                  "My Profile",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              ElevatedButton(
+                style: filledStyle,
+                onPressed: () async {
+                  await Supabase.instance.client.auth.signOut();
+
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Successfully signed out!")));
+                  }
+                },
+                child: Text(
+                  "Logout",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.onSecondary,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ],
+          );
+        } else {
+          return Row(
+            children: [
+              ElevatedButton(
+                style: outlinedStyle,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ),
+                  );
+                },
+                child: Text(
+                  "Login",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              SizedBox(width: 8),
+              OutlinedButton(
+                style: filledStyle,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const SignupPage(),
+                    ),
+                  );
+                },
+                child: Text(
+                  "Sign Up",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.onSecondary,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
+      },
     );
   }
 }
@@ -286,7 +344,7 @@ Widget _hero(context) {
 
 Widget _programs(context) {
   return Container(
-    color: Color(0xfffff0),
+      color: Color(0xfffff0),
       padding: const EdgeInsets.symmetric(vertical: 180.0),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -294,7 +352,7 @@ Widget _programs(context) {
           children: [
             Text("Featured Programs",
                 style: Theme.of(context).textTheme.bodyLarge),
-                SizedBox(height: 50),
+            SizedBox(height: 50),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -342,7 +400,8 @@ Widget _buildMicroCard(context) {
               SizedBox(height: 20),
               Row(
                 children: [
-                  Icon(Icons.school_rounded, size: 14, color: Color(0xff153faa)),
+                  Icon(Icons.school_rounded,
+                      size: 14, color: Color(0xff153faa)),
                   SizedBox(width: 5),
                   Text(
                     "12 courses",
@@ -414,7 +473,8 @@ Widget _buildGoogleCard(context) {
               SizedBox(height: 20),
               Row(
                 children: [
-                  Icon(Icons.school_rounded, size: 14, color: Color(0xff153faa)),
+                  Icon(Icons.school_rounded,
+                      size: 14, color: Color(0xff153faa)),
                   SizedBox(width: 5),
                   Text(
                     "12 courses",
@@ -486,7 +546,8 @@ Widget _buildSkillCard(context) {
               SizedBox(height: 20),
               Row(
                 children: [
-                  Icon(Icons.school_rounded, size: 14, color: Color(0xff153faa)),
+                  Icon(Icons.school_rounded,
+                      size: 14, color: Color(0xff153faa)),
                   SizedBox(width: 5),
                   Text(
                     "12 courses",

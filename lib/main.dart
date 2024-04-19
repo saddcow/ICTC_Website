@@ -6,14 +6,18 @@ import 'package:ICTC_Website/pages/mobile/home.dart';
 import 'package:ICTC_Website/pages/programs/google_certified_educators.dart';
 import 'package:ICTC_Website/pages/programs/microcredentials.dart';
 import 'package:ICTC_Website/pages/programs/skillup.dart';
+import 'package:ICTC_Website/supabase_options.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(
+    url: SupabaseOptions.SUPABASE_URL,
+    anonKey: SupabaseOptions.SUPABASE_ANON_KEY,
+    debug: true,
   );
 
   runApp(const MyApp());
@@ -53,21 +57,24 @@ class MyApp extends StatelessWidget {
             labelSmall: TextStyle(
                 fontSize: 12, fontWeight: FontWeight.w300, color: Colors.white),
             bodyLarge: TextStyle(
-                fontSize: 64, fontWeight: FontWeight.w600, color: Color(0xff153faa)),
+                fontSize: 64,
+                fontWeight: FontWeight.w600,
+                color: Color(0xff153faa)),
             bodyMedium: TextStyle(
                 fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black),
-            ),
+          ),
           useMaterial3: true,
         ),
-        routes: {
-          '/home': (context) => const HomeDesktopPage(),
-          '/signup': (context) => const SignupPage(),
-          '/login': (context) => const LoginPage(),
-          '/about': (context) => const AboutPage(),
-          '/microcredentials': (context) => const MicrocredentialsPage(),
-          '/skillup': (context) => const SkillUpPage(),
-          '/google_certified_educators': (context) => const GoogleCertifiedEducatorsPage(),
-        },
+        // routes: {
+        //   '/home': (context) => const HomeDesktopPage(),
+        //   '/signup': (context) => const SignupPage(),
+        //   '/login': (context) => const LoginPage(),
+        //   '/about': (context) => const AboutPage(),
+        //   '/microcredentials': (context) => const MicrocredentialsPage(),
+        //   '/skillup': (context) => const SkillUpPage(),
+        //   '/google_certified_educators': (context) =>
+        //       const GoogleCertifiedEducatorsPage(),
+        // },
         home: const MainApp());
   }
 }
@@ -80,8 +87,8 @@ class MainApp extends StatelessWidget {
     return ScreenTypeLayout.builder(
       desktop: (BuildContext context) => HomeDesktopPage(),
       mobile: (BuildContext context) => HomeMobilePage(),
-    // tablet: (BuildContext context) => Container(color:Colors.yellow),
-    // watch: (BuildContext context) => Container(color:Colors.purple),
+      // tablet: (BuildContext context) => Container(color:Colors.yellow),
+      // watch: (BuildContext context) => Container(color:Colors.purple),
     );
   }
 }
