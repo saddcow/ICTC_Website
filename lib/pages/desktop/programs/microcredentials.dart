@@ -1,6 +1,7 @@
 import 'package:ICTC_Website/pages/desktop/about.dart';
 import 'package:ICTC_Website/pages/desktop/footer.dart';
 import 'package:ICTC_Website/pages/desktop/home.dart';
+import 'package:ICTC_Website/pages/desktop/preregister.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
 import 'package:ICTC_Website/widgets/course_card.dart';
 import 'package:ICTC_Website/widgets/sampleCourse.dart';
@@ -81,7 +82,7 @@ Widget _buildList(context) {
               children: <Widget>[
                 CourseCard(),
                 SampleCourseCard(),
-                sample2(),
+                sample2(context),
               ],
             ),
           )
@@ -89,7 +90,7 @@ Widget _buildList(context) {
       ));
 }
 
-Widget sample2() {
+Widget sample2(context) {
   return Container(
     width: 400,
     height: 500,
@@ -128,7 +129,13 @@ Widget sample2() {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 FilledButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: ((context) => PreRegisterPage())
+                        )
+                      );
+                    },
                     child: Text(
                       "Pre-Register",
                       style: TextStyle(
