@@ -8,6 +8,7 @@ import 'package:ICTC_Website/pages/desktop/programs/microcredentials.dart';
 import 'package:ICTC_Website/pages/desktop/programs/skillup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -20,17 +21,7 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
     final ButtonStyle style = TextButton.styleFrom(
       foregroundColor: Theme.of(context).colorScheme.onPrimary,
     );
-    final ButtonStyle filledStyle = FilledButton.styleFrom(
-      foregroundColor: Theme.of(context).colorScheme.onSecondary,
-      backgroundColor: Theme.of(context).colorScheme.onPrimary,
-    );
-    final ButtonStyle outlinedStyle = OutlinedButton.styleFrom(
-      surfaceTintColor: Colors.white,
-      elevation: 0,
-      side: BorderSide(width: 1, color: Color(0xff153faa)),
-      foregroundColor: Theme.of(context).colorScheme.onPrimary,
-      backgroundColor: Theme.of(context).colorScheme.onSecondary,
-    );
+
     return Scaffold(
       appBar: AppBar(
         primary: true,
@@ -167,55 +158,44 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
                   ],
                 ),
                 SizedBox(width: 16),
-                // ElevatedButton(
-                //   style: outlinedStyle,
-                //   onPressed: () {
-                //     Navigator.of(context).push(
-                //       MaterialPageRoute(
-                //         builder: (context) => const LoginPage(),
-                //       ),
-                //     );
-                //   },
-                //   child: Text(
-                //     "Login",
-                //     style: TextStyle(
-                //       fontWeight: FontWeight.w500,
-                //       color: Theme.of(context).colorScheme.onPrimary,
-                //       fontSize: 14,
-                //     ),
-                //   ),
-                // ),
-                // SizedBox(width: 8),
-                OutlinedButton(
-                  style: filledStyle,
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const SignupPage(),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    "Sign Up",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.onSecondary,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
+                _buildButtons(context)
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-                SizedBox(width: 16),
-                //TODO: show this part only when user is logged in/registered
+  Widget _buildButtons(BuildContext context) {
+    final ButtonStyle filledStyle = FilledButton.styleFrom(
+      foregroundColor: Theme.of(context).colorScheme.onSecondary,
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+    );
+    final ButtonStyle outlinedStyle = OutlinedButton.styleFrom(
+      surfaceTintColor: Colors.white,
+      elevation: 0,
+      side: BorderSide(width: 1, color: Color(0xff153faa)),
+      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+      backgroundColor: Theme.of(context).colorScheme.onSecondary,
+    );
 
-                PopupMenuButton(
+    return StreamBuilder(
+      stream: Supabase.instance.client.auth.onAuthStateChange,
+      builder: (context, snapshot) {
+        final data = snapshot.data;
+
+        if (data?.session?.user != null) {
+          return Row(
+            children: [
+              PopupMenuButton(
                   padding: EdgeInsets.all(0),
                   surfaceTintColor: Colors.white,
                   elevation: 4,
                   offset: Offset.fromDirection(90, 10),
                   position: PopupMenuPosition.under,
                   icon: Icon(
-                    Icons.more_vert,
+                    Icons.person,
                     color: Color(0xff19306B),
                   ),
                   itemBuilder: (BuildContext context) {
@@ -228,20 +208,120 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
                             ),
                           );
                         },
-                        child: const Text(
-                          "Profile",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 14),
+                        child: ListTile(
+                          leading: Icon(Icons.person),
+                          title: Text(
+                            "My Profile",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        onTap: () async {
+                          await Supabase.instance.client.auth.signOut();
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text("Successfully signed out!")));
+                          }
+                        },
+                        child: ListTile(
+                          leading: Icon(Icons
+                              .logout),
+                          title: Text(
+                            "Logout",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                            ),
+                          ),
                         ),
                       )
                     ];
-                  }
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
+                  })
+              // ElevatedButton(
+              //   style: outlinedStyle,
+              //   onPressed: () {
+              //     // TODO: route to user profile
+              //   },
+              //   child: Text(
+              //     "My Profile",
+              //     style: TextStyle(
+              //       fontWeight: FontWeight.w500,
+              //       color: Theme.of(context).colorScheme.onPrimary,
+              //       fontSize: 14,
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(width: 8),
+              // ElevatedButton(
+              //   style: filledStyle,
+              //   onPressed: () async {
+              //     await Supabase.instance.client.auth.signOut();
+
+              //     if (mounted) {
+              //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              //           content: Text("Successfully signed out!")));
+              //     }
+              //   },
+              //   child: Text(
+              //     "Logout",
+              //     style: TextStyle(
+              //       fontWeight: FontWeight.w500,
+              //       color: Theme.of(context).colorScheme.onSecondary,
+              //       fontSize: 14,
+              //     ),
+              //   ),
+              // ),
+            ],
+          );
+        } else {
+          return Row(
+            children: [
+              ElevatedButton(
+                style: outlinedStyle,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ),
+                  );
+                },
+                child: Text(
+                  "Login",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              SizedBox(width: 8),
+              OutlinedButton(
+                style: filledStyle,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const SignupPage(),
+                    ),
+                  );
+                },
+                child: Text(
+                  "Sign Up",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.onSecondary,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
+      },
     );
   }
 }
