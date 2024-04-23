@@ -1,8 +1,10 @@
 import 'package:ICTC_Website/pages/desktop/attendedDetails.dart';
+import 'package:ICTC_Website/pages/desktop/editProfile.dart';
 import 'package:ICTC_Website/pages/desktop/pendingDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:ICTC_Website/pages/desktop/footer.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
+
 
 class ProfilesPage extends StatefulWidget {
   const ProfilesPage({Key? key}) : super(key: key);
@@ -86,7 +88,11 @@ Widget profileDetails(BuildContext context) {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => EditProfile())
+                    );
+                  },
                   icon: Icon(Icons.create_sharp),
                 ),
               ],
