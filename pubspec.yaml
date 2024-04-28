@@ -18,6 +18,8 @@ dependencies:
   flutter_svg: ^2.0.9
   supabase_flutter: ^2.5.1
   email_validator: ^2.1.17
+  json_annotation: ^4.8.1
+  build_runner: ^2.3.3
 
 dev_dependencies:
   flutter_test:

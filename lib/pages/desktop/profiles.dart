@@ -1,33 +1,82 @@
+import 'package:ICTC_Website/models/student.dart';
 import 'package:ICTC_Website/pages/desktop/attendedDetails.dart';
 import 'package:ICTC_Website/pages/desktop/editProfile.dart';
 import 'package:ICTC_Website/pages/desktop/pendingDetails.dart';
+import 'package:ICTC_Website/pages/desktop/profileDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:ICTC_Website/pages/desktop/footer.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
-
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfilesPage extends StatefulWidget {
   const ProfilesPage({Key? key}) : super(key: key);
-
+  
   @override
   State<ProfilesPage> createState() => _ProfilesPageState();
 }
 
 class _ProfilesPageState extends State<ProfilesPage> {
+  late final Future<Student> loggedInStudent;
+
+  @override
+  void initState() {
+    final uuid = Supabase.instance.client.auth.currentSession!.user.id;
+    loggedInStudent = Supabase.instance.client
+        .from('student')
+        .select()
+        .eq('uuid', uuid)
+        .limit(1)
+        .withConverter((data) => Student.fromJson(data.first));
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarDesktop(),
       body: SingleChildScrollView(
         child: Column(
-          children: [_buildPlacer(context), FooterWidget()],
+          children: [
+            FutureBuilder(
+              future: loggedInStudent, 
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return _buildPlacer(context, snapshot.data as Student);
+                }
+
+                return Text('An error occurred');
+              },
+            )
+          ],
         ),
       ),
     );
   }
+
+  Widget buildStudentDetails() {
+    return FutureBuilder(
+      future: loggedInStudent,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Placeholder(); // TODO: separate profileDetails() to its own widget
+        }
+
+        return Text('An error occurred');
+      },
+    );
+  }
 }
 
-Widget _buildPlacer(BuildContext context) {
+Widget _buildPlacer(BuildContext context, Student student) {
   return Container(
     padding: EdgeInsets.symmetric(horizontal: 100, vertical: 100),
     child: Column(
@@ -46,7 +95,7 @@ Widget _buildPlacer(BuildContext context) {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  profileDetails(context),
+                  ProfileDetails(student: student),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -62,90 +111,89 @@ Widget _buildPlacer(BuildContext context) {
   );
 }
 
-Widget profileDetails(BuildContext context) {
-  return SizedBox(
-    width: MediaQuery.of(context).size.width * 0.35,
-    height: MediaQuery.of(context).size.height * 0.75,
-    child: Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(35),
-      ),
-      color: Colors.white,
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(80, 10, 80, 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'My Profile',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => EditProfile())
-                    );
-                  },
-                  icon: Icon(Icons.create_sharp),
-                ),
-              ],
-            ),
-            Center(
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.25,
-                child: Image.asset('assets/images/squid.png'),
-              ),
-            ),
-            SizedBox(height: 10),
-            Divider(),
-            SizedBox(height: 20),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Squidward Tentacles',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                Text(
-                  '+639454999222',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                  ),
-                )
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'stentacles80@gmail.com',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-}
+// Widget profileDetails(BuildContext context) {
+//   return SizedBox(
+//     width: MediaQuery.of(context).size.width * 0.35,
+//     height: MediaQuery.of(context).size.height * 0.75,
+//     child: Card(
+//       shape: RoundedRectangleBorder(
+//         borderRadius: BorderRadius.circular(35),
+//       ),
+//       color: Colors.white,
+//       elevation: 2,
+//       child: Padding(
+//         padding: const EdgeInsets.fromLTRB(80, 10, 80, 10),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 Text(
+//                   'My Profile',
+//                   style: TextStyle(
+//                     fontSize: 20,
+//                     fontWeight: FontWeight.w600,
+//                   ),
+//                 ),
+//                 IconButton(
+//                   onPressed: () {
+//                     Navigator.of(context).push(
+//                         MaterialPageRoute(builder: (context) => EditProfile()));
+//                   },
+//                   icon: Icon(Icons.create_sharp),
+//                 ),
+//               ],
+//             ),
+//             Center(
+//               child: SizedBox(
+//                 width: MediaQuery.of(context).size.width * 0.25,
+//                 child: Image.asset('assets/images/squid.png'),
+//               ),
+//             ),
+//             SizedBox(height: 10),
+//             Divider(),
+//             SizedBox(height: 20),
+//             Row(
+//               crossAxisAlignment: CrossAxisAlignment.center,
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 Text(
+//                   'Squidward Tentacles',
+//                   style: TextStyle(
+//                     fontSize: 18,
+//                     fontWeight: FontWeight.w400,
+//                   ),
+//                 ),
+//                 Text(
+//                   '+639454999222',
+//                   style: TextStyle(
+//                     fontSize: 18,
+//                     fontWeight: FontWeight.w400,
+//                   ),
+//                 )
+//               ],
+//             ),
+//             SizedBox(height: 20),
+//             Row(
+//               crossAxisAlignment: CrossAxisAlignment.center,
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 Text(
+//                   'stentacles80@gmail.com',
+//                   style: TextStyle(
+//                     fontSize: 18,
+//                     fontWeight: FontWeight.w400,
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ],
+//         ),
+//       ),
+//     ),
+//   );
+// }
 
 Widget attendedCard(BuildContext context) {
   return SizedBox(
@@ -217,7 +265,6 @@ Widget pendingCard(BuildContext context) {
   );
 }
 
-
 Widget pendingContent() {
   List<String> pendingItems = [
     'Pending Item 1',
@@ -245,10 +292,7 @@ Widget pendingContent() {
             IconButton(
               onPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => PendingDetails()
-                  )
-                );
+                    MaterialPageRoute(builder: (context) => PendingDetails()));
               },
               icon: Icon(Icons.remove_red_eye),
             ),
@@ -286,10 +330,7 @@ Widget attendedContent() {
             IconButton(
               onPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => AttendedDetails()
-                  )
-                );
+                    MaterialPageRoute(builder: (context) => AttendedDetails()));
               },
               icon: Icon(Icons.remove_red_eye),
             ),
