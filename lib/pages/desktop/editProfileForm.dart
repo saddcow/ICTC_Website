@@ -187,5 +187,7 @@ class _ProfileFormState extends State<ProfileForm> {
     final uuid = supabase.auth.currentSession!.user.id;
 
     await supabase.from('student').update(newStudent.toJson()).eq('uuid', uuid);
+
+    Navigator.of(context).pop();
   }
 }

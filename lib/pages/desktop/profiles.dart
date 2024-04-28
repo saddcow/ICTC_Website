@@ -38,20 +38,8 @@ class _ProfilesPageState extends State<ProfilesPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            FutureBuilder(
-              future: loggedInStudent, 
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                }
-
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return _buildPlacer(context, snapshot.data as Student);
-                }
-
-                return Text('An error occurred');
-              },
-            )
+            buildStudentDetails(),
+            FooterWidget(),
           ],
         ),
       ),
@@ -67,7 +55,7 @@ class _ProfilesPageState extends State<ProfilesPage> {
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
-          return Placeholder(); // TODO: separate profileDetails() to its own widget
+          return _buildPlacer(context, snapshot.data as Student); // TODO: separate profileDetails() to its own widget
         }
 
         return Text('An error occurred');
@@ -110,90 +98,6 @@ Widget _buildPlacer(BuildContext context, Student student) {
     ),
   );
 }
-
-// Widget profileDetails(BuildContext context) {
-//   return SizedBox(
-//     width: MediaQuery.of(context).size.width * 0.35,
-//     height: MediaQuery.of(context).size.height * 0.75,
-//     child: Card(
-//       shape: RoundedRectangleBorder(
-//         borderRadius: BorderRadius.circular(35),
-//       ),
-//       color: Colors.white,
-//       elevation: 2,
-//       child: Padding(
-//         padding: const EdgeInsets.fromLTRB(80, 10, 80, 10),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               children: [
-//                 Text(
-//                   'My Profile',
-//                   style: TextStyle(
-//                     fontSize: 20,
-//                     fontWeight: FontWeight.w600,
-//                   ),
-//                 ),
-//                 IconButton(
-//                   onPressed: () {
-//                     Navigator.of(context).push(
-//                         MaterialPageRoute(builder: (context) => EditProfile()));
-//                   },
-//                   icon: Icon(Icons.create_sharp),
-//                 ),
-//               ],
-//             ),
-//             Center(
-//               child: SizedBox(
-//                 width: MediaQuery.of(context).size.width * 0.25,
-//                 child: Image.asset('assets/images/squid.png'),
-//               ),
-//             ),
-//             SizedBox(height: 10),
-//             Divider(),
-//             SizedBox(height: 20),
-//             Row(
-//               crossAxisAlignment: CrossAxisAlignment.center,
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               children: [
-//                 Text(
-//                   'Squidward Tentacles',
-//                   style: TextStyle(
-//                     fontSize: 18,
-//                     fontWeight: FontWeight.w400,
-//                   ),
-//                 ),
-//                 Text(
-//                   '+639454999222',
-//                   style: TextStyle(
-//                     fontSize: 18,
-//                     fontWeight: FontWeight.w400,
-//                   ),
-//                 )
-//               ],
-//             ),
-//             SizedBox(height: 20),
-//             Row(
-//               crossAxisAlignment: CrossAxisAlignment.center,
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               children: [
-//                 Text(
-//                   'stentacles80@gmail.com',
-//                   style: TextStyle(
-//                     fontSize: 18,
-//                     fontWeight: FontWeight.w400,
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ],
-//         ),
-//       ),
-//     ),
-//   );
-// }
 
 Widget attendedCard(BuildContext context) {
   return SizedBox(
