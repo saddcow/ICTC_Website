@@ -85,7 +85,7 @@ class MyApp extends StatelessWidget {
           '/google_certified_educators': (context) =>
               const GoogleCertifiedEducatorsPage(),
         },
-        home: ProfilePage());
+        home: HomeDesktopPage());
   }
 }
 
@@ -95,7 +95,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenTypeLayout.builder(
-      desktop: (BuildContext context) => ProfilePage(),
+      desktop: (BuildContext context) => HomeDesktopPage(),
       mobile: (BuildContext context) => HomeMobilePage(),
       // tablet: (BuildContext context) => Container(color:Colors.yellow),
       // watch: (BuildContext context) => Container(color:Colors.purple),
