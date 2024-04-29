@@ -1,5 +1,6 @@
 import 'package:ICTC_Website/models/student.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -38,123 +39,166 @@ class _ProfileFormState extends State<ProfileForm> {
       key: _formKey,
       child: Column(
         children: [
-          TextFormField(
-            controller: firstNameCon,
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please enter your first name';
-              }
-              return null;
-            },
-            onChanged: (_) => _formKey.currentState!.validate(),
-            decoration: InputDecoration(
-              labelText: 'First Name',
-              labelStyle: TextStyle(
+          SizedBox(height: 30,),
+          Flexible(
+            child: CupertinoTextFormFieldRow(
+              prefix: const Row(
+                children: [
+                  Text("First Name",
+                      style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400)),
+                  SizedBox(width: 12),
+                ],
+              ),
+              controller: firstNameCon,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Please enter your first name';
+                }
+                return null;
+              },
+              placeholder: 'e.g. John',
+              placeholderStyle: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: Colors.black45,
+              ),
+              onChanged: (_) => _formKey.currentState!.validate(),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black87,
+                  width: 0.5,
+                ),
+                borderRadius: BorderRadius.circular(18),
+              ),
+              style: TextStyle(
                 color: Colors.black87,
                 fontSize: 16,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w400,
               ),
-              hintText: 'Enter your first name',
-              hintStyle: TextStyle(
-                color: Colors.black38,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            style: TextStyle(
-              color: Colors.black54,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
             ),
           ),
-          TextFormField(
-            controller: lastNameCon,
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please enter your last name';
-              }
-              return null;
-            },
-            onChanged: (_) => _formKey.currentState!.validate(),
-            decoration: InputDecoration(
-              labelText: 'Last Name',
-              labelStyle: TextStyle(
-                color: Colors.black87,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-              hintText: 'Enter your last name',
-              hintStyle: TextStyle(
-                color: Colors.black38,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            style: TextStyle(
-              color: Colors.black54,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          TextFormField(
-            controller: emailCon,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "Enter an email address";
-              }
 
-              if (!EmailValidator.validate(value)) {
-                return "Enter a valid email address";
-              }
-
-              return null;
-            },
-            onChanged: (_) => _formKey.currentState!.validate(),
-            decoration: InputDecoration(
-              labelText: 'Email',
-              labelStyle: TextStyle(
+          Flexible(
+            child: CupertinoTextFormFieldRow(
+              prefix: const Row(
+                children: [
+                  Text("Last Name",
+                      style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400)),
+                  SizedBox(width: 12),
+                ],
+              ),
+              placeholder: 'e.g. De La Cruz',
+              placeholderStyle: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: Colors.black45,
+              ),
+              controller: lastNameCon,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Please enter your last name';
+                }
+                return null;
+              },
+              onChanged: (_) => _formKey.currentState!.validate(),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black87,
+                  width: 0.5,
+                ),
+                borderRadius: BorderRadius.circular(18),
+              ),
+              style: TextStyle(
                 color: Colors.black87,
                 fontSize: 16,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w400,
               ),
-              hintText: 'Enter your email',
-              hintStyle: TextStyle(
-                color: Colors.black38,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            style: TextStyle(
-              color: Colors.black54,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
             ),
           ),
-          TextFormField(
-            controller: conactCon,
-            inputFormatters: [
-              LengthLimitingTextInputFormatter(11),
-              FilteringTextInputFormatter.digitsOnly,
-            ],
-            onChanged: (_) => _formKey.currentState!.validate(),
-            decoration: InputDecoration(
-              labelText: 'Phone Number',
-              labelStyle: TextStyle(
+
+          Flexible(
+            child: CupertinoTextFormFieldRow(
+              prefix: const Row(
+                children: [
+                  Text("Last Name", 
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400
+                      )),
+                  SizedBox(width: 12),
+                ],
+              ),
+              controller: emailCon,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Enter an email address";
+                }
+            
+                if (!EmailValidator.validate(value)) {
+                  return "Enter a valid email address";
+                }
+            
+                return null;
+              },
+              onChanged: (_) => _formKey.currentState!.validate(),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black87,
+                  width: 0.5,
+                ),
+                borderRadius: BorderRadius.circular(18),
+              ),
+              style: TextStyle(
                 color: Colors.black87,
                 fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-              hintText: 'Enter your phone number',
-              hintStyle: TextStyle(
-                color: Colors.black38,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w400,
               ),
             ),
-            style: TextStyle(
-              color: Colors.black54,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
+          ),
+
+          Flexible(
+            child: CupertinoTextFormFieldRow(
+              prefix: const Row(
+                children: [
+                  Text("Contact Number",
+                      style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400)),
+                  SizedBox(width: 12),
+                ],
+              ),
+              placeholder: 'e.g. 09123456789',
+              placeholderStyle: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: Colors.black45,
+              ),
+              controller: conactCon,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(11),
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+              onChanged: (_) => _formKey.currentState!.validate(),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black87,
+                  width: 0.5,
+                ),
+                borderRadius: BorderRadius.circular(18),
+              ),
+              style: TextStyle(
+                color: Colors.black87,
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ),
           SizedBox(height: 20),

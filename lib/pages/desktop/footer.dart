@@ -10,16 +10,79 @@ class FooterWidget extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: 300,
       color: Color(0xff153faa),
-      child: Row(
-        children: [
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 180),
+        child: Row(
+          children: [
+            Column(
+              children:[
+              aboutUs()
+              ]
+            ),
           Column(
             children:[
-            //  Icon(),
-          ]
-        ), Column(children:[]), Column(children:[]),],
-
+              location()
+            ]
+          ), 
+          Column(
+            children:[
+              contact()
+            ]
+          ),
+        ],
+        
+        ),
       )
 
     );
   }
+}
+
+Widget aboutUs() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        'ABOUT US',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      Text(
+        "Information and Communications Technology Center is Ateneo de Naga's Professional School for ICT and the Premier IT Training Center in Southern Luzon, Philippines.",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 15,
+        ),
+      )
+    ],
+  );
+}
+
+Widget location() {
+  return Column(
+    children: [
+      Text("WHERE TO FIND US",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          )),
+    ],
+  );
+}
+
+Widget contact() {
+  return Column(
+    children: [
+      Text("CONTACT US",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          )),
+    ],
+  );
 }
