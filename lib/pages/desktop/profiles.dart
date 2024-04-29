@@ -10,13 +10,15 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfilesPage extends StatefulWidget {
   const ProfilesPage({Key? key}) : super(key: key);
-  
+
   @override
   State<ProfilesPage> createState() => _ProfilesPageState();
 }
 
 class _ProfilesPageState extends State<ProfilesPage> {
   late final Future<Student> loggedInStudent;
+  final _stream =
+      Supabase.instance.client.from('student').stream(primaryKey: ['uuid']);
 
   @override
   void initState() {
@@ -33,17 +35,21 @@ class _ProfilesPageState extends State<ProfilesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBarDesktop(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            buildStudentDetails(),
-            FooterWidget(),
-          ],
-        ),
-      ),
-    );
+    return StreamBuilder(
+        stream: _stream,
+        builder: (context, snapshot) {
+          return Scaffold(
+            appBar: AppBarDesktop(),
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  buildStudentDetails(),
+                  FooterWidget(),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   Widget buildStudentDetails() {
@@ -55,7 +61,7 @@ class _ProfilesPageState extends State<ProfilesPage> {
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
-          return _buildPlacer(context, snapshot.data as Student); // TODO: separate profileDetails() to its own widget
+          return _buildPlacer(context, snapshot.data as Student);
         }
 
         return Text('An error occurred');
