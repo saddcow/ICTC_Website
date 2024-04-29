@@ -2,6 +2,7 @@ import 'package:ICTC_Website/pages/auth/login_page.dart';
 import 'package:ICTC_Website/pages/auth/signup_page.dart';
 import 'package:ICTC_Website/pages/desktop/about.dart';
 import 'package:ICTC_Website/pages/desktop/home.dart';
+import 'package:ICTC_Website/pages/desktop/profile_page.dart';
 import 'package:ICTC_Website/pages/desktop/profiles.dart';
 import 'package:ICTC_Website/pages/desktop/registration.dart';
 import 'package:ICTC_Website/pages/mobile/home.dart';
@@ -84,7 +85,7 @@ class MyApp extends StatelessWidget {
           '/google_certified_educators': (context) =>
               const GoogleCertifiedEducatorsPage(),
         },
-        home: RegistrationPage());
+        home: ProfilePage());
   }
 }
 
@@ -94,7 +95,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenTypeLayout.builder(
-      desktop: (BuildContext context) => RegistrationPage(),
+      desktop: (BuildContext context) => ProfilePage(),
       mobile: (BuildContext context) => HomeMobilePage(),
       // tablet: (BuildContext context) => Container(color:Colors.yellow),
       // watch: (BuildContext context) => Container(color:Colors.purple),
