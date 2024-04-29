@@ -1,4 +1,5 @@
 import 'package:ICTC_Website/pages/desktop/editProfile.dart';
+import 'package:ICTC_Website/pages/desktop/editProfileForm.dart';
 import 'package:flutter/material.dart';
 import 'package:ICTC_Website/models/student.dart';
 
@@ -9,86 +10,98 @@ class ProfileDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.35,
-      height: MediaQuery.of(context).size.height * 0.75,
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(35),
-        ),
-        color: Colors.white,
-        elevation: 2,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(80, 10, 80, 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'My Profile',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => EditProfile(student: student)));
-                    },
-                    icon: Icon(Icons.create_sharp),
-                  )
-                ],
-              ),
-              Center(
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.25,
-                  child: Image.asset('assets/images/squid.png'),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.2,
+          height: MediaQuery.of(context).size.height * .8,
+          child: Container(
+            margin: EdgeInsets.only(top: 60),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  // IMAGE
+                  margin: EdgeInsets.only(bottom: 10),
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  height: 360,
+                  decoration: BoxDecoration(color: Colors.black12),
                 ),
-              ),
-              SizedBox(height: 10),
-              Divider(),
-              SizedBox(height: 20),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '${student.firstName} ${student.lastName}', 
-                    style: TextStyle(
-                      fontSize: 18,
+                Text(
+                  '${student.toString()}',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87,
+                      fontSize: 24),
+                ),
+                Text(
+                  '${student.email}',
+                  style: TextStyle(
                       fontWeight: FontWeight.w400,
+                      color: Colors.black38,
+                      fontSize: 14),
+                ),
+                Container(
+                  margin: EdgeInsets.only(bottom: 10),
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  child: Text(
+                    "Contact: ${student.contactNumber}",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black87,
+                        fontSize: 13),
+                  ),
+                ),
+                Material(
+                  color: Colors.black12,
+                  child: InkWell(
+                    splashColor: Colors.black26,
+                    onTap: () async {
+                      await showDialog<void>(
+                          context: context,
+                          builder: (context) => buildEditDialog(context));
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      height: 40,
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Edit Profile",
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  Text(
-                    '${student.contactNumber}', 
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    student.email,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Divider(
+                  height: 1,
+                ),
+              ],
+            ),
           ),
         ),
-      ),
+      ],
     );
-  }
+    }
+    Widget buildEditDialog(context) {
+      return AlertDialog(
+        content: Container(
+            width: MediaQuery.of(context).size.width * 0.3,
+            height: MediaQuery.of(context).size.height * 0.3,
+          child: ProfileForm(student: student))
+      );
+    }
 }

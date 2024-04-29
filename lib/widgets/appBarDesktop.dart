@@ -2,6 +2,7 @@ import 'package:ICTC_Website/main.dart';
 import 'package:ICTC_Website/pages/auth/login_page.dart';
 import 'package:ICTC_Website/pages/auth/signup_page.dart';
 import 'package:ICTC_Website/pages/desktop/home.dart';
+import 'package:ICTC_Website/pages/desktop/profile_page.dart';
 import 'package:ICTC_Website/pages/desktop/profiles.dart';
 import 'package:ICTC_Website/pages/desktop/programs/google_certified_educators.dart';
 import 'package:ICTC_Website/pages/desktop/programs/microcredentials.dart';
@@ -204,7 +205,7 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => const ProfilesPage(),
+                              builder: (context) => const ProfilePage(),
                             ),
                           );
                         },
