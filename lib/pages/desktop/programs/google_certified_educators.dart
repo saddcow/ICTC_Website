@@ -1,12 +1,25 @@
-import 'dart:ui';
-
+import 'package:ICTC_Website/models/course.dart';
 import 'package:ICTC_Website/pages/desktop/footer.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
+import 'package:ICTC_Website/widgets/levelCard.dart';
 import 'package:flutter/material.dart';
 import 'package:ICTC_Website/pages/desktop/home.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class GoogleCertifiedEducatorsPage extends StatelessWidget {
+class GoogleCertifiedEducatorsPage extends StatefulWidget {
   const GoogleCertifiedEducatorsPage({super.key});
+
+  @override
+  State<GoogleCertifiedEducatorsPage> createState() =>
+      _GoogleCertifiedEducatorsPageState();
+}
+
+class _GoogleCertifiedEducatorsPageState
+    extends State<GoogleCertifiedEducatorsPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,96 +106,40 @@ Widget _buildLevels(context) {
       color: Color(0xfffff0),
       child: Padding(
         padding: EdgeInsets.fromLTRB(350, 15, 350, 15),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text("Levels of Google Certified Educators Certification",
-                  style: Theme.of(context).textTheme.bodyLarge),
-              SizedBox(height: 50),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildCard(context),
-                  _buildCard(context),
-                ],
-              ),
-            ]),
-      ));
-}
+        child: FutureBuilder(
+          future: Supabase.instance.client
+              .from('course')
+              .select()
+              .eq('program_id', 7)
+              .withConverter(
+                  (data) => data.map((e) => Course.fromJson(e)).toList()),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
 
-Widget _buildCard(context) {
-  return Container(
-    width: MediaQuery.of(context).size.width * 0.7,
-    height: 300,
-    child: Card(
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      color: Colors.white,
-      surfaceTintColor: Colors.white,
-      elevation: 2,
-      child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // SizedBox(height: 45),
-              Text("Level 1 Google Certified Educator",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
-              SizedBox(height: 20),
-              Text(
-                "This certification assesses educators' foundational skills in using Google Workspace tools for educational purposes.",
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                textHeightBehavior: TextHeightBehavior(
-                    applyHeightToFirstAscent: true,
-                    applyHeightToLastDescent: true),
-              ),
-              SizedBox(height: 35),
-              // Row(
-              //   children: [
-              //     Icon(Icons.school_rounded,
-              //         size: 14, color: Color(0xff153faa)),
-              //     SizedBox(width: 5),
-              //     Text(
-              //       "12 courses",
-              //       style: TextStyle(fontSize: 12, color: Color(0xff153faa)),
-              //     ),
-              //   ],
-              // ),
-              Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    FilledButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const GoogleCertifiedEducatorsPage(),
-                          ),
-                        );
-                      },
-                      child: Text("Pre-Register",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600)),
-                    ),
-                  ]),
-              // Padding(
-              //   padding: EdgeInsets.only(top: 40),
-              //   child: AspectRatio(
-              //     aspectRatio: 20 / 10,
-              //     child: Image.asset(
-              //       'assets/images/program1.png',
-              //       fit: BoxFit.fitWidth,
-              //     ),
-              //   ),
-              // ),
-            ],
-          )),
-    ),
-  );
+            if (snapshot.hasData) {
+              return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text("Levels of Google Certified Educators Certification",
+                    style: Theme.of(context).textTheme.bodyLarge),
+                SizedBox(height: 50),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: snapshot.data!
+                      .map((e) => LevelCard(course: e))
+                      .toList()
+                ),
+              ]);
+            }
+
+            return Center(
+              child: Text("No data found"),
+            );
+          }
+        ),
+      ));
 }

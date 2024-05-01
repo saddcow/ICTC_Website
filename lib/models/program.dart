@@ -7,10 +7,12 @@ class Program {
   int id;
   String title;
   String? description;
+  String? route;
 
   Program({
     required this.id,
     required this.title,
+    this.route,
     this.description,
   });
 

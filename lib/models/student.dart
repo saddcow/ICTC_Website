@@ -43,6 +43,7 @@ class Student {
       required this.email,
       this.contactNumber,
       this.school,
+      this.course,
       this.office,
       this.designation,
       this.yearLevel,
@@ -52,6 +53,8 @@ class Student {
       _$StudentFromJson(json);
 
   Map<String, dynamic> toJson() => _$StudentToJson(this);
+
+  
 
   @override
   String toString() {

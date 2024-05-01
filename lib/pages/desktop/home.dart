@@ -1,3 +1,4 @@
+import 'package:ICTC_Website/models/program.dart';
 import 'package:ICTC_Website/pages/auth/login_page.dart';
 import 'package:ICTC_Website/pages/auth/signup_page.dart';
 import 'package:ICTC_Website/pages/desktop/footer.dart';
@@ -5,6 +6,7 @@ import 'package:ICTC_Website/pages/desktop/programs/google_certified_educators.d
 import 'package:ICTC_Website/pages/desktop/programs/microcredentials.dart';
 import 'package:ICTC_Website/pages/desktop/programs/skillup.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
+import 'package:ICTC_Website/widgets/program_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -112,7 +114,7 @@ Widget _buildPrograms(context) {
       //height: MediaQuery.of(context).size.height * 0.8,
       color: Color(0xfffff0),
       child: Padding(
-      padding: const EdgeInsets.symmetric(vertical: 180.0),
+        padding: const EdgeInsets.symmetric(vertical: 180.0),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -120,15 +122,28 @@ Widget _buildPrograms(context) {
               Text("Featured Programs",
                   style: Theme.of(context).textTheme.bodyLarge),
               SizedBox(height: 50),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _buildMicroCard(context),
-                  _buildGoogleCard(context),
-                  _buildSkillCard(context),
-                ],
-              ),
+              FutureBuilder(
+                future: Supabase.instance.client
+                    .from('program')
+                    .select()
+                    .withConverter((data) =>
+                        data.map((e) => Program.fromJson(e)).toList()),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: snapshot.data!
+                        .map((e) => ProgramCardWidget(program: e))
+                        .toList(),
+                  );
+                },
+              )
             ]),
       ));
 }
@@ -369,4 +384,3 @@ Widget _buildSkillCard(context) {
     ),
   );
 }
-

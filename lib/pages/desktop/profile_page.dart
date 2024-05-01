@@ -17,20 +17,12 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late final Future<Student> loggedInStudent;
-
-  @override
-  void initState() {
-    final uuid = Supabase.instance.client.auth.currentSession!.user.id;
-    loggedInStudent = Supabase.instance.client
-        .from('student')
-        .select()
-        .eq('uuid', uuid)
-        .limit(1)
-        .withConverter((data) => Student.fromJson(data.first));
-
-    super.initState();
-  }
+    late final _stream = Supabase.instance.client
+      .from('student')
+      .stream(primaryKey: ['id'])
+      .eq('uuid', Supabase.instance.client.auth.currentSession?.user.id ?? "")
+      .limit(1)
+      .map((event) => Student.fromJson(event.first));
 
   @override
   Widget build(BuildContext context) {
@@ -49,18 +41,22 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget buildStudentDetails() {
-    return FutureBuilder(
-      future: loggedInStudent,
+    return StreamBuilder(
+      stream: _stream,
       builder: (context, snapshot) {
+        print('something changed');
         if (snapshot.connectionState == ConnectionState.waiting) {
+          print('waiting');
           return Center(child: CircularProgressIndicator());
         }
 
-        if (snapshot.connectionState == ConnectionState.done) {
-          return buildProfileWidgets(context, snapshot.data as Student);
+        if (snapshot.hasData) {
+          print('has data');
+          return buildProfileWidgets(context, snapshot.data!);
         }
 
-        return Text('An error occurred');
+        print('no data');
+        return Center(child: Text('Are you not logged in?'));
       },
     );
   }

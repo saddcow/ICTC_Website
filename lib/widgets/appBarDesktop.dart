@@ -230,8 +230,7 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
                           }
                         },
                         child: ListTile(
-                          leading: Icon(Icons
-                              .logout),
+                          leading: Icon(Icons.logout),
                           title: Text(
                             "Logout",
                             style: TextStyle(

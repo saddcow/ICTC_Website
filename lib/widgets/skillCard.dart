@@ -1,18 +1,17 @@
-import 'package:ICTC_Website/models/program.dart';
-import 'package:ICTC_Website/pages/desktop/programs/google_certified_educators.dart';
-import 'package:ICTC_Website/pages/desktop/programs/microcredentials.dart';
+import 'package:ICTC_Website/models/course.dart';
+import 'package:ICTC_Website/pages/desktop/preregister.dart';
 import 'package:flutter/material.dart';
 
-class ProgramCardWidget extends StatelessWidget {
-  const ProgramCardWidget({Key? key, required this.program}) : super(key: key);
+class SkillCard extends StatelessWidget {
+  const SkillCard({super.key, required this.course});
 
-  final Program program;
+  final Course course;
 
   @override
   Widget build(BuildContext context) {
-   return Container(
-    width: 400,
-    height: 500,
+    return Container(
+    //width: 400,
+    //height: 500,
     child: Card(
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
@@ -25,51 +24,65 @@ class ProgramCardWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("PROGRAM",
+              Text("Skill-Up",
                   style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w400,
                       decoration: TextDecoration.underline)),
               SizedBox(height: 30),
-              Text('${program.title}',
+              Text('${course.title}',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
               SizedBox(height: 20),
               Text(
-                '${program.description ?? "No description provided."}',
+                '${course.description ?? "No description provided."}',
                 maxLines: 3,
+                overflow: TextOverflow.ellipsis,
                 textHeightBehavior: TextHeightBehavior(
                     applyHeightToFirstAscent: true,
                     applyHeightToLastDescent: true),
               ),
               SizedBox(height: 20),
-              
+              // Row(
+              //   children: [
+              //     Icon(Icons.school_rounded,
+              //         size: 14, color: Color(0xff153faa)),
+              //     SizedBox(width: 5),
+              //     Text(
+              //       "12 courses",
+              //       style: TextStyle(fontSize: 12, color: Color(0xff153faa)),
+              //     ),
+              //   ],
+              // ),
               Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     FilledButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed(program.route ?? "/home");
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                            PreRegisterPage(course: course)));
                       },
-                      child: Text("Explore Courses",
+                      child: Text("Pre-register",
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w600)),
                     ),
                   ]),
-              Padding(
-                padding: EdgeInsets.only(top: 40),
-                child: AspectRatio(
-                  aspectRatio: 20 / 10,
-                  child: Image.asset(
-                    'assets/images/program1.png',
-                    fit: BoxFit.fitWidth,
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: EdgeInsets.only(top: 40),
+              //   child: AspectRatio(
+              //     aspectRatio: 20 / 10,
+              //     child: Image.asset(
+              //       'assets/images/program1.png',
+              //       fit: BoxFit.fitWidth,
+              //     ),
+              //   ),
+              // ),
             ],
           )),
     ),
   );
-}
+  }
 }

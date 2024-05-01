@@ -1,16 +1,21 @@
+import 'package:ICTC_Website/models/course.dart';
+import 'package:ICTC_Website/pages/desktop/preregister.dart';
 import 'package:flutter/material.dart';
 
 class CourseCard extends StatelessWidget {
-  const CourseCard({Key? key});
+  const CourseCard({super.key, required this.course});
+
+  final Course course;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 400, 
-      height: 500, 
+      width: 400,
+      height: 500,
       child: Card(
         clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         color: Colors.white,
         surfaceTintColor: Colors.white,
         elevation: 2,
@@ -24,37 +29,35 @@ class CourseCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Micro-Credential",
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
-                      decoration: TextDecoration.underline
-                    )
-                  ),
-                  Text("₱ 2500")
+                  Text("Micro-Credential",
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                          decoration: TextDecoration.underline)),
+                  Text("₱ ${course.cost}")
                 ],
               ),
               SizedBox(height: 20),
-              Text("Introduction to Cybersecurity",
+              Text('${course.title}',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
               SizedBox(height: 20),
-              Text("Lorem ipsum dolor sit amet chuchu chuchuness"),
+              Text('${course.description ?? "No description provided."}',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
               SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   FilledButton(
-                    onPressed: () {}, 
-                    child: Text(
-                      "Pre-Register",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600
-                      ),
-                    )
-                  )
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => PreRegisterPage(course: course)));
+                      },
+                      child: Text(
+                        "Pre-Register",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600),
+                      ))
                 ],
               ),
               Padding(

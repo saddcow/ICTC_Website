@@ -1,11 +1,16 @@
+import 'dart:html';
+
+import 'package:ICTC_Website/models/course.dart';
 import 'package:ICTC_Website/pages/desktop/about.dart';
 import 'package:ICTC_Website/pages/desktop/footer.dart';
 import 'package:ICTC_Website/pages/desktop/home.dart';
 import 'package:ICTC_Website/pages/desktop/registration.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
 import 'package:ICTC_Website/widgets/course_card.dart';
+import 'package:ICTC_Website/widgets/iframe_test.dart';
 import 'package:ICTC_Website/widgets/sampleCourse.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MicrocredentialsPage extends StatefulWidget {
   const MicrocredentialsPage({super.key});
@@ -16,6 +21,11 @@ class MicrocredentialsPage extends StatefulWidget {
 
 class _MicrocredentialsPageState extends State<MicrocredentialsPage> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarDesktop(),
@@ -25,6 +35,7 @@ class _MicrocredentialsPageState extends State<MicrocredentialsPage> {
           child: Column(
             children: [
               _buildHero(context),
+              IframeTest(),
               _buildList(context),
               FooterWidget()
             ],
@@ -58,10 +69,10 @@ Widget _buildHero(context) {
   );
 }
 
-Widget _buildList(context) {
+Widget _buildList(BuildContext context) {
   return Container(
       //height: MediaQuery.of(context).size.height * 0.6,
-      padding: EdgeInsets.symmetric(vertical: 180.0),
+      padding: EdgeInsets.symmetric(vertical: 80.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,20 +81,38 @@ Widget _buildList(context) {
               style: Theme.of(context).textTheme.bodyLarge),
           Padding(
             padding: EdgeInsets.only(left: 350, right: 350),
-            child: GridView(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              padding: const EdgeInsets.all(8),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 16,
-                childAspectRatio: 0.8,
-              ),
-              children: <Widget>[
-                CourseCard(),
-                SampleCourseCard(),
-              ],
-            ),
+            child: FutureBuilder(
+                future: Supabase.instance.client
+                    .from('course')
+                    .select()
+                    .eq('program_id', 1)
+                    .withConverter(
+                        (data) => data.map((e) => Course.fromJson(e)).toList()),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (snapshot.hasData) {
+                    return GridView(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.all(8),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 16,
+                        childAspectRatio: 0.8,
+                      ),
+                      children: snapshot.data!
+                          .map((e) => CourseCard(course: e))
+                          .toList(),
+                    );
+                  }
+
+                  return Center(
+                    child: Text("No data found."),
+                  );
+                }),
           )
         ],
       ));

@@ -51,7 +51,7 @@ class _SampleCourseCardState extends State<SampleCourseCard> {
                 children: [
                   FilledButton(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PreRegisterPage()));
+                        // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PreRegisterPage()));
                       },
                       child: Text(
                         "Pre-Register",
