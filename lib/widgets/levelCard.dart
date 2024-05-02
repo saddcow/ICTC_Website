@@ -1,5 +1,5 @@
 import 'package:ICTC_Website/models/course.dart';
-import 'package:ICTC_Website/pages/desktop/preregister.dart';
+import 'package:ICTC_Website/pages/desktop/preRegister/preregister.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

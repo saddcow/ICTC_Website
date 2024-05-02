@@ -1,5 +1,5 @@
 import 'package:ICTC_Website/models/student.dart';
-import 'package:ICTC_Website/pages/desktop/editProfileForm.dart';
+import 'package:ICTC_Website/pages/desktop/profile/editProfileForm.dart';
 import 'package:ICTC_Website/pages/desktop/footer.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
 import 'package:flutter/material.dart';

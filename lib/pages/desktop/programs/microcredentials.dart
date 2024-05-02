@@ -4,7 +4,7 @@ import 'package:ICTC_Website/models/course.dart';
 import 'package:ICTC_Website/pages/desktop/about.dart';
 import 'package:ICTC_Website/pages/desktop/footer.dart';
 import 'package:ICTC_Website/pages/desktop/home.dart';
-import 'package:ICTC_Website/pages/desktop/registration.dart';
+import 'package:ICTC_Website/pages/desktop/preRegister/registration.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
 import 'package:ICTC_Website/widgets/course_card.dart';
 import 'package:ICTC_Website/widgets/iframe_test.dart';

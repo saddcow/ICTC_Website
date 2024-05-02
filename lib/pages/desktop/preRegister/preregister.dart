@@ -1,6 +1,7 @@
 import 'package:ICTC_Website/models/course.dart';
 import 'package:ICTC_Website/models/student.dart';
-import 'package:ICTC_Website/pages/desktop/editProfileForm.dart';
+import 'package:ICTC_Website/pages/desktop/profile/editProfileForm.dart';
+import 'package:ICTC_Website/widgets/regisConfirm.dart';
 import 'package:ICTC_Website/widgets/signupWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:ICTC_Website/pages/auth/login_page.dart';
@@ -220,7 +221,7 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
                           return ProfileForm(student: student);
                         }
 
-                        return Text('confirmation dialog thingy');
+                        return ConfirmDialog();
                       }
 
                       return Text('Error');

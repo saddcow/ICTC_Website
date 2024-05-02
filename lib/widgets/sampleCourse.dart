@@ -1,5 +1,5 @@
-import 'package:ICTC_Website/pages/desktop/preregister.dart';
-import 'package:ICTC_Website/pages/desktop/registration.dart';
+import 'package:ICTC_Website/pages/desktop/preRegister/preregister.dart';
+import 'package:ICTC_Website/pages/desktop/preRegister/registration.dart';
 import 'package:flutter/material.dart';
 
 class SampleCourseCard extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:ICTC_Website/pages/desktop/footer.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
 import 'package:flutter/material.dart';
-import 'Placer.dart';
+import '../Placer.dart';
 
 class PendingDetails extends StatefulWidget {
   const PendingDetails({Key? key}) : super(key: key);
