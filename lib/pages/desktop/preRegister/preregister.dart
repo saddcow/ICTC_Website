@@ -34,7 +34,7 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
   void checkLoggedIn() {
     // Check if the user is logged in
     final supabase = Supabase.instance.client;
-    if (supabase.auth.currentUser != null) {
+    if (supabase.auth.currentSession?.user != null) {
       setState(() {
         _isLoggedIn = true;
       });
@@ -147,20 +147,22 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
 
   Widget registerButton(context) {
     return FilledButton(
-      onPressed: () {
+      onPressed: () async {
         if (_isLoggedIn) {
-          showDialog(
+          await showDialog(
               context: context,
               builder: (context) {
                 return registerDialog(context);
               });
         } else {
-          showDialog(
+          await showDialog(
               context: context,
               builder: (context) {
                 return FormDialog();
               });
         }
+
+        checkLoggedIn();
       },
       child: Text(
         'Pre-Register',
@@ -214,7 +216,7 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return CircularProgressIndicator();
                       }
-                      
+
                       if (snapshot.hasData) {
                         final student = snapshot.data!;
 

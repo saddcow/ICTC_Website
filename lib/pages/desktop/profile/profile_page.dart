@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:ICTC_Website/models/student.dart';
+import 'package:ICTC_Website/pages/desktop/home.dart';
 import 'package:ICTC_Website/pages/desktop/profile/attendedDetails.dart';
 import 'package:ICTC_Website/pages/desktop/profile/pendingDetails.dart';
 import 'package:ICTC_Website/pages/desktop/profile/profileDetails.dart';
@@ -17,12 +20,39 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-    late final _stream = Supabase.instance.client
+  late final _stream = Supabase.instance.client
       .from('student')
       .stream(primaryKey: ['id'])
       .eq('uuid', Supabase.instance.client.auth.currentSession?.user.id ?? "")
       .limit(1)
       .map((event) => Student.fromJson(event.first));
+
+  late StreamSubscription authStream;
+
+  @override
+  void initState() {
+    authStream =
+        Supabase.instance.client.auth.onAuthStateChange.listen((event) {
+      print('noticed change');
+
+      if (event.event == AuthChangeEvent.signedOut) {
+        print('signed out, put back to home');
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeDesktopPage(),
+            ));
+      }
+    });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    authStream.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,18 +74,14 @@ class _ProfilePageState extends State<ProfilePage> {
     return StreamBuilder(
       stream: _stream,
       builder: (context, snapshot) {
-        print('something changed');
         if (snapshot.connectionState == ConnectionState.waiting) {
-          print('waiting');
           return Center(child: CircularProgressIndicator());
         }
 
         if (snapshot.hasData) {
-          print('has data');
           return buildProfileWidgets(context, snapshot.data!);
         }
 
-        print('no data');
         return Center(child: Text('Are you not logged in?'));
       },
     );
@@ -375,5 +401,4 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
-  
 }
