@@ -1,5 +1,7 @@
 import 'package:ICTC_Website/main.dart';
 import 'package:ICTC_Website/pages/auth/login_page.dart';
+import 'package:ICTC_Website/widgets/loginWidget.dart';
+import 'package:ICTC_Website/widgets/signupFormWidget.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -12,56 +14,7 @@ class SignupWidget extends StatefulWidget {
 }
 
 class _SignupWidgetState extends State<SignupWidget> {
-  late final TextEditingController emailCon,
-      passwordCon,
-      confirmCon,
-      firstNameCon,
-      lastNameCon;
-  final formKey = GlobalKey<FormState>();
-
-  register() async {
-    final supabase = Supabase.instance.client;
-
-    if (!formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Please correct any invalid input.")));
-      return;
-    }
-
-    await supabase.auth.signUp(
-      email: emailCon.text,
-      password: passwordCon.text,
-      data: {"user_type": "STUDENT"},
-    ).then((value) async {
-      final uuid = value.session!.user.id;
-
-      await supabase.from('student').insert({
-        'first_name': firstNameCon.text,
-        'last_name': lastNameCon.text,
-        'email': emailCon.text,
-        'uuid': uuid,
-      });
-    }).whenComplete(() {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Successfully signed up!")));
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => MainApp()),
-      );
-    });
-  }
-
-  @override
-  void initState() {
-    emailCon = TextEditingController();
-    passwordCon = TextEditingController();
-    confirmCon = TextEditingController();
-    firstNameCon = TextEditingController();
-    lastNameCon = TextEditingController();
-    super.initState();
-  }
-
+  bool _isLoginForm = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -98,8 +51,8 @@ class _SignupWidgetState extends State<SignupWidget> {
                                           "assets/images/logo_ictc.png"),
                                       height: 100),
                                 ),
-                                const Text(
-                                  "Create an Account",
+                                Text(
+                                  _isLoginForm ? "Login" : "Create an Account",
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 24),
@@ -131,12 +84,9 @@ class _SignupWidgetState extends State<SignupWidget> {
                                       // highlightColor: const Color(0xff153faa).withOpacity(0.4),
                                       // splashColor: const Color(0xff153faa).withOpacity(1),
                                       onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const LoginPage(),
-                                            ));
+                                        setState(() {
+                                          _isLoginForm = !_isLoginForm;
+                                        });
                                       },
                                       child: Container(
                                         alignment: Alignment.center,
@@ -153,7 +103,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                                           // adding color will hide the splash effect
                                           color: Colors.transparent,
                                         ),
-                                        child: const Row(
+                                        child: Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           mainAxisAlignment:
@@ -168,7 +118,9 @@ class _SignupWidgetState extends State<SignupWidget> {
                                               width: 9,
                                             ),
                                             Text(
-                                              "Back to Login",
+                                              _isLoginForm
+                                                  ? "Back to Sign Up"
+                                                  : "Back to Login",
                                               style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w500,
@@ -196,212 +148,11 @@ class _SignupWidgetState extends State<SignupWidget> {
     );
   }
 
-  Form buildForm() {
-    return Form(
-        key: formKey,
-        child: Column(
-          children: [
-            TextFormField(
-              controller: firstNameCon,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Enter a name";
-                }
-                return null;
-              },
-              onChanged: (_) => formKey.currentState!.validate(),
-              keyboardType: TextInputType.name,
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                prefix: Icon(
-                  Icons.person, 
-                  color: Colors.black54, 
-                  size: 20
-                ),
-                labelText: "First Name",
-                labelStyle: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 12,
-                ),
-                floatingLabelStyle: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: emailCon,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Enter an email address";
-                }
-
-                if (!EmailValidator.validate(value)) {
-                  return "Enter a valid email address";
-                }
-
-                return null;
-              },
-              onChanged: (_) => formKey.currentState!.validate(),
-              keyboardType: TextInputType.emailAddress,
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(
-                  Icons.person,
-                  color: Colors.black54,
-                  size: 20,
-                ),
-                labelText: "Enter last name",
-                labelStyle: TextStyle(color: Colors.black54, fontSize: 12),
-                floatingLabelStyle: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: emailCon,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Enter an email address";
-                }
-
-                if (!EmailValidator.validate(value)) {
-                  return "Enter a valid email address";
-                }
-
-                return null;
-              },
-              onChanged: (_) => formKey.currentState!.validate(),
-              keyboardType: TextInputType.emailAddress,
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(
-                  Icons.email_rounded,
-                  color: Colors.black54,
-                  size: 20,
-                ),
-                labelText: "E-mail",
-                labelStyle: TextStyle(color: Colors.black54, fontSize: 12),
-                floatingLabelStyle: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: passwordCon,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Enter a password";
-                }
-
-                if (value.length < 6) {
-                  return "Password must be at least 6 characters";
-                }
-
-                return null;
-              },
-              onChanged: (_) => formKey.currentState!.validate(),
-              keyboardType: TextInputType.visiblePassword,
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black),
-              obscureText: true,
-              obscuringCharacter: '•',
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(
-                  Icons.key_rounded,
-                  color: Colors.black54,
-                  size: 20,
-                ),
-                labelText: "Password",
-                labelStyle: TextStyle(color: Colors.black54, fontSize: 12),
-                floatingLabelStyle: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: confirmCon,
-              validator: (value) {
-                if (value != passwordCon.text) {
-                  return "Passwords do not match";
-                }
-
-                return null;
-              },
-              onChanged: (value) => formKey.currentState!.validate(),
-              keyboardType: TextInputType.visiblePassword,
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black),
-              // onFieldSubmitted: (_) => state.register(),
-              obscureText: true,
-              obscuringCharacter: '•',
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(
-                  Icons.password_rounded,
-                  color: Colors.black54,
-                  size: 20,
-                ),
-                labelText: "Confirm Password",
-                labelStyle: TextStyle(color: Colors.black54, fontSize: 12),
-                floatingLabelStyle: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            InkWell(
-              customBorder: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              // hoverColor: const Color(0xff153faa).withOpacity(0.8),
-              // highlightColor: const Color(0xff153faa).withOpacity(0.4),
-              // splashColor: const Color(0xff153faa).withOpacity(1),
-              onTap: register,
-              child: Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                width: 350,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(35),
-                  // adding color will hide the splash effect
-                  color: const Color(0xff153faa),
-                ),
-                child: const Text(
-                  "Register",
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white),
-                ),
-              ),
-            ),
-          ],
-        ));
+  buildForm() {
+    if (_isLoginForm) {
+      return LoginWidget();
+    } else {
+      return SignupFormWidget();
+    }
   }
 }

@@ -12,7 +12,7 @@ class FooterWidget extends StatelessWidget {
       margin: EdgeInsets.only(top: 200),
       width: MediaQuery.of(context).size.width,
       height: 300,
-      color: Color(0xff153faa),
+      color: Color(0xFF19306B),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 300),
         child: Row(

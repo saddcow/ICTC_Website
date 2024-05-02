@@ -1,8 +1,9 @@
 import 'package:ICTC_Website/models/course.dart';
 import 'package:ICTC_Website/models/student.dart';
 import 'package:ICTC_Website/pages/desktop/profile/editProfileForm.dart';
+import 'package:ICTC_Website/widgets/dialogWidget.dart';
 import 'package:ICTC_Website/widgets/regisConfirm.dart';
-import 'package:ICTC_Website/widgets/signupWidget.dart';
+import 'package:ICTC_Website/widgets/signupFormWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:ICTC_Website/pages/auth/login_page.dart';
 import 'package:email_validator/email_validator.dart';
@@ -157,7 +158,7 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
           showDialog(
               context: context,
               builder: (context) {
-                return signupDialog(context);
+                return FormDialog();
               });
         }
       },
@@ -252,7 +253,7 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
           )
         ],
       ),
-      content: SignupWidget(),
+      content: SignupFormWidget(),
     );
   }
 }
