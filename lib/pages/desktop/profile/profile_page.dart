@@ -14,6 +14,12 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  List<String> pendingItems = [
+    'A Bootcamp on HTML, CSS, and PHP',
+    'Guide on Full Stack Development',
+    'Learning MERN',
+  ];
+
   late final _stream = Supabase.instance.client
       .from('student')
       .stream(primaryKey: ['id'])
@@ -82,48 +88,60 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget buildProfileWidgets(BuildContext context, Student student) {
-    return Column(
-      children: [
-        Container(
-          margin: EdgeInsets.only(left: 90),
-          child: Row(
+    return Container(
+      margin: EdgeInsets.only(left: 90),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ProfileDetails(student: student),
-                ],
-              ),
-              SizedBox(width: 20),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [attendedCard(context), pendingCard(context)],
-              ),
+              ProfileDetails(student: student),
             ],
           ),
-        ),
-      ],
+          SizedBox(width: 20),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              attendedCard(context),pendingCard(context),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
   Widget attendedCard(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.6,
-      height: MediaQuery.of(context).size.height * 0.5,
+      height: MediaQuery.of(context).size.height * 0.2,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Attended Programs/Courses',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-              )),
-          attendedContent(),
+          Text(
+            'Attended Programs/Courses',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Container(
+            height: MediaQuery.of(context).size.height * 0.1,
+            width: MediaQuery.of(context).size.width * 0.5,
+            margin: EdgeInsets.only(top: 10, bottom: 0),
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: pendingItems.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return createAttendedText(index);
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -132,7 +150,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget pendingCard(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.6,
-      height: MediaQuery.of(context).size.height * 0.5,
+      height: MediaQuery.of(context).size.height * 0.2,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,9 +162,17 @@ class _ProfilePageState extends State<ProfilePage> {
               fontWeight: FontWeight.w600,
             ),
           ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: pendingContent(),
+          Container(
+            height: MediaQuery.of(context).size.height * 0.1,
+            width: MediaQuery.of(context).size.width * 0.5,
+            margin: EdgeInsets.only(top: 10, bottom: 0),
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: pendingItems.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return createPendingText(index);
+              },
             ),
           ),
         ],
@@ -154,101 +180,85 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget pendingContent() {
-    List<String> pendingItems = [
-      'A Bootcamp on HTML, CSS, and PHP',
-      'Guide on Full Stack Development',
-      'Learning MERN',
-    ];
-
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: pendingItems.length,
-      itemBuilder: (context, index) {
-        return Row(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width * 0.5,
-              margin: EdgeInsets.only(top: 10, bottom: 0),
-              height: 100,
-              decoration: BoxDecoration(
-                color: Colors.white24,
-                border: Border.all(color: Colors.black38, width: 0.5),
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
-              ),
-              child: InkWell(
-                onTap: () async {
-                  await showDialog<void>(
-                      context: context,
-                      builder: (context) => buildAttendedDialog());
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      pendingItems[index],
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                      ),
+  Widget createAttendedText(index) {
+    return Row(
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width * 0.1,
+          margin: EdgeInsets.only(top: 10, bottom: 0, left:5),
+          height: 80,
+          decoration: BoxDecoration(
+            color: Colors.white24,
+            border: Border.all(color: Colors.black38, width: 0.5),
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          ),
+          child: InkWell(
+            onTap: () async {
+              await showDialog<void>(
+                  context: context,
+                  builder: (context) => buildAttendedDialog());
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  flex:1,
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    pendingItems[index],
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        );
-      },
+          ),
+        ),
+      ],
     );
   }
 
-  Widget attendedContent() {
-    List<String> attendedItems = [
-      'Hacker Course',
-      'Introduction to Artificial Intelligence',
-      'Complete Course on UI/UX Design',
-    ];
-
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: attendedItems.length,
-      itemBuilder: (context, index) {
-        return Row(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width * 0.5,
-              margin: EdgeInsets.only(top: 10, bottom: 0),
-              height: 100,
-              decoration: BoxDecoration(
-                color: Colors.white24,
-                border: Border.all(color: Colors.black38, width: 0.5),
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
-              ),
-              child: InkWell(
-                onTap: () async {
-                  await showDialog<void>(
-                      context: context,
-                      builder: (context) => buildAttendedDialog());
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      attendedItems[index],
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                      ),
+  Widget createPendingText(index) {
+    return Row(
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width * 0.1,
+          margin: EdgeInsets.only(top: 10, bottom: 0, left:5),
+          height: 80,
+          decoration: BoxDecoration(
+            color: Colors.white24,
+            border: Border.all(color: Colors.black38, width: 0.5),
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          ),
+          child: InkWell(
+            onTap: () async {
+              await showDialog<void>(
+                  context: context,
+                  builder: (context) => buildPendingDialog());
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  flex:1,
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    pendingItems[index],
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        );
-      },
+          ),
+        ),
+      ],
     );
   }
 

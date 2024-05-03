@@ -49,7 +49,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   margin: EdgeInsets.only(bottom: 10),
                   width: MediaQuery.of(context).size.width * 0.2,
                   height: 360,
-                  decoration: BoxDecoration(color: Colors.black12),
+                  decoration: BoxDecoration(color: Colors.white, border: Border.all(color: Colors.black12)),
                   child: FutureBuilder(
                     // TODO: Implement image loading
                     future: avatarUrl,
@@ -66,10 +66,14 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                           url,
                           fit: BoxFit.cover,
                         );
-                      }
+                      } 
 
                       return Center(
-                        child: Icon(Icons.error_outline_rounded),
+                        child: Row(
+                          children: [
+                            Icon(Icons.error_outline_rounded),Text('Add a picture.')
+                          ],
+                        ),
                       );
                     },
                   ),
@@ -199,11 +203,13 @@ class _ProfileDetailsState extends State<ProfileDetails> {
 
   Widget buildEditDialog(context) {
     return AlertDialog(
+      surfaceTintColor: Colors.white,
+      backgroundColor: Colors.white,
         content: Flexible(
           flex: 2,
           child: Container(
-              width: MediaQuery.of(context).size.width * 0.3,
-              height: MediaQuery.of(context).size.height * 0.5,
+              width: MediaQuery.of(context).size.width * 0.2,
+              height: MediaQuery.of(context).size.height * 0.4,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,

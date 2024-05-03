@@ -3,6 +3,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileForm extends StatefulWidget {
@@ -227,66 +228,155 @@ class _ProfileFormState extends State<ProfileForm> {
               ),
             ),
           ),
+          Flexible(
+            flex: 1,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 5),
+                Padding(
+                  padding: const EdgeInsets.only(left:20.0),
+                  child: Text('I am a: ',
+                  textAlign: TextAlign.start,
+                      style:
+                          TextStyle(fontWeight: FontWeight.w400, fontSize: 14)),
+                ),
+                SizedBox(height: 3),
+                CupertinoListSection(
+                  separatorColor: Colors.transparent,
+                  topMargin: 0,
+                  dividerMargin: 0,
+                  hasLeading: true,
+                  additionalDividerMargin: 0,
+                  margin: EdgeInsets.all(0),
+                  children: <Widget>[
+                    CupertinoListTile(
+                      title: const Text('Student'),
+                      leading: CupertinoRadio<ProfileType>(
+                        value: ProfileType.student,
+                        groupValue: _type,
+                        onChanged: (ProfileType? value) {
+                          setState(() {
+                            _type = value;
+                          });
+                        },
+                      ),
+                    ),
+                    CupertinoListTile(
+                      title: const Text('Professional'),
+                      leading: CupertinoRadio<ProfileType>(
+                        value: ProfileType.professional,
+                        groupValue: _type,
+                        onChanged: (ProfileType? value) {
+                          setState(() {
+                            _type = value;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text("I am a: ",
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  )),
-              Expanded(
-                child: ListTile(
-                  leading: Radio<ProfileType>(
-                    value: ProfileType.student,
-                    groupValue: _type,
-                    onChanged: (value) {
-                      setState(() {
-                        _type = value;
-                      });
-                    },
+              SizedBox(height: 3),
+              OutlinedButton(
+                  onPressed: saveProfile,
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.resolveWith((states) {
+                      // If the button is pressed, return green, otherwise blue
+                      if (states.contains(MaterialState.pressed)) {
+                        return Colors.green;
+                      }
+                      return Colors.green;
+                    }),
+                    textStyle: MaterialStateProperty.resolveWith((states) {
+                      // If the button is pressed, return size 40, otherwise 20
+                      if (states.contains(MaterialState.pressed)) {
+                        return TextStyle(fontSize: 15);
+                      }
+                      return TextStyle(fontSize: 15);
+                    }),
+                    foregroundColor:
+                        MaterialStateProperty.resolveWith((states) {
+                      // If the button is pressed, return size 40, otherwise 20
+                      if (states.contains(MaterialState.pressed)) {
+                        return Colors.white;
+                      }
+                      return Colors.white;
+                    }),
                   ),
-                  title: const Text(
-                    "Student",
-                    style: TextStyle(
-                      color: Colors.black87,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: ListTile(
-                  leading: Radio<ProfileType>(
-                    value: ProfileType.professional,
-                    groupValue: _type,
-                    onChanged: (value) {
-                      setState(() {
-                        _type = value;
-                      });
-                    },
-                  ),
-                  title: const Text(
-                    "Professional",
-                    style: TextStyle(
-                      color: Colors.black87,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-              ),
+                  child: Text('Save')),SizedBox(height: 20),buildExtension(),
             ],
-          ),
-          SizedBox(height: 20),
-          buildExtension(),
-          OutlinedButton(onPressed: saveProfile, child: Text('Save'))
+          )
         ],
       ),
     );
   }
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //         children: [
+  //           Text("I am a: ",
+  //               style: TextStyle(
+  //                 color: Colors.black87,
+  //                 fontSize: 14,
+  //                 fontWeight: FontWeight.w400,
+  //               )),
+  //           Expanded(
+  //             child: ListTile(
+  //               leading: Radio<ProfileType>(
+  //                 value: ProfileType.student,
+  //                 groupValue: _type,
+  //                 onChanged: (value) {
+  //                   setState(() {
+  //                     _type = value;
+  //                   });
+  //                 },
+  //               ),
+  //               title: const Text(
+  //                 "Student",
+  //                 style: TextStyle(
+  //                   color: Colors.black87,
+  //                   fontSize: 14,
+  //                   fontWeight: FontWeight.w400,
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //           Expanded(
+  //             child: ListTile(
+  //               leading: Radio<ProfileType>(
+  //                 value: ProfileType.professional,
+  //                 groupValue: _type,
+  //                 onChanged: (value) {
+  //                   setState(() {
+  //                     _type = value;
+  //                   });
+  //                 },
+  //               ),
+  //               title: const Text(
+  //                 "Professional",
+  //                 style: TextStyle(
+  //                   color: Colors.black87,
+  //                   fontSize: 14,
+  //                   fontWeight: FontWeight.w400,
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //       SizedBox(height: 20),
+  //       buildExtension(),
+  //       OutlinedButton(onPressed: saveProfile, child: Text('Save'))
+  //     ],
+  //   ),
+  // );
 
   void saveProfile() async {
     final supabase = Supabase.instance.client;
