@@ -1,6 +1,5 @@
 import 'package:ICTC_Website/models/student.dart';
 import 'package:ICTC_Website/pages/desktop/profile/attendedDetails.dart';
-import 'package:ICTC_Website/pages/desktop/profile/editProfile.dart';
 import 'package:ICTC_Website/pages/desktop/profile/pendingDetails.dart';
 import 'package:ICTC_Website/pages/desktop/profile/profileDetails.dart';
 import 'package:flutter/material.dart';

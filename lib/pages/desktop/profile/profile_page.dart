@@ -1,15 +1,9 @@
 import 'dart:async';
-
 import 'package:ICTC_Website/models/student.dart';
 import 'package:ICTC_Website/pages/desktop/home.dart';
-import 'package:ICTC_Website/pages/desktop/profile/attendedDetails.dart';
-import 'package:ICTC_Website/pages/desktop/profile/pendingDetails.dart';
 import 'package:ICTC_Website/pages/desktop/profile/profileDetails.dart';
-import 'package:ICTC_Website/pages/desktop/profile/profiles.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfilePage extends StatefulWidget {

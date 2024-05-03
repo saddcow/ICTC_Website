@@ -1,7 +1,6 @@
 import 'package:ICTC_Website/models/program.dart';
-import 'package:ICTC_Website/pages/desktop/programs/google_certified_educators.dart';
-import 'package:ICTC_Website/pages/desktop/programs/microcredentials.dart';
 import 'package:flutter/material.dart';
+import 'package:html_unescape/html_unescape.dart';
 
 class ProgramCardWidget extends StatelessWidget {
   const ProgramCardWidget({Key? key, required this.program}) : super(key: key);
@@ -35,7 +34,7 @@ class ProgramCardWidget extends StatelessWidget {
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
               SizedBox(height: 20),
               Text(
-                '${program.description ?? "No description provided."}',
+                '${HtmlUnescape().convert(program.description ?? "No description provided.")}',
                 maxLines: 3,
                 textHeightBehavior: TextHeightBehavior(
                     applyHeightToFirstAscent: true,
@@ -57,16 +56,16 @@ class ProgramCardWidget extends StatelessWidget {
                               fontWeight: FontWeight.w600)),
                     ),
                   ]),
-              Padding(
-                padding: EdgeInsets.only(top: 40),
-                child: AspectRatio(
-                  aspectRatio: 20 / 10,
-                  child: Image.asset(
-                    'assets/images/program1.png',
-                    fit: BoxFit.fitWidth,
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: EdgeInsets.only(top: 40),
+              //   child: AspectRatio(
+              //     aspectRatio: 20 / 10,
+              //     child: Image.asset(
+              //       'assets/images/program1.png',
+              //       fit: BoxFit.fitWidth,
+              //     ),
+              //   ),
+              // ),
             ],
           )),
     ),

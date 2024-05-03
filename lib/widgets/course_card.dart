@@ -1,6 +1,7 @@
 import 'package:ICTC_Website/models/course.dart';
 import 'package:ICTC_Website/pages/desktop/preRegister/preregister.dart';
 import 'package:flutter/material.dart';
+import 'package:html_unescape/html_unescape.dart';
 
 class CourseCard extends StatelessWidget {
   const CourseCard({super.key, required this.course});
@@ -34,16 +35,21 @@ class CourseCard extends StatelessWidget {
                           fontSize: 15,
                           fontWeight: FontWeight.w400,
                           decoration: TextDecoration.underline)),
-                  Text("₱ ${course.cost}")
+                  //Text("₱ ${course.cost}")
                 ],
               ),
               SizedBox(height: 20),
               Text('${course.title}',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
               SizedBox(height: 20),
-              Text('${course.description ?? "No description provided."}',
+              Text('${HtmlUnescape().convert(course.description ?? "No description provided.")}',
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
               SizedBox(height: 20),
+              Text('${course.schedule}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+              SizedBox(height: 10),
+              Text('${course.duration}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
+              SizedBox(height: 10),
+              Text('${course.venue}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -60,16 +66,16 @@ class CourseCard extends StatelessWidget {
                       ))
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 40),
-                child: AspectRatio(
-                  aspectRatio: 20 / 10,
-                  child: Image.asset(
-                    'assets/images/program1.png',
-                    fit: BoxFit.fitWidth,
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: EdgeInsets.only(top: 40),
+              //   child: AspectRatio(
+              //     aspectRatio: 20 / 10,
+              //     child: Image.asset(
+              //       'assets/images/program1.png',
+              //       fit: BoxFit.fitWidth,
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

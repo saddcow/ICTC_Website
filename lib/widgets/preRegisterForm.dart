@@ -29,7 +29,6 @@ class _preRegisterFormState extends State<preRegisterForm> {
 
   @override
   void initState() {
-    super.initState();
 
     firstNameCon = TextEditingController(text: widget.student.firstName);
     lastNameCon = TextEditingController(text: widget.student.lastName);
@@ -47,6 +46,9 @@ class _preRegisterFormState extends State<preRegisterForm> {
     } else if (widget.student.office != null) {
       _type = ProfileType.professional;
     }
+
+    
+    super.initState();
   }
 
   @override
@@ -167,13 +169,16 @@ class _preRegisterFormState extends State<preRegisterForm> {
           ),
           controller: emailCon,
           validator: (value) {
-            if (value!.isEmpty) {
+            if (value == null ||value.isEmpty) {
               return 'Please enter your email';
             }
 
             if (!EmailValidator.validate(value)) {
               return "Enter a valid email address";
             }
+
+            return null;
+            
           },
           onChanged: (_) => _formKey.currentState!.validate(),
           style: const TextStyle(

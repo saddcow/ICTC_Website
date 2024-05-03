@@ -2,6 +2,7 @@ import 'package:ICTC_Website/models/course.dart';
 import 'package:ICTC_Website/pages/desktop/preRegister/preregister.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:html_unescape/html_unescape.dart';
 
 class LevelCard extends StatelessWidget {
   const LevelCard({super.key, required this.course});
@@ -32,7 +33,7 @@ class LevelCard extends StatelessWidget {
                         TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
                 SizedBox(height: 20),
                 Text(
-                  '${course.description ?? "No description provided."}',
+                  '${HtmlUnescape().convert(course.description ?? "No description provided.")}',
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   textHeightBehavior: TextHeightBehavior(

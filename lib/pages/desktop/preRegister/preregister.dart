@@ -5,13 +5,10 @@ import 'package:ICTC_Website/widgets/dialogWidget.dart';
 import 'package:ICTC_Website/widgets/regisConfirm.dart';
 import 'package:ICTC_Website/widgets/signupFormWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:ICTC_Website/pages/auth/login_page.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:ICTC_Website/main.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
-import 'package:ICTC_Website/widgets/preRegisterForm.dart';
 import 'package:ICTC_Website/pages/desktop/footer.dart';
+import 'package:html_unescape/html_unescape.dart';
 
 class PreRegisterPage extends StatefulWidget {
   const PreRegisterPage({super.key, required this.course});
@@ -60,84 +57,95 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 40.0),
       child: SizedBox(
-        width: 1690,
-        height: 800,
+        width: 1000,
+        height: 500,
         child: Card(
           elevation: 2,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                width: 840,
-                height: 800,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                    bottomLeft: Radius.circular(20.0),
+              Expanded(
+                child: Container(
+                  width: 840,
+                  height: 800,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20.0),
+                      bottomLeft: Radius.circular(20.0),
+                    ),
+                    color: Color(0xFFF2F2F2),
                   ),
-                  color: Color(0xFFF2F2F2),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 60.0, horizontal: 60.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${widget.course.title}',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 35,
-                          fontWeight: FontWeight.w600,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 60.0, horizontal: 60.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${widget.course.title}',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 35,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        '${widget.course.description}',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                        SizedBox(height: 20),
+                        Text(
+                          '${HtmlUnescape().convert(widget.course.description ?? "No description provided.")}',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          textAlign: TextAlign.justify,
                         ),
-                      ),
-                      SizedBox(height: 30),
-                      Text(
-                        '${widget.course.schedule}',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        '${widget.course.duration}',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w400),
-                      ),
-                      SizedBox(height: 30),
-                      Text(
-                        '₱ ${widget.course.cost}',
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(height: 30),
-                      registerButton(context),
-                    ],
+                        SizedBox(height: 20),
+                        Text(
+                          '${widget.course.venue}',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w600),
+                        ),
+                        SizedBox(height: 30),
+                        Text(
+                          '${widget.course.schedule}',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w600),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          '${widget.course.duration}',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w400),
+                        ),
+                        SizedBox(height: 30),
+                        Text(
+                          '₱ ${widget.course.cost}',
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.w600),
+                        ),
+                        SizedBox(height: 30),
+                        registerButton(context),
+                      ],
+                    ),
                   ),
                 ),
               ),
-              Container(
-                  width: 840,
-                  height: 800,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20.0),
-                      bottomRight: Radius.circular(20.0),
-                    ),
-                    child: Image.asset(
-                      'assets/images/course1.png',
-                      fit: BoxFit.fill,
-                    ),
-                  ))
+              // Expanded(
+              //   child: Container(
+              //       width: 840,
+              //       height: 800,
+              //       child: ClipRRect(
+              //         borderRadius: BorderRadius.only(
+              //           topRight: Radius.circular(20.0),
+              //           bottomRight: Radius.circular(20.0),
+              //         ),
+              //         child: Image.asset(
+              //           'assets/images/course1.png',
+              //           fit: BoxFit.fill,
+              //         ),
+              //       )),
+              // )
             ],
           ),
         ),

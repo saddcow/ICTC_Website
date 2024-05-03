@@ -3,7 +3,6 @@ import 'package:ICTC_Website/pages/desktop/footer.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
 import 'package:ICTC_Website/widgets/skillCard.dart';
 import 'package:flutter/material.dart';
-import 'package:ICTC_Website/pages/desktop/home.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SkillUpPage extends StatefulWidget {
@@ -123,8 +122,9 @@ Widget _buildList(BuildContext context) {
                       shrinkWrap: true,
                       padding: const EdgeInsets.all(8),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
+                        crossAxisCount: MediaQuery.of(context).size.width > 600 ? 3 : 1,
                         crossAxisSpacing: 16,
+                        mainAxisSpacing: 16,
                         childAspectRatio: 1.4,
                       ),
                       children: snapshot.data!

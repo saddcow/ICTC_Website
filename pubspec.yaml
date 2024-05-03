@@ -20,6 +20,7 @@ dependencies:
   email_validator: ^2.1.17
   json_annotation: ^4.8.1
   file_picker: ^8.0.0+1
+  html_unescape: ^2.0.0
   
 
 dev_dependencies:

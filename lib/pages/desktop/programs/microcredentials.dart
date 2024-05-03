@@ -1,14 +1,7 @@
-import 'dart:html';
-
 import 'package:ICTC_Website/models/course.dart';
-import 'package:ICTC_Website/pages/desktop/about.dart';
 import 'package:ICTC_Website/pages/desktop/footer.dart';
-import 'package:ICTC_Website/pages/desktop/home.dart';
-import 'package:ICTC_Website/pages/desktop/preRegister/registration.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
 import 'package:ICTC_Website/widgets/course_card.dart';
-import 'package:ICTC_Website/widgets/iframe_test.dart';
-import 'package:ICTC_Website/widgets/sampleCourse.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -35,7 +28,7 @@ class _MicrocredentialsPageState extends State<MicrocredentialsPage> {
           child: Column(
             children: [
               _buildHero(context),
-              IframeTest(),
+              //IframeTest(),
               _buildList(context),
               FooterWidget()
             ],
@@ -64,7 +57,24 @@ Widget _buildHero(context) {
                 ?.copyWith(color: Colors.white, fontSize: 45),
           ),
           SizedBox(height: 50),
-          characteristicsChips()
+          //characteristicsChips()
+          Text(
+            "A micro-credential is a short, focused, and specialized certification or credential that validates an  ",
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
+          SizedBox(height: 20),
+          Text(
+            "individual's knowledge, skills, and competencies in a specific area or domain. Unlike traditional ",
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
+          SizedBox(height: 20),
+          Text(
+              "academic degrees or certifications that require long-term study, micro-credentials are designed",
+              style: Theme.of(context).textTheme.labelMedium),
+          SizedBox(height: 20),
+          Text(
+              " to be more flexible, accessible, and time-efficient.",
+              style: Theme.of(context).textTheme.labelMedium),
         ]),
   );
 }
@@ -79,6 +89,7 @@ Widget _buildList(BuildContext context) {
         children: [
           Text("Micro-Credentials Courses",
               style: Theme.of(context).textTheme.bodyLarge),
+          SizedBox(height: 50),
           Padding(
             padding: EdgeInsets.only(left: 350, right: 350),
             child: FutureBuilder(

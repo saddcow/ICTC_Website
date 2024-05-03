@@ -3,7 +3,6 @@ import 'package:ICTC_Website/pages/desktop/footer.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
 import 'package:ICTC_Website/widgets/levelCard.dart';
 import 'package:flutter/material.dart';
-import 'package:ICTC_Website/pages/desktop/home.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class GoogleCertifiedEducatorsPage extends StatefulWidget {

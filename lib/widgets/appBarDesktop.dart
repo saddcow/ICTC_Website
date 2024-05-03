@@ -1,9 +1,7 @@
 import 'package:ICTC_Website/main.dart';
 import 'package:ICTC_Website/pages/auth/login_page.dart';
 import 'package:ICTC_Website/pages/auth/signup_page.dart';
-import 'package:ICTC_Website/pages/desktop/home.dart';
 import 'package:ICTC_Website/pages/desktop/profile/profile_page.dart';
-import 'package:ICTC_Website/pages/desktop/profile/profiles.dart';
 import 'package:ICTC_Website/pages/desktop/programs/google_certified_educators.dart';
 import 'package:ICTC_Website/pages/desktop/programs/microcredentials.dart';
 import 'package:ICTC_Website/pages/desktop/programs/skillup.dart';

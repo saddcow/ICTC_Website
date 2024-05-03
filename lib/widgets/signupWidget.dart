@@ -1,10 +1,6 @@
-import 'package:ICTC_Website/main.dart';
-import 'package:ICTC_Website/pages/auth/login_page.dart';
 import 'package:ICTC_Website/widgets/loginWidget.dart';
 import 'package:ICTC_Website/widgets/signupFormWidget.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignupWidget extends StatefulWidget {
   const SignupWidget({super.key});
