@@ -125,7 +125,7 @@ Widget _buildLevels(context) {
                 Text("Levels of Google Certified Educators Certification",
                     style: Theme.of(context).textTheme.bodyLarge),
                 SizedBox(height: 50),
-                Column(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: snapshot.data!

@@ -94,13 +94,14 @@ Widget _buildHero(context) {
 Widget _buildList(BuildContext context) {
   return Container(
       color: Color(0xfffff0),
-      padding: const EdgeInsets.symmetric(vertical: 180.0),
+      padding: const EdgeInsets.symmetric(vertical: 80.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text("Skill-Up Courses",
               style: Theme.of(context).textTheme.bodyLarge),
+          SizedBox(height: 50),
           Padding(
             //height: MediaQuery.of(context).size.height * 0.6,
             padding: EdgeInsets.only(left: 350, right: 350),
@@ -117,16 +118,9 @@ Widget _buildList(BuildContext context) {
                   }
 
                   if (snapshot.hasData) {
-                    return GridView(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.all(8),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: MediaQuery.of(context).size.width > 600 ? 3 : 1,
-                        crossAxisSpacing: 16,
-                        mainAxisSpacing: 16,
-                        childAspectRatio: 1.4,
-                      ),
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: snapshot.data!
                           .map((e) => SkillCard(course: e))
                           .toList(),

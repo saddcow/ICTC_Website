@@ -158,9 +158,10 @@ class FooterWidget extends StatelessWidget {
                   Row(
                     children: [
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "(054) 881.23.68 local 2054",
+                            "(054) 881.41.45",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 13,

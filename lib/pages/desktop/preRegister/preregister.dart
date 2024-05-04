@@ -1,17 +1,16 @@
+import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:ICTC_Website/models/course.dart';
 import 'package:ICTC_Website/models/student.dart';
 import 'package:ICTC_Website/pages/desktop/profile/editProfileForm.dart';
 import 'package:ICTC_Website/widgets/dialogWidget.dart';
 import 'package:ICTC_Website/widgets/regisConfirm.dart';
-import 'package:ICTC_Website/widgets/signupFormWidget.dart';
-import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
 import 'package:ICTC_Website/pages/desktop/footer.dart';
 import 'package:html_unescape/html_unescape.dart';
 
 class PreRegisterPage extends StatefulWidget {
-  const PreRegisterPage({super.key, required this.course});
+  const PreRegisterPage({Key? key, required this.course}) : super(key: key);
 
   final Course course;
 
@@ -54,101 +53,106 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
   }
 
   Widget _buildBox(context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 40.0),
-      child: SizedBox(
-        width: 1000,
-        height: 500,
-        child: Card(
-          elevation: 2,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Container(
-                  width: 840,
-                  height: 800,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      bottomLeft: Radius.circular(20.0),
+    return SizedBox(
+      width: 1000,
+      height: 500,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Container(
+              width: 840,
+              height: 800,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20.0),
+                ),
+                //color: Color(0xFFF2F2F2),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 40.0, horizontal: 60.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${widget.course.title}',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 35,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                    color: Color(0xFFF2F2F2),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 60.0, horizontal: 60.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    SizedBox(height: 20),
+                    Text(
+                      '${HtmlUnescape().convert(widget.course.description ?? "No description provided.")}',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                    SizedBox(height: 20),
+                    Row(
                       children: [
                         Text(
-                          '${widget.course.title}',
+                          "Venue: ",
                           style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 35,
-                            fontWeight: FontWeight.w600,
-                          ),
+                              fontSize: 18, fontWeight: FontWeight.w400),
                         ),
-                        SizedBox(height: 20),
-                        Text(
-                          '${HtmlUnescape().convert(widget.course.description ?? "No description provided.")}',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          textAlign: TextAlign.justify,
-                        ),
-                        SizedBox(height: 20),
                         Text(
                           '${widget.course.venue}',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(height: 30),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Text(
+                          "Schedule: ",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w400),
+                        ),
                         Text(
                           '${widget.course.schedule}',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(height: 10),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      children: [
                         Text(
-                          '${widget.course.duration}',
+                          "Duration: ",
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w400),
                         ),
-                        SizedBox(height: 30),
                         Text(
-                          '₱ ${widget.course.cost}',
+                          '${widget.course.duration}',
                           style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.w600),
+                              fontSize: 18, fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(height: 30),
-                        registerButton(context),
                       ],
                     ),
-                  ),
+                    SizedBox(height: 20),
+                    Text(
+                      '₱ ${widget.course.cost}',
+                      style: TextStyle(
+                          fontSize: 25, fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(height: 25),
+                    registerButton(context),
+                  ],
                 ),
               ),
-              // Expanded(
-              //   child: Container(
-              //       width: 840,
-              //       height: 800,
-              //       child: ClipRRect(
-              //         borderRadius: BorderRadius.only(
-              //           topRight: Radius.circular(20.0),
-              //           bottomRight: Radius.circular(20.0),
-              //         ),
-              //         child: Image.asset(
-              //           'assets/images/course1.png',
-              //           fit: BoxFit.fill,
-              //         ),
-              //       )),
-              // )
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -203,67 +207,43 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
           )
         ],
       ),
-      content: Flexible(
-        flex: 2,
-        child: Container(
-            width: MediaQuery.of(context).size.width * 0.3,
-            height: MediaQuery.of(context).size.height * 0.5,
-            child: SingleChildScrollView(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                FutureBuilder(
-                    future: Supabase.instance.client
-                        .from('student')
-                        .select()
-                        .eq('uuid', uuid ?? "")
-                        .single()
-                        .withConverter((data) => Student.fromJson(data)),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
-                      }
+      content: Container(
+        width: MediaQuery.of(context).size.width * 0.3,
+        height: MediaQuery.of(context).size.height * 0.5,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              FutureBuilder(
+                future: Supabase.instance.client
+                    .from('student')
+                    .select()
+                    .eq('uuid', uuid ?? "")
+                    .single()
+                    .withConverter((data) => Student.fromJson(data)),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  }
 
-                      if (snapshot.hasData) {
-                        final student = snapshot.data!;
+                  if (snapshot.hasData) {
+                    final student = snapshot.data!;
 
-                        if (student.school == null && student.office == null) {
-                          return ProfileForm(student: student);
-                        }
+                    if (student.school == null && student.office == null) {
+                      return ProfileForm(student: student);
+                    }
 
-                        return ConfirmDialog();
-                      }
+                    return ConfirmDialog(course: widget.course, student: student);
+                  }
 
-                      return Text('Error');
-                    })
-              ],
-            ))),
-      ),
-    );
-  }
-
-  Widget signupDialog(context) {
-    return AlertDialog(
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            alignment: FractionalOffset.topRight,
-            child: IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
+                  return Text('Error');
+                },
+              ),
+            ],
           ),
-          const Text(
-            'Sign Up',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-          )
-        ],
+        ),
       ),
-      content: SignupFormWidget(),
     );
   }
 }

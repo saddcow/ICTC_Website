@@ -45,11 +45,11 @@ class CourseCard extends StatelessWidget {
               Text('${HtmlUnescape().convert(course.description ?? "No description provided.")}',
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
               SizedBox(height: 20),
-              Text('${course.schedule}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-              SizedBox(height: 10),
-              Text('${course.duration}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
-              SizedBox(height: 10),
-              Text('${course.venue}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
+              // Text('${course.schedule}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+              // SizedBox(height: 10),
+              // Text('${course.duration}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
+              // SizedBox(height: 10),
+              // Text('${course.venue}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
