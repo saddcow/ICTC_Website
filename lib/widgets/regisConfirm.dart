@@ -27,32 +27,37 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text(
+          child: const Text(
             'No',
             style: TextStyle(color: Colors.black45),
           ),
         ),
         TextButton(
           onPressed: () async {
-            final registration = Register(
-              studentId: widget.student.id,
-              courseId: widget.course.id,
-              is_approved: false // Set default value to false
-            );
+            try {
+              final registration = Register(
+                studentId: widget.student.id,
+                courseId: widget.course.id,
+                is_approved: false,
+              );
 
-            final response = await Supabase.instance.client
-                .from('registration')
-                .insert(registration.toJson());
+              final response = await Supabase.instance.client
+                  .from('registration')
+                  .insert(registration.toJson());
 
-            if (response.error != null) {
-              // Handle error
-              print(response.error!.message);
-            } else {
-              // Registration successful
-              Navigator.pop(context); // Close the dialog
+              if (response.error != null) {
+                // Handle error
+                print(response.error!.message);
+              } else {
+                // Registration successful
+                Navigator.of(context).pop(); // Close the dialog
+              }
+            } catch (e) {
+              // Handle any other exceptions
+              print('Error: $e');
             }
           },
-          child: Text(
+          child: const Text(
             'Yes',
             style: TextStyle(color: Colors.blue),
           ),
