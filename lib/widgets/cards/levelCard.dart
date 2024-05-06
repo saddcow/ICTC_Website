@@ -43,7 +43,12 @@ class LevelCard extends StatelessWidget {
               Text('${course.title}',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
               SizedBox(height: 20),
-              Text('${HtmlUnescape().convert(course.description ?? "No description provided.")}',
+              Text(
+                  '${HtmlUnescape().convert(course.description ?? "No description provided.")}',
+                  maxLines: 3,
+                  textHeightBehavior: TextHeightBehavior(
+                      applyHeightToFirstAscent: true,
+                      applyHeightToLastDescent: true),
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
               SizedBox(height: 20),
               // Text('${course.schedule}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
@@ -56,7 +61,9 @@ class LevelCard extends StatelessWidget {
                 children: [
                   FilledButton(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => PreRegisterPage(course: course)));
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                PreRegisterPage(course: course)));
                       },
                       child: Text(
                         "Pre-Register",

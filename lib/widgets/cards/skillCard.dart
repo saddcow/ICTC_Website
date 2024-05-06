@@ -1,15 +1,12 @@
+import 'package:ICTC_Website/models/course.dart';
 import 'package:ICTC_Website/pages/desktop/preRegister/preregister.dart';
-import 'package:ICTC_Website/pages/desktop/preRegister/registration.dart';
 import 'package:flutter/material.dart';
+import 'package:html_unescape/html_unescape.dart';
+class SkillCard extends StatelessWidget {
+  const SkillCard({super.key, required this.course});
 
-class SampleCourseCard extends StatefulWidget {
-  const SampleCourseCard({super.key});
+  final Course course;
 
-  @override
-  State<SampleCourseCard> createState() => _SampleCourseCardState();
-}
-
-class _SampleCourseCardState extends State<SampleCourseCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,21 +34,31 @@ class _SampleCourseCardState extends State<SampleCourseCard> {
                           fontSize: 15,
                           fontWeight: FontWeight.w400,
                           decoration: TextDecoration.underline)),
-                  Text("₱ 5600")
+                  //Text("₱ ${course.cost}")
                 ],
               ),
               SizedBox(height: 20),
-              Text("Certified Artificial Intelligence Professional",
+              Text('${course.title}',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
               SizedBox(height: 20),
-              Text("Lorem ipsum dolor sit amet chuchu chuchuness"),
+              Text('${HtmlUnescape().convert(course.description ?? "No description provided.")}',
+                maxLines: 3,
+                textHeightBehavior: TextHeightBehavior(
+                    applyHeightToFirstAscent: true,
+                    applyHeightToLastDescent: true),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
               SizedBox(height: 20),
+              // Text('${course.schedule}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+              // SizedBox(height: 10),
+              // Text('${course.duration}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
+              // SizedBox(height: 10),
+              // Text('${course.venue}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   FilledButton(
                       onPressed: () {
-                        // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PreRegisterPage()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => PreRegisterPage(course: course)));
                       },
                       child: Text(
                         "Pre-Register",
@@ -62,16 +69,16 @@ class _SampleCourseCardState extends State<SampleCourseCard> {
                       ))
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 40),
-                child: AspectRatio(
-                  aspectRatio: 20 / 10,
-                  child: Image.asset(
-                    'assets/images/course1.png',
-                    fit: BoxFit.fitWidth,
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: EdgeInsets.only(top: 40),
+              //   child: AspectRatio(
+              //     aspectRatio: 20 / 10,
+              //     child: Image.asset(
+              //       'assets/images/program1.png',
+              //       fit: BoxFit.fitWidth,
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

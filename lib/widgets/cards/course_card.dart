@@ -2,9 +2,10 @@ import 'package:ICTC_Website/models/course.dart';
 import 'package:ICTC_Website/pages/desktop/preRegister/preregister.dart';
 import 'package:flutter/material.dart';
 import 'package:html_unescape/html_unescape.dart';
-class SkillCard extends StatelessWidget {
-  const SkillCard({super.key, required this.course});
 
+class CourseCard extends StatelessWidget {
+  const CourseCard({super.key, required this.course});
+  
   final Course course;
 
   @override
@@ -25,23 +26,27 @@ class SkillCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Micro-Credential",
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                          decoration: TextDecoration.underline)),
-                  //Text("₱ ${course.cost}")
-                ],
-              ),
+              // Row(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Text('${program.title}',
+              //         style: TextStyle(
+              //             fontSize: 15,
+              //             fontWeight: FontWeight.w400,
+              //             decoration: TextDecoration.underline)),
+              //     //Text("₱ ${course.cost}")
+              //   ],
+              // ),
               SizedBox(height: 20),
               Text('${course.title}',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
               SizedBox(height: 20),
               Text('${HtmlUnescape().convert(course.description ?? "No description provided.")}',
+                  maxLines: 3,
+                  textHeightBehavior: TextHeightBehavior(
+                      applyHeightToFirstAscent: true,
+                      applyHeightToLastDescent: true),
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
               SizedBox(height: 20),
               // Text('${course.schedule}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),

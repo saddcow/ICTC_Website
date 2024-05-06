@@ -1,10 +1,9 @@
 import 'package:ICTC_Website/main.dart';
+import 'package:ICTC_Website/models/program.dart';
 import 'package:ICTC_Website/pages/auth/login_page.dart';
 import 'package:ICTC_Website/pages/auth/signup_page.dart';
 import 'package:ICTC_Website/pages/desktop/profile/profile_page.dart';
-import 'package:ICTC_Website/pages/desktop/programs/google_certified_educators.dart';
-import 'package:ICTC_Website/pages/desktop/programs/microcredentials.dart';
-import 'package:ICTC_Website/pages/desktop/programs/skillup.dart';
+import 'package:ICTC_Website/widgets/programPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -13,7 +12,7 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(70);
 
-  const AppBarDesktop({super.key});
+  const AppBarDesktop({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +20,12 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
       foregroundColor: Theme.of(context).colorScheme.onPrimary,
     );
 
+    late final _stream = Supabase.instance.client
+        .from('program')
+        .select()
+        .withConverter((data) => data.map((e) => Program.fromJson(e)).toList())
+        .asStream();
+        
     return Scaffold(
       appBar: AppBar(
         primary: true,
@@ -62,102 +67,68 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                TextButton(
-                  style: style,
-                  onPressed: () {},
-                  child: const Text('About Us'),
-                ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    PopupMenuButton<String>(
-                      shadowColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(15.0))),
-                      padding: EdgeInsets.all(0),
-                      surfaceTintColor: Colors.white,
-                      elevation: 4,
-                      offset: Offset.fromDirection(90, 10),
-                      position: PopupMenuPosition.under,
-                      icon: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 14),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Programs",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xff19306B)),
+                    StreamBuilder<List<Program>>(
+                      stream: _stream,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          List<Program> programs = snapshot.data!;
+                          return PopupMenuButton<String>(
+                            shadowColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15.0))),
+                            padding: EdgeInsets.all(0),
+                            surfaceTintColor: Colors.white,
+                            elevation: 4,
+                            offset: Offset.fromDirection(90, 10),
+                            position: PopupMenuPosition.under,
+                            icon: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 14),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Programs",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xff19306B)),
+                                  ),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Icon(
+                                    CupertinoIcons.chevron_down,
+                                    size: 9,
+                                    color: Color(0xff19306B),
+                                  ),
+                                ],
+                              ),
                             ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Icon(
-                              CupertinoIcons.chevron_down,
-                              size: 9,
-                              color: Color(0xff19306B),
-                            ),
-                          ],
-                        ),
-                      ),
-                      tooltip: "View more programs",
-                      itemBuilder: (BuildContext context) {
-                        return [
-                          PopupMenuItem(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const MicrocredentialsPage(),
-                                ),
-                              );
+                            tooltip: "View more programs",
+                            itemBuilder: (BuildContext context) {
+                              return [
+                                for (Program program in programs)
+                                  buildProgramMenuItem(context, program),
+                              ];
                             },
-                            child: const Text(
-                              "Micro-credential Program",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 14),
-                            ),
-                          ),
-                          PopupMenuItem(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const GoogleCertifiedEducatorsPage(),
-                                ),
-                              );
-                            },
-                            child: const Text(
-                              "Google Certified Educator Program",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 14),
-                            ),
-                          ),
-                          PopupMenuItem(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => const SkillUpPage(),
-                                ),
-                              );
-                            },
-                            child: const Text(
-                              "Skillup Program",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 14),
-                            ),
-                          ),
-                        ];
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text("Error: ${snapshot.error}");
+                        } else {
+                          return CircularProgressIndicator();
+                        }
                       },
                     ),
+                    SizedBox(width: 16),
+                    _buildButtons(context)
                   ],
                 ),
-                SizedBox(width: 16),
-                _buildButtons(context)
               ],
             ),
           ),
@@ -166,16 +137,31 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
+  PopupMenuItem<String> buildProgramMenuItem(
+      BuildContext context, Program program) {
+    return PopupMenuItem<String>(
+      value: program.title,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProgramPage(program: program),
+          ),
+        );
+      },
+      child: Text('${program.title}'),
+    );
+  }
+
   Widget _buildButtons(BuildContext context) {
-    final ButtonStyle filledStyle = FilledButton.styleFrom(
-      foregroundColor: Theme.of(context).colorScheme.onSecondary,
-      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+    final ButtonStyle filledStyle = ElevatedButton.styleFrom(
+      onPrimary: Theme.of(context).colorScheme.onSecondary,
+      primary: Theme.of(context).colorScheme.onPrimary,
     );
     final ButtonStyle outlinedStyle = OutlinedButton.styleFrom(
-      surfaceTintColor: Colors.white,
-      elevation: 0,
       side: BorderSide(width: 1, color: Color(0xff153faa)),
-      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+      onSurface: Colors.white,
+      primary: Theme.of(context).colorScheme.onPrimary,
       backgroundColor: Theme.of(context).colorScheme.onSecondary,
     );
 
@@ -188,92 +174,59 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
           return Row(
             children: [
               PopupMenuButton(
-                  padding: EdgeInsets.all(0),
-                  surfaceTintColor: Colors.white,
-                  elevation: 4,
-                  offset: Offset.fromDirection(90, 10),
-                  position: PopupMenuPosition.under,
-                  icon: Icon(
-                    Icons.person,
-                    color: Color(0xff19306B),
-                  ),
-                  itemBuilder: (BuildContext context) {
-                    return [
-                      PopupMenuItem(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const ProfilePage(),
-                            ),
-                          );
-                        },
-                        child: ListTile(
-                          leading: Icon(Icons.person),
-                          title: Text(
-                            "My Profile",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
+                padding: EdgeInsets.all(0),
+                surfaceTintColor: Colors.white,
+                elevation: 4,
+                offset: Offset.fromDirection(90, 10),
+                position: PopupMenuPosition.under,
+                icon: Icon(
+                  Icons.person,
+                  color: Color(0xff19306B),
+                ),
+                itemBuilder: (BuildContext context) {
+                  return [
+                    PopupMenuItem(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const ProfilePage(),
+                          ),
+                        );
+                      },
+                      child: ListTile(
+                        leading: Icon(Icons.person),
+                        title: Text(
+                          "My Profile",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
                           ),
                         ),
                       ),
-                      PopupMenuItem(
-                        onTap: () async {
-                          await Supabase.instance.client.auth.signOut();
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text("Successfully signed out!")));
-                          }
-                        },
-                        child: ListTile(
-                          leading: Icon(Icons.logout),
-                          title: Text(
-                            "Logout",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
+                    ),
+                    PopupMenuItem(
+                      onTap: () async {
+                        await Supabase.instance.client.auth.signOut();
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text("Successfully signed out!")));
+                        }
+                      },
+                      child: ListTile(
+                        leading: Icon(Icons.logout),
+                        title: Text(
+                          "Logout",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
                           ),
                         ),
-                      )
-                    ];
-                  })
-              // ElevatedButton(
-              //   style: outlinedStyle,
-              //   onPressed: () {
-              //     // TODO: route to user profile
-              //   },
-              //   child: Text(
-              //     "My Profile",
-              //     style: TextStyle(
-              //       fontWeight: FontWeight.w500,
-              //       color: Theme.of(context).colorScheme.onPrimary,
-              //       fontSize: 14,
-              //     ),
-              //   ),
-              // ),
-              // const SizedBox(width: 8),
-              // ElevatedButton(
-              //   style: filledStyle,
-              //   onPressed: () async {
-              //     await Supabase.instance.client.auth.signOut();
-
-              //     if (mounted) {
-              //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              //           content: Text("Successfully signed out!")));
-              //     }
-              //   },
-              //   child: Text(
-              //     "Logout",
-              //     style: TextStyle(
-              //       fontWeight: FontWeight.w500,
-              //       color: Theme.of(context).colorScheme.onSecondary,
-              //       fontSize: 14,
-              //     ),
-              //   ),
-              // ),
+                      ),
+                    )
+                  ];
+                },
+              ),
             ],
           );
         } else {

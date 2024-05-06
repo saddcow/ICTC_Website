@@ -1,4 +1,5 @@
 import 'package:ICTC_Website/models/program.dart';
+import 'package:ICTC_Website/widgets/programPage.dart';
 import 'package:flutter/material.dart';
 import 'package:html_unescape/html_unescape.dart';
 
@@ -48,8 +49,9 @@ class ProgramCardWidget extends StatelessWidget {
                   children: [
                     FilledButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed(program.route ?? "/home");
-                      },
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ProgramPage(program: program)));
+                        // Navigator.of(context).pushNamed(program.route ?? "/home");
+                      },  
                       child: Text("Explore Courses",
                           style: TextStyle(
                               color: Colors.white,

@@ -3,7 +3,6 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileForm extends StatefulWidget {
@@ -228,155 +227,66 @@ class _ProfileFormState extends State<ProfileForm> {
               ),
             ),
           ),
-          Flexible(
-            flex: 1,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 5),
-                Padding(
-                  padding: const EdgeInsets.only(left:20.0),
-                  child: Text('I am a: ',
-                  textAlign: TextAlign.start,
-                      style:
-                          TextStyle(fontWeight: FontWeight.w400, fontSize: 14)),
-                ),
-                SizedBox(height: 3),
-                CupertinoListSection(
-                  separatorColor: Colors.transparent,
-                  topMargin: 0,
-                  dividerMargin: 0,
-                  hasLeading: true,
-                  additionalDividerMargin: 0,
-                  margin: EdgeInsets.all(0),
-                  children: <Widget>[
-                    CupertinoListTile(
-                      title: const Text('Student'),
-                      leading: CupertinoRadio<ProfileType>(
-                        value: ProfileType.student,
-                        groupValue: _type,
-                        onChanged: (ProfileType? value) {
-                          setState(() {
-                            _type = value;
-                          });
-                        },
-                      ),
-                    ),
-                    CupertinoListTile(
-                      title: const Text('Professional'),
-                      leading: CupertinoRadio<ProfileType>(
-                        value: ProfileType.professional,
-                        groupValue: _type,
-                        onChanged: (ProfileType? value) {
-                          setState(() {
-                            _type = value;
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              SizedBox(height: 3),
-              OutlinedButton(
-                  onPressed: saveProfile,
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.resolveWith((states) {
-                      // If the button is pressed, return green, otherwise blue
-                      if (states.contains(MaterialState.pressed)) {
-                        return Colors.green;
-                      }
-                      return Colors.green;
-                    }),
-                    textStyle: MaterialStateProperty.resolveWith((states) {
-                      // If the button is pressed, return size 40, otherwise 20
-                      if (states.contains(MaterialState.pressed)) {
-                        return TextStyle(fontSize: 15);
-                      }
-                      return TextStyle(fontSize: 15);
-                    }),
-                    foregroundColor:
-                        MaterialStateProperty.resolveWith((states) {
-                      // If the button is pressed, return size 40, otherwise 20
-                      if (states.contains(MaterialState.pressed)) {
-                        return Colors.white;
-                      }
-                      return Colors.white;
-                    }),
+              Text("I am a: ",
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  )),
+              Expanded(
+                child: ListTile(
+                  leading: Radio<ProfileType>(
+                    value: ProfileType.student,
+                    groupValue: _type,
+                    onChanged: (value) {
+                      setState(() {
+                        _type = value;
+                      });
+                    },
                   ),
-                  child: Text('Save')),SizedBox(height: 20),buildExtension(),
+                  title: const Text(
+                    "Student",
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: ListTile(
+                  leading: Radio<ProfileType>(
+                    value: ProfileType.professional,
+                    groupValue: _type,
+                    onChanged: (value) {
+                      setState(() {
+                        _type = value;
+                      });
+                    },
+                  ),
+                  title: const Text(
+                    "Professional",
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
             ],
-          )
+          ),
+          SizedBox(height: 20),
+          buildExtension(),
+          OutlinedButton(onPressed: saveProfile, child: Text('Save'))
         ],
       ),
     );
   }
-  //       Row(
-  //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //         children: [
-  //           Text("I am a: ",
-  //               style: TextStyle(
-  //                 color: Colors.black87,
-  //                 fontSize: 14,
-  //                 fontWeight: FontWeight.w400,
-  //               )),
-  //           Expanded(
-  //             child: ListTile(
-  //               leading: Radio<ProfileType>(
-  //                 value: ProfileType.student,
-  //                 groupValue: _type,
-  //                 onChanged: (value) {
-  //                   setState(() {
-  //                     _type = value;
-  //                   });
-  //                 },
-  //               ),
-  //               title: const Text(
-  //                 "Student",
-  //                 style: TextStyle(
-  //                   color: Colors.black87,
-  //                   fontSize: 14,
-  //                   fontWeight: FontWeight.w400,
-  //                 ),
-  //               ),
-  //             ),
-  //           ),
-  //           Expanded(
-  //             child: ListTile(
-  //               leading: Radio<ProfileType>(
-  //                 value: ProfileType.professional,
-  //                 groupValue: _type,
-  //                 onChanged: (value) {
-  //                   setState(() {
-  //                     _type = value;
-  //                   });
-  //                 },
-  //               ),
-  //               title: const Text(
-  //                 "Professional",
-  //                 style: TextStyle(
-  //                   color: Colors.black87,
-  //                   fontSize: 14,
-  //                   fontWeight: FontWeight.w400,
-  //                 ),
-  //               ),
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //       SizedBox(height: 20),
-  //       buildExtension(),
-  //       OutlinedButton(onPressed: saveProfile, child: Text('Save'))
-  //     ],
-  //   ),
-  // );
 
   void saveProfile() async {
     final supabase = Supabase.instance.client;
@@ -413,10 +323,11 @@ class _ProfileFormState extends State<ProfileForm> {
       newStudent.designation = designationCon.text;
     }
     final uuid = supabase.auth.currentSession!.user.id;
-
+// 
     await supabase.from('student').update(newStudent.toJson()).eq('uuid', uuid);
 
-    Navigator.of(context).pop();
+    Navigator.pop(context, true);
+    
   }
 
   studentExtension() {
@@ -440,12 +351,12 @@ class _ProfileFormState extends State<ProfileForm> {
           color: Colors.black45,
         ),
         controller: schoolCon,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return 'Please enter name of School';
-          }
-          return null;
-        },
+        // validator: (value) {
+        //   if (value!.isEmpty) {
+        //     return 'Please enter name of School';
+        //   }
+        //   return null;
+        // },
         decoration: BoxDecoration(
           border: Border.all(
             color: Colors.black87,
@@ -478,12 +389,12 @@ class _ProfileFormState extends State<ProfileForm> {
           color: Colors.black45,
         ),
         controller: courseCon,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return 'Please enter course';
-          }
-          return null;
-        },
+        // validator: (value) {
+        //   if (value!.isEmpty) {
+        //     return 'Please enter course';
+        //   }
+        //   return null;
+        // },
         decoration: BoxDecoration(
           border: Border.all(
             color: Colors.black87,
@@ -557,12 +468,12 @@ class _ProfileFormState extends State<ProfileForm> {
           color: Colors.black45,
         ),
         controller: officeCon,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return 'Please enter name of Office';
-          }
-          return null;
-        },
+        // validator: (value) {
+        //   if (value!.isEmpty) {
+        //     return 'Please enter name of Office';
+        //   }
+        //   return null;
+        // },
         decoration: BoxDecoration(
           border: Border.all(
             color: Colors.black87,
@@ -595,12 +506,12 @@ class _ProfileFormState extends State<ProfileForm> {
           color: Colors.black45,
         ),
         controller: designationCon,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return 'Please enter designation';
-          }
-          return null;
-        },
+        // validator: (value) {
+        //   if (value!.isEmpty) {
+        //     return 'Please enter designation';
+        //   }
+        //   return null;
+        // },
         decoration: BoxDecoration(
           border: Border.all(
             color: Colors.black87,

@@ -4,7 +4,7 @@ import 'package:ICTC_Website/pages/desktop/programs/google_certified_educators.d
 import 'package:ICTC_Website/pages/desktop/programs/microcredentials.dart';
 import 'package:ICTC_Website/pages/desktop/programs/skillup.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
-import 'package:ICTC_Website/widgets/program_card.dart';
+import 'package:ICTC_Website/widgets/cards/program_card.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -111,7 +111,7 @@ Widget _buildPrograms(context) {
       //height: MediaQuery.of(context).size.height * 0.8,
       color: Color(0xfffff0),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 180.0),
+        padding: const EdgeInsets.symmetric(vertical: 80.0),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -119,27 +119,44 @@ Widget _buildPrograms(context) {
               Text("Featured Programs",
                   style: Theme.of(context).textTheme.bodyLarge),
               SizedBox(height: 50),
-              FutureBuilder(
-                future: Supabase.instance.client
-                    .from('program')
-                    .select()
-                    .withConverter((data) =>
-                        data.map((e) => Program.fromJson(e)).toList()),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
+              Padding(
+                padding: const EdgeInsets.only(left: 350, right: 350),
+                child: FutureBuilder(
+                  future: Supabase.instance.client
+                      .from('program')
+                      .select()
+                      .withConverter((data) =>
+                          data.map((e) => Program.fromJson(e)).toList()),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                
+                    return GridView(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.all(8),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 16,
+                        childAspectRatio: 0.8,
+                      ),
+                      children: snapshot.data!
+                          .map((e) => ProgramCardWidget(program: e))
+                          .toList(),
                     );
-                  }
-
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: snapshot.data!
-                        .map((e) => ProgramCardWidget(program: e))
-                        .toList(),
-                  );
-                },
+                
+                    // return Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   crossAxisAlignment: CrossAxisAlignment.center,
+                    //   children: snapshot.data!
+                    //       .map((e) => ProgramCardWidget(program: e))
+                    //       .toList(),
+                    // );
+                  },
+                ),
               )
             ]),
       ));

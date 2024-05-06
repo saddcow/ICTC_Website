@@ -1,7 +1,6 @@
 import 'package:ICTC_Website/main.dart';
 import 'package:ICTC_Website/pages/auth/login_page.dart';
 import 'package:ICTC_Website/pages/desktop/footer.dart';
-import 'package:ICTC_Website/pages/desktop/home.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';

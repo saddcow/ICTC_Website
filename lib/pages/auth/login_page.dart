@@ -1,6 +1,6 @@
 import 'package:ICTC_Website/pages/desktop/footer.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
-import 'package:ICTC_Website/widgets/loginWidget.dart';
+import 'package:ICTC_Website/widgets/forms/loginFormWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

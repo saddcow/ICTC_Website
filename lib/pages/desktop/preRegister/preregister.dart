@@ -1,3 +1,4 @@
+import 'package:ICTC_Website/models/register.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:ICTC_Website/models/course.dart';
@@ -54,8 +55,8 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
 
   Widget _buildBox(context) {
     return SizedBox(
-      width: 1000,
-      height: 500,
+      width: MediaQuery.of(context).size.width * 0.8,
+      height: MediaQuery.of(context).size.height * 0.8,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -142,8 +143,8 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
                     SizedBox(height: 20),
                     Text(
                       '₱ ${widget.course.cost}',
-                      style: TextStyle(
-                          fontSize: 25, fontWeight: FontWeight.w600),
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
                     ),
                     SizedBox(height: 25),
                     registerButton(context),
@@ -161,11 +162,51 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
     return FilledButton(
       onPressed: () async {
         if (_isLoggedIn) {
-          await showDialog(
+          final result = await showDialog(
               context: context,
               builder: (context) {
                 return registerDialog(context);
               });
+          print(result);
+
+          try {
+            final registration = Register(
+              studentId: await Supabase.instance.client
+                  .from('student')
+                  .select()
+                  .eq('uuid', Supabase.instance.client.auth.currentSession?.user.id ?? "")
+                  .single()
+                  .withConverter((students) =>
+                      Student.fromJson(students).id),
+              courseId: widget.course.id,
+              is_approved: false,
+            );
+
+            final response = await Supabase.instance.client
+                .from('registration')
+                .insert(registration.toJson());
+            if (response != null && response.error != null) {
+              print(response.error!.message);
+            } else {
+              Navigator.of(context).pop();
+            }
+          } catch (e) {
+            print('Error: $e');
+          }
+
+          // if (result != null && result) {
+          //   final supabase = Supabase.instance.client;
+          //   final uuid = Supabase.instance.client.auth.currentSession?.user.id;
+          //   final register =  Register(
+          //     studentId: await supabase
+          //       .from('student')
+          //           .select()
+          //           .eq('uuid', uuid ?? "")
+          //           .withConverter((students) => Student.fromJson(students as Map<String, dynamic>) as int?),
+          //     courseId: widget.course.id,
+          //     is_approved: false,
+          //   );
+          // }
         } else {
           await showDialog(
               context: context,
@@ -234,7 +275,8 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
                       return ProfileForm(student: student);
                     }
 
-                    return ConfirmDialog(course: widget.course, student: student);
+                    return ConfirmDialog(
+                        course: widget.course, student: student);
                   }
 
                   return Text('Error');

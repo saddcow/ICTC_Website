@@ -1,7 +1,7 @@
 import 'package:ICTC_Website/models/course.dart';
 import 'package:ICTC_Website/pages/desktop/footer.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
-import 'package:ICTC_Website/widgets/skillCard.dart';
+import 'package:ICTC_Website/widgets/cards/skillCard.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

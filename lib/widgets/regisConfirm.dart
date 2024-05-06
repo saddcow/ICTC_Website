@@ -19,50 +19,74 @@ class ConfirmDialog extends StatefulWidget {
 class _ConfirmDialogState extends State<ConfirmDialog> {
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text('Confirm'),
-      content: Text('Do you want to register for this course?'),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text(
-            'No',
-            style: TextStyle(color: Colors.black45),
-          ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Do you want to pre-register for this course?',
+          style: TextStyle(fontSize: 18),
         ),
-        TextButton(
-          onPressed: () async {
-            try {
-              final registration = Register(
-                studentId: widget.student.id,
-                courseId: widget.course.id,
-                is_approved: false,
-              );
-
-              final response = await Supabase.instance.client
-                  .from('registration')
-                  .insert(registration.toJson());
-
-              if (response.error != null) {
-                // Handle error
-                print(response.error!.message);
-              } else {
-                // Registration successful
-                Navigator.of(context).pop(); // Close the dialog
-              }
-            } catch (e) {
-              // Handle any other exceptions
-              print('Error: $e');
-            }
-          },
-          child: const Text(
-            'Yes',
-            style: TextStyle(color: Colors.blue),
-          ),
-        ),
+        SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildNoButton(),
+            _buildYesButton(),
+          ],
+        )
       ],
     );
+  }
+
+  Widget _buildNoButton() {
+    return TextButton(
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+      child: const Text(
+        'No',
+        style: TextStyle(
+          color: Colors.black45,
+          fontSize: 18
+        ),
+      ),
+    );
+  }
+
+  Widget _buildYesButton() {
+    return TextButton(
+      onPressed: () {
+        _handleYesButton();
+      },
+      child: const Text(
+        'Yes',
+        style: TextStyle(
+          color: Colors.blue,
+          fontSize: 18
+        ),
+      ),
+    );
+  }
+
+  void _handleYesButton() async {
+    try {
+      final registration = Register(
+        studentId: widget.student.id,
+        courseId: widget.course.id,
+        is_approved: false,
+      );
+
+      final response = await Supabase.instance.client
+          .from('registration')
+          .insert(registration.toJson());
+      if (response != null && response.error != null) {
+        print(response.error!.message);
+      } else {
+        Navigator.of(context).pop();
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
   }
 }

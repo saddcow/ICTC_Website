@@ -1,5 +1,5 @@
-import 'package:ICTC_Website/widgets/loginWidget.dart';
-import 'package:ICTC_Website/widgets/signupFormWidget.dart';
+import 'package:ICTC_Website/widgets/forms/loginFormWidget.dart';
+import 'package:ICTC_Website/widgets/forms/signupFormWidget.dart';
 import 'package:flutter/material.dart';
 
 class SignupWidget extends StatefulWidget {
