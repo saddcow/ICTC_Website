@@ -16,12 +16,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  List<String> pendingItems = [
-    'A Bootcamp on HTML, CSS, and PHP',
-    'Guide on Full Stack Development',
-    'Learning MERN',
-  ];
-
   late final _stream = Supabase.instance.client
       .from('student')
       .stream(primaryKey: ['id'])
@@ -55,15 +49,34 @@ class _ProfilePageState extends State<ProfilePage> {
     authStream.cancel();
     super.dispose();
   }
-  
-  Future<List<Course>> getCourses() async {
-    Supabase.instance.client
+
+  Future<List<Course>> getPendingCourses(Student student) async {
+    final response = await Supabase.instance.client
         .from('registration')
         .select()
-        .eq('student_id', Supabase.instance.client.auth.currentUser!.id)
-        .withConverter((data) => data.map((e) => Register.fromJson(e)).toList());
-    
-    return [];
+        .eq('student_id', student.id)
+        .eq('is_approved', false)
+        .withConverter(
+            (data) => data.map((e) => Register.fromJson(e)).toList());
+    if (response.isEmpty) {
+      return List.empty();
+    }
+
+    final List<Course> courses = [];
+
+    for (Register r in response) {
+      final course = await Supabase.instance.client
+          .from('course')
+          .select()
+          .eq('id', r.courseId!)
+          .limit(1)
+          .single()
+          .withConverter((data) => Course.fromJson(data));
+
+      courses.add(course);
+    }
+
+    return courses;
   }
 
   @override
@@ -118,7 +131,7 @@ class _ProfilePageState extends State<ProfilePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              pendingCard(context),
+              pendingCard(context, student),
             ],
           ),
         ],
@@ -126,7 +139,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget pendingCard(BuildContext context) {
+  Widget pendingCard(BuildContext context, Student student) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.6,
       height: MediaQuery.of(context).size.height * 0.2,
@@ -145,12 +158,31 @@ class _ProfilePageState extends State<ProfilePage> {
             height: MediaQuery.of(context).size.height * 0.1,
             width: MediaQuery.of(context).size.width * 0.5,
             margin: EdgeInsets.only(top: 10, bottom: 0),
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: pendingItems.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return createPendingText(index);
+            child: FutureBuilder(
+              future: getPendingCourses(student),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                final courseList = snapshot.data!;
+
+                if (courseList.isEmpty) {
+                  return Center(
+                    child: Text("No registered courses!"),
+                  );
+                }
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: courseList.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return createPendingText(courseList[index]);
+                  },
+                );
               },
             ),
           ),
@@ -159,12 +191,12 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget createPendingText(index) {
+  Widget createPendingText(Course course) {
     return Row(
       children: [
         Container(
           width: MediaQuery.of(context).size.width * 0.1,
-          margin: EdgeInsets.only(top: 10, bottom: 0, left:5),
+          margin: EdgeInsets.only(top: 10, bottom: 0, left: 5),
           height: 80,
           decoration: BoxDecoration(
             color: Colors.white24,
@@ -174,18 +206,17 @@ class _ProfilePageState extends State<ProfilePage> {
           child: InkWell(
             onTap: () async {
               await showDialog<void>(
-                  context: context,
-                  builder: (context) => buildPendingDialog());
+                  context: context, builder: (context) => buildPendingDialog());
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
-                  flex:1,
+                  flex: 1,
                   child: Text(
+                    course.title!,
                     textAlign: TextAlign.center,
-                    pendingItems[index],
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
