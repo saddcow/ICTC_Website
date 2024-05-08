@@ -148,7 +148,7 @@ class _ProfileFormState extends State<ProfileForm> {
             child: CupertinoTextFormFieldRow(
               prefix: const Row(
                 children: [
-                  Text("Last Name",
+                  Text("Email",
                       style: TextStyle(
                           color: Colors.black87,
                           fontSize: 14,

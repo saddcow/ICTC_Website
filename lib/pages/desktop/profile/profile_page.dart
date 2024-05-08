@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:ICTC_Website/models/course.dart';
+import 'package:ICTC_Website/models/register.dart';
 import 'package:ICTC_Website/models/student.dart';
 import 'package:ICTC_Website/pages/desktop/home.dart';
 import 'package:ICTC_Website/pages/desktop/profile/profileDetails.dart';
@@ -53,6 +55,16 @@ class _ProfilePageState extends State<ProfilePage> {
     authStream.cancel();
     super.dispose();
   }
+  
+  Future<List<Course>> getCourses() async {
+    Supabase.instance.client
+        .from('registration')
+        .select()
+        .eq('student_id', Supabase.instance.client.auth.currentUser!.id)
+        .withConverter((data) => data.map((e) => Register.fromJson(e)).toList());
+    
+    return [];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,41 +118,8 @@ class _ProfilePageState extends State<ProfilePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              attendedCard(context),pendingCard(context),
+              pendingCard(context),
             ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget attendedCard(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.6,
-      height: MediaQuery.of(context).size.height * 0.2,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Attended Programs/Courses',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.1,
-            width: MediaQuery.of(context).size.width * 0.5,
-            margin: EdgeInsets.only(top: 10, bottom: 0),
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: pendingItems.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return createAttendedText(index);
-              },
-            ),
           ),
         ],
       ),
@@ -177,47 +156,6 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget createAttendedText(index) {
-    return Row(
-      children: [
-        Container(
-          width: MediaQuery.of(context).size.width * 0.1,
-          margin: EdgeInsets.only(top: 10, bottom: 0, left:5),
-          height: 80,
-          decoration: BoxDecoration(
-            color: Colors.white24,
-            border: Border.all(color: Colors.black38, width: 0.5),
-            borderRadius: BorderRadius.all(Radius.circular(5.0)),
-          ),
-          child: InkWell(
-            onTap: () async {
-              await showDialog<void>(
-                  context: context,
-                  builder: (context) => buildAttendedDialog());
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex:1,
-                  child: Text(
-                    textAlign: TextAlign.center,
-                    pendingItems[index],
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 
@@ -260,77 +198,6 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ],
     );
-  }
-
-  Widget buildAttendedDialog() {
-    return AlertDialog(
-        content: Container(
-            width: MediaQuery.of(context).size.width * 0.3,
-            height: MediaQuery.of(context).size.height * 0.3,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(Icons.arrow_back),
-                      ),
-                      Text(
-                        "Attended Course Details",
-                        style: TextStyle(fontSize: 30),
-                      ),
-                    ],
-                  ),
-                ),
-                Divider(),
-                SizedBox(height: 20),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Course Name: Advance Figma",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        "Course Date: January 12 - 13, 2024",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        "Payment Status: Paid",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        "Certificate Status: Received",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            )));
   }
 
   Widget buildPendingDialog() {

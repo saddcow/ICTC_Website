@@ -81,7 +81,7 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
                             shadowColor: Colors.black,
                             shape: RoundedRectangleBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(15.0))),
+                                    BorderRadius.all(Radius.circular(20))),
                             padding: EdgeInsets.all(0),
                             surfaceTintColor: Colors.white,
                             elevation: 4,

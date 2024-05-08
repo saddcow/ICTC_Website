@@ -22,7 +22,7 @@ class Register {
   Register({
     this.id,
     required this.studentId,
-    required this.courseId,
+    this.courseId,
     //this.status,
     required this.is_approved, 
   });
