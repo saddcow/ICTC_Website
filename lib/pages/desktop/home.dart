@@ -1,8 +1,5 @@
 import 'package:ICTC_Website/models/program.dart';
 import 'package:ICTC_Website/pages/desktop/footer.dart';
-import 'package:ICTC_Website/pages/desktop/programs/google_certified_educators.dart';
-import 'package:ICTC_Website/pages/desktop/programs/microcredentials.dart';
-import 'package:ICTC_Website/pages/desktop/programs/skillup.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
 import 'package:ICTC_Website/widgets/cards/program_card.dart';
 import 'package:flutter/material.dart';
@@ -20,17 +17,30 @@ class _HomeDesktopPageState extends State<HomeDesktopPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarDesktop(),
-      body: SingleChildScrollView(
-        child: Expanded(
-          flex: 1,
-          child: Column(
-            children: [
-              _buildHero(context),
-              _buildPrograms(context),
-              FooterWidget(),
-            ],
-          ),
-        ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth < 1118) {
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  _buildHero(context),
+                  _buildPrograms(context),
+                  FooterWidget(),
+                ],
+              ),
+            );
+          } else {
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  _buildHero(context),
+                  _buildPrograms(context),
+                  FooterWidget(),
+                ],
+              ),
+            );
+          }
+        },
       ),
     );
   }
@@ -106,295 +116,144 @@ Widget _buildHero(context) {
   );
 }
 
-Widget _buildPrograms(context) {
+Widget _buildHeroSmallScreen(context) {
   return Container(
-      //height: MediaQuery.of(context).size.height * 0.8,
-      color: Color(0xfffff0),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 80.0),
-        child: Column(
+    alignment: Alignment.topLeft,
+    width: MediaQuery.of(context).size.width,
+    height: 750,
+    color: Color(0xff153faa),
+    child: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "BE A ",
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+              Text(
+                "CERTIFIED", 
+                style: Theme.of(context).textTheme.titleMedium
+              ),
+
+            ],
+          ),
+          Text(
+            "PROFESSIONAL.",
+            style: Theme.of(context).textTheme.titleMedium,
+          ), 
+          SizedBox(
+            height: 10,
+          ),
+          Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text("Featured Programs",
-                  style: Theme.of(context).textTheme.bodyLarge),
-              SizedBox(height: 50),
-              Padding(
-                padding: const EdgeInsets.only(left: 350, right: 350),
-                child: FutureBuilder(
-                  future: Supabase.instance.client
-                      .from('program')
-                      .select()
-                      .withConverter((data) =>
-                          data.map((e) => Program.fromJson(e)).toList()),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
+              Text(
+                "Seize the opportunity to gain a competitive edge by mastering",
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Text(
+                "essential skills. Unlock new horizons of expertise, from hands-on",
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Text(
+                "learning experiences to industry-relevant skills. Delve into",
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Text(
+                "specialized courses with Ateneo ICTC.",
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+              SizedBox(
+                height: 8,
+              ),
+            ],
+          )
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _buildPrograms(context) {
+  return Container(
+    color: Color(0xfffff0),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text("Featured Programs",
+              style: Theme.of(context).textTheme.bodyLarge),
+          SizedBox(height: 50),
+          FutureBuilder(
+            future: Supabase.instance.client
+                .from('program')
+                .select()
+                .withConverter((data) =>
+                    data.map((e) => Program.fromJson(e)).toList()),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              final programs = snapshot.data as List<Program>;
+              if (MediaQuery.of(context).size.width < 1450) {
+                // ListView for small screen sizes
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                  child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: programs.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: ProgramCardWidget(program: programs[index]),
                       );
-                    }
-                
-                    return GridView(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.all(8),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 16,
-                        childAspectRatio: 0.8,
-                      ),
-                      children: snapshot.data!
-                          .map((e) => ProgramCardWidget(program: e))
-                          .toList(),
-                    );
-                
-                    // return Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   crossAxisAlignment: CrossAxisAlignment.center,
-                    //   children: snapshot.data!
-                    //       .map((e) => ProgramCardWidget(program: e))
-                    //       .toList(),
-                    // );
-                  },
-                ),
-              )
-            ]),
-      ));
-}
-
-Widget _buildMicroCard(context) {
-  return Container(
-    width: 400,
-    height: 500,
-    child: Card(
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      color: Colors.white,
-      surfaceTintColor: Colors.white,
-      elevation: 2,
-      child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("PROGRAM",
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
-                      decoration: TextDecoration.underline)),
-              SizedBox(height: 30),
-              Text("Micro-credentials Program",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
-              SizedBox(height: 20),
-              Text(
-                "short focused and competency based certifications that validate specific skills and knowledge in a particular area",
-                maxLines: 3,
-                textHeightBehavior: TextHeightBehavior(
-                    applyHeightToFirstAscent: true,
-                    applyHeightToLastDescent: true),
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Icon(Icons.school_rounded,
-                      size: 14, color: Color(0xff153faa)),
-                  SizedBox(width: 5),
-                  Text(
-                    "12 courses",
-                    style: TextStyle(fontSize: 12, color: Color(0xff153faa)),
+                    },
                   ),
-                ],
-              ),
-              Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    FilledButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const MicrocredentialsPage(),
-                          ),
-                        );
-                      },
-                      child: Text("Explore Courses",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600)),
+                );
+              } else {
+                // GridView for larger screen sizes
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 300),
+                  child: GridView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 16,
+                      childAspectRatio: 0.8,
                     ),
-                  ]),
-              Padding(
-                padding: EdgeInsets.only(top: 40),
-                child: AspectRatio(
-                  aspectRatio: 20 / 10,
-                  child: Image.asset(
-                    'assets/images/program1.png',
-                    fit: BoxFit.fitWidth,
+                    itemCount: programs.length,
+                    itemBuilder: (context, index) {
+                      return ProgramCardWidget(program: programs[index]);
+                    },
                   ),
-                ),
-              ),
-            ],
-          )),
-    ),
-  );
-}
-
-Widget _buildGoogleCard(context) {
-  return Container(
-    width: 400,
-    height: 500,
-    child: Card(
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      color: Colors.white,
-      surfaceTintColor: Colors.white,
-      elevation: 2,
-      child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("PROGRAM",
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
-                      decoration: TextDecoration.underline)),
-              SizedBox(height: 30),
-              Text("Google Certified Educators",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
-              SizedBox(height: 20),
-              Text(
-                "validate educators' proficiency in effectively integrating technology and Google tools to enhance teaching and learning experiences for students",
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                textHeightBehavior: TextHeightBehavior(
-                    applyHeightToFirstAscent: true,
-                    applyHeightToLastDescent: true),
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Icon(Icons.school_rounded,
-                      size: 14, color: Color(0xff153faa)),
-                  SizedBox(width: 5),
-                  Text(
-                    "12 courses",
-                    style: TextStyle(fontSize: 12, color: Color(0xff153faa)),
-                  ),
-                ],
-              ),
-              Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    FilledButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const GoogleCertifiedEducatorsPage(),
-                          ),
-                        );
-                      },
-                      child: Text("Explore Courses",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600)),
-                    ),
-                  ]),
-              Padding(
-                padding: EdgeInsets.only(top: 40),
-                child: AspectRatio(
-                  aspectRatio: 20 / 10,
-                  child: Image.asset(
-                    'assets/images/program1.png',
-                    fit: BoxFit.fitWidth,
-                  ),
-                ),
-              ),
-            ],
-          )),
-    ),
-  );
-}
-
-Widget _buildSkillCard(context) {
-  return Container(
-    width: 400,
-    height: 500,
-    child: Card(
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      color: Colors.white,
-      surfaceTintColor: Colors.white,
-      elevation: 2,
-      child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("PROGRAM",
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
-                      decoration: TextDecoration.underline)),
-              SizedBox(height: 30),
-              Text("Skill Up Program",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
-              SizedBox(height: 20),
-              Text(
-                "acquire new skills or upgrade existing ones to enhance their employability and career prospects.",
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                textHeightBehavior: TextHeightBehavior(
-                    applyHeightToFirstAscent: true,
-                    applyHeightToLastDescent: true),
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Icon(Icons.school_rounded,
-                      size: 14, color: Color(0xff153faa)),
-                  SizedBox(width: 5),
-                  Text(
-                    "12 courses",
-                    style: TextStyle(fontSize: 12, color: Color(0xff153faa)),
-                  ),
-                ],
-              ),
-              Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    FilledButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const SkillUpPage(),
-                          ),
-                        );
-                      },
-                      child: Text("Explore Courses",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600)),
-                    ),
-                  ]),
-              Padding(
-                padding: EdgeInsets.only(top: 40),
-                child: AspectRatio(
-                  aspectRatio: 20 / 10,
-                  child: Image.asset(
-                    'assets/images/program1.png',
-                    fit: BoxFit.fitWidth,
-                  ),
-                ),
-              ),
-            ],
-          )),
+                );
+              }
+            },
+          ),
+        ],
+      ),
     ),
   );
 }

@@ -70,6 +70,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
 
                       return Center(
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.error_outline_rounded),Text('Add a picture.')
                           ],

@@ -163,35 +163,44 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
       onPressed: () async {
         if (_isLoggedIn) {
           final result = await showDialog(
+            barrierLabel: 'Register',
+              barrierDismissible: true,
               context: context,
               builder: (context) {
-                return registerDialog(context);
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    registerDialog(context),
+                  ],
+                );
               });
           print(result);
 
-          try {
-            final registration = Register(
-              studentId: await Supabase.instance.client
-                  .from('student')
-                  .select()
-                  .eq('uuid', Supabase.instance.client.auth.currentSession?.user.id ?? "")
-                  .single()
-                  .withConverter((students) =>
-                      Student.fromJson(students).id),
-              courseId: widget.course.id,
-              is_approved: false,
-            );
+          // try {
+          final registration = Register(
+            studentId: await Supabase.instance.client
+                .from('student')
+                .select()
+                .eq('uuid',
+                    Supabase.instance.client.auth.currentSession?.user.id ?? "")
+                .single()
+                .withConverter((students) => Student.fromJson(students).id),
+            courseId: widget.course.id,
+            is_approved: false,
+          );
 
-            final response = await Supabase.instance.client
-                .from('registration')
-                .insert(registration.toJson());
-            if (response != null && response.error != null) {
-              print(response.error!.message);
-            } else {
-              Navigator.of(context).pop();
-            }
-          } catch (e) {
-            print('Error: $e');
+          final response = await Supabase.instance.client
+              .from('registration')
+              .insert(registration.toJson());
+          if (response != null && response.error != null) {
+            Navigator.of(context).pop();
+            print(response.error!.message);
+            // } else {
+            // Navigator.of(context).pop();
+            // }
+            // } catch (e) {
+            //   print('Error: $e');
           }
 
           // if (result != null && result) {
@@ -209,6 +218,8 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
           // }
         } else {
           await showDialog(
+            barrierLabel: 'Pre-Register',
+              barrierDismissible: true,
               context: context,
               builder: (context) {
                 return FormDialog();
@@ -228,63 +239,73 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
   Widget registerDialog(context) {
     final uuid = Supabase.instance.client.auth.currentSession?.user.id;
 
-    return AlertDialog(
-      contentPadding: const EdgeInsets.only(left: 20, right: 30, top: 40),
-      title: Column(
+    return Container(
+      // width: MediaQuery.of(context).size.width * 0.3,
+      // height: MediaQuery.of(context).size.height * 0.5,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            alignment: FractionalOffset.topRight,
-            child: IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
+          FutureBuilder(
+            future: Supabase.instance.client
+                .from('student')
+                .select()
+                .eq('uuid', uuid ?? "")
+                .single()
+                .withConverter((data) => Student.fromJson(data)),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              }
+      
+              if (snapshot.hasData) {
+                final student = snapshot.data!;
+      
+                if (student.school == null && student.office == null) {
+                  return AlertDialog(
+                    content: Container(
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  height: MediaQuery.of(context).size.height * 0.5,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                          ProfileForm(student: student),
+                        ],
+                      ),)
+                    ));
+                }
+      
+                return AlertDialog(
+                  titlePadding: EdgeInsets.fromLTRB(0, 32, 0, 0),
+                  title: Center(child: Text('Confirm Registration', 
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)
+                  
+                  ,)),
+                  actionsPadding: EdgeInsets.only(bottom: 0),
+                  contentPadding: EdgeInsets.only(top:0, right:40, left: 40, bottom: 0),
+                    content: Container(
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ConfirmDialog(
+                          course: widget.course, student: student),
+                    ],
+                  ),
+                ));
+              }
+      
+              return Text('Error');
+            },
           ),
-          const Text(
-            'Pre-Register',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-          )
         ],
-      ),
-      content: Container(
-        width: MediaQuery.of(context).size.width * 0.3,
-        height: MediaQuery.of(context).size.height * 0.5,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              FutureBuilder(
-                future: Supabase.instance.client
-                    .from('student')
-                    .select()
-                    .eq('uuid', uuid ?? "")
-                    .single()
-                    .withConverter((data) => Student.fromJson(data)),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
-                  }
-
-                  if (snapshot.hasData) {
-                    final student = snapshot.data!;
-
-                    if (student.school == null && student.office == null) {
-                      return ProfileForm(student: student);
-                    }
-
-                    return ConfirmDialog(
-                        course: widget.course, student: student);
-                  }
-
-                  return Text('Error');
-                },
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

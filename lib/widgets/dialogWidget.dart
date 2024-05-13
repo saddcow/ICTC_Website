@@ -18,7 +18,7 @@ class _FormDialogState extends State<FormDialog> {
       backgroundColor: Colors.white,
       contentPadding: EdgeInsets.all(0),
       title: Container(
-        color: Colors.transparent,
+        color: Colors.white,
         child: Center(
           child: SingleChildScrollView(
             child: Card(

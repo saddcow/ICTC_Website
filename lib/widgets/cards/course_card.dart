@@ -21,7 +21,7 @@ class CourseCard extends StatelessWidget {
         surfaceTintColor: Colors.white,
         elevation: 2,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,7 +47,8 @@ class CourseCard extends StatelessWidget {
                   textHeightBehavior: TextHeightBehavior(
                       applyHeightToFirstAscent: true,
                       applyHeightToLastDescent: true),
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
+                  //style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)
+                  ),
               SizedBox(height: 20),
               // Text('${course.schedule}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
               // SizedBox(height: 10),
@@ -56,6 +57,7 @@ class CourseCard extends StatelessWidget {
               // Text('${course.venue}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   FilledButton(
                       onPressed: () {
@@ -70,6 +72,8 @@ class CourseCard extends StatelessWidget {
                       ))
                 ],
               ),
+              SizedBox(height: 20),
+              Expanded(child: Placeholder())              
               // Padding(
               //   padding: EdgeInsets.only(top: 40),
               //   child: AspectRatio(

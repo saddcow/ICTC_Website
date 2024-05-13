@@ -20,7 +20,7 @@ class ProgramCardWidget extends StatelessWidget {
       surfaceTintColor: Colors.white,
       elevation: 2,
       child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,6 +58,8 @@ class ProgramCardWidget extends StatelessWidget {
                               fontWeight: FontWeight.w600)),
                     ),
                   ]),
+                SizedBox(height: 20),
+                Expanded(child: Placeholder())
               // Padding(
               //   padding: EdgeInsets.only(top: 40),
               //   child: AspectRatio(

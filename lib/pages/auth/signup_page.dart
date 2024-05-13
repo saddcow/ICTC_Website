@@ -74,7 +74,7 @@ class _SignupPageState extends State<SignupPage> {
       body: SingleChildScrollView(
           child: Column(
         children: [
-          SizedBox(height: 120),
+          SizedBox(height: 30),
           buildBody(context),
           FooterWidget(),
         ],

@@ -24,14 +24,18 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'Do you want to pre-register for this course?',
-          style: TextStyle(fontSize: 18),
+          'Are you sure you want to pre-register for this course?',
+          style: TextStyle(
+              fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black87),
         ),
-        SizedBox(height: 20),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             _buildNoButton(),
+            SizedBox(
+              width: 35,
+            ),
             _buildYesButton(),
           ],
         )
@@ -40,53 +44,70 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
   }
 
   Widget _buildNoButton() {
-    return TextButton(
+    return FilledButton.icon(
+      style: FilledButton.styleFrom(
+        minimumSize: Size(100, 50),
+        maximumSize: Size(300, 50),
+        foregroundColor: Colors.black87,
+        backgroundColor: Colors.white38,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(32.0),
+        ),
+      ),
       onPressed: () {
         Navigator.of(context).pop();
       },
-      child: const Text(
+      icon: Icon(Icons.close),
+      label: const Text(
         'No',
         style: TextStyle(
-          color: Colors.black45,
-          fontSize: 18
-        ),
+            color: Colors.black87, fontSize: 16, fontWeight: FontWeight.w400),
       ),
     );
   }
 
   Widget _buildYesButton() {
-    return TextButton(
+    return FilledButton.icon(
+      icon: Icon(Icons.check),
+      style: FilledButton.styleFrom(
+        minimumSize: Size(100, 50),
+        maximumSize: Size(300, 50),
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.green,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(32.0),
+        ),
+      ),
+      label: const Text(
+        'Yes',
+        style: TextStyle(
+            color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
+      ),
       onPressed: () {
         _handleYesButton();
       },
-      child: const Text(
-        'Yes',
-        style: TextStyle(
-          color: Colors.blue,
-          fontSize: 18
-        ),
-      ),
     );
   }
 
   void _handleYesButton() async {
-    try {
-      final registration = Register(
-        studentId: widget.student.id,
-        courseId: widget.course.id,
-        is_approved: false,
-      );
+    // try {
+    final registration = Register(
+      studentId: widget.student.id,
+      courseId: widget.course.id,
+      is_approved: false,
+    );
 
-      final response = await Supabase.instance.client
-          .from('registration')
-          .insert(registration.toJson());
-      if (response != null && response.error != null) {
-        print(response.error!.message);
-      } else {
-        Navigator.of(context).pop();
-      }
-    } catch (e) {
-      print('Error: $e');
+    final response = await Supabase.instance.client
+        .from('registration')
+        .insert(registration.toJson());
+    if (response != null && response.error != null) {
+      Navigator.of(context).pop();
+      print(response.error!.message);
+      // } else {
+      //   Navigator.of(context).pop();
+      // }
+      // } catch (e) {
+      //   print('Error: $e');
     }
   }
 }

@@ -4,7 +4,6 @@ import 'package:ICTC_Website/pages/auth/login_page.dart';
 import 'package:ICTC_Website/pages/auth/signup_page.dart';
 import 'package:ICTC_Website/pages/desktop/profile/profile_page.dart';
 import 'package:ICTC_Website/widgets/programPage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -25,7 +24,7 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
         .select()
         .withConverter((data) => data.map((e) => Program.fromJson(e)).toList())
         .asStream();
-        
+
     return Scaffold(
       appBar: AppBar(
         primary: true,
@@ -103,8 +102,8 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
                                     width: 4,
                                   ),
                                   Icon(
-                                    CupertinoIcons.chevron_down,
-                                    size: 9,
+                                    Icons.arrow_drop_down,
+                                    size: 18,
                                     color: Color(0xff19306B),
                                   ),
                                 ],

@@ -79,6 +79,35 @@ class _ProfilePageState extends State<ProfilePage> {
     return courses;
   }
 
+  Future<List<Course>> getOngoingCourses(Student student) async {
+    final response = await Supabase.instance.client
+        .from('registration')
+        .select()
+        .eq('student_id', student.id)
+        .eq('is_approved', true)
+        .withConverter(
+            (data) => data.map((e) => Register.fromJson(e)).toList());
+    if (response.isEmpty) {
+      return List.empty();
+    }
+
+    final List<Course> courses = [];
+
+    for (Register r in response) {
+      final course = await Supabase.instance.client
+          .from('course')
+          .select()
+          .eq('id', r.courseId!)
+          .limit(1)
+          .single()
+          .withConverter((data) => Course.fromJson(data));
+
+      courses.add(course);
+    }
+
+    return courses;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,7 +160,9 @@ class _ProfilePageState extends State<ProfilePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              ongoingCard(context, student),
               pendingCard(context, student),
+              
             ],
           ),
         ],
@@ -148,7 +179,7 @@ class _ProfilePageState extends State<ProfilePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Pending Programs/Courses',
+            'Pending Courses',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w600,
@@ -206,7 +237,7 @@ class _ProfilePageState extends State<ProfilePage> {
           child: InkWell(
             onTap: () async {
               await showDialog<void>(
-                  context: context, builder: (context) => buildPendingDialog());
+                  context: context, builder: (context) => buildPendingDialog(course));
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -231,7 +262,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget buildPendingDialog() {
+  Widget buildPendingDialog(Course course) {
     return AlertDialog(
       content: Container(
         width: MediaQuery.of(context).size.width * 0.3,
@@ -265,7 +296,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Course Name: Introduction to Cyber Security",
+                    "${course.title}",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
@@ -273,7 +304,172 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   SizedBox(height: 20),
                   Text(
-                    "Course Date: April 19 - 20, 2021",
+                    "${course.schedule}",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    "Payment Status: Paid",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    "Certificate Status: Pending",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget ongoingCard(BuildContext context, Student student) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.6,
+      height: MediaQuery.of(context).size.height * 0.2,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Ongoing Courses',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Container(
+            height: MediaQuery.of(context).size.height * 0.1,
+            width: MediaQuery.of(context).size.width * 0.5,
+            margin: EdgeInsets.only(top: 10, bottom: 0),
+            child: FutureBuilder(
+              future: getOngoingCourses(student),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                final courseList = snapshot.data!;
+
+                if (courseList.isEmpty) {
+                  return Center(
+                    child: Text("No ongoing courses!"),
+                  );
+                }
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: courseList.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return createOngoingText(courseList[index]);
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget createOngoingText(Course course) {
+    return Row(
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width * 0.1,
+          margin: EdgeInsets.only(top: 10, bottom: 0, left: 5),
+          height: 80,
+          decoration: BoxDecoration(
+            color: Colors.white24,
+            border: Border.all(color: Colors.black38, width: 0.5),
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          ),
+          child: InkWell(
+            onTap: () async {
+              await showDialog<void>(
+                  context: context, builder: (context) => buildOngoingDialog(course));
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    course.title!,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildOngoingDialog(Course course) {
+    return AlertDialog(
+      content: Container(
+        width: MediaQuery.of(context).size.width * 0.3,
+        height: MediaQuery.of(context).size.height * 0.3,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.arrow_back),
+                  ),
+                  Text(
+                    "Ongoing Course Details",
+                    style: TextStyle(fontSize: 30),
+                  ),
+                ],
+              ),
+            ),
+            Divider(),
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "${course.title}",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    "${course.schedule}",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
