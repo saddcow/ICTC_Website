@@ -241,6 +241,7 @@ Widget _buildPrograms(context) {
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
                       childAspectRatio: 0.8,
                     ),
                     itemCount: programs.length,

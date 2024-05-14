@@ -171,54 +171,50 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget pendingCard(BuildContext context, Student student) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.6,
-      height: MediaQuery.of(context).size.height * 0.2,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Pending Courses',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-            ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Pending Courses',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
           ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.1,
-            width: MediaQuery.of(context).size.width * 0.5,
-            margin: EdgeInsets.only(top: 10, bottom: 0),
-            child: FutureBuilder(
-              future: getPendingCourses(student),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-
-                final courseList = snapshot.data!;
-
-                if (courseList.isEmpty) {
-                  return Center(
-                    child: Text("No registered courses!"),
-                  );
-                }
-
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: courseList.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return createPendingText(courseList[index]);
-                  },
+        ),
+        Container(
+          height: MediaQuery.of(context).size.height * 0.1,
+          width: MediaQuery.of(context).size.width * 0.5,
+          margin: EdgeInsets.only(top: 10, bottom: 0),
+          child: FutureBuilder(
+            future: getPendingCourses(student),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
                 );
-              },
-            ),
+              }
+    
+              final courseList = snapshot.data!;
+    
+              if (courseList.isEmpty) {
+                return Center(
+                  child: Text("No registered courses!"),
+                );
+              }
+    
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: courseList.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return createPendingText(courseList[index]);
+                },
+              );
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -336,54 +332,50 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget ongoingCard(BuildContext context, Student student) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.6,
-      height: MediaQuery.of(context).size.height * 0.2,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Ongoing Courses',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-            ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Ongoing Courses',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
           ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.1,
-            width: MediaQuery.of(context).size.width * 0.5,
-            margin: EdgeInsets.only(top: 10, bottom: 0),
-            child: FutureBuilder(
-              future: getOngoingCourses(student),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-
-                final courseList = snapshot.data!;
-
-                if (courseList.isEmpty) {
-                  return Center(
-                    child: Text("No ongoing courses!"),
-                  );
-                }
-
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: courseList.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return createOngoingText(courseList[index]);
-                  },
+        ),
+        Container(
+          height: MediaQuery.of(context).size.height * 0.1,
+          width: MediaQuery.of(context).size.width * 0.5,
+          margin: EdgeInsets.only(top: 10, bottom: 0),
+          child: FutureBuilder(
+            future: getOngoingCourses(student),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
                 );
-              },
-            ),
+              }
+    
+              final courseList = snapshot.data!;
+    
+              if (courseList.isEmpty) {
+                return Center(
+                  child: Text("No ongoing courses!"),
+                );
+              }
+    
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: courseList.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return createOngoingText(courseList[index]);
+                },
+              );
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

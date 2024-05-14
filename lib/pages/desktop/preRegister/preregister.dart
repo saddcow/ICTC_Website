@@ -77,13 +77,23 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '${widget.course.title}',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 35,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '${widget.course.title}',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 35,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          '₱ ${widget.course.cost}',
+                          style: TextStyle(
+                              fontSize: 35, fontWeight: FontWeight.w600),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 20),
                     Text(
@@ -140,12 +150,6 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
-                    Text(
-                      '₱ ${widget.course.cost}',
-                      style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
-                    ),
                     SizedBox(height: 25),
                     registerButton(context),
                   ],
@@ -160,10 +164,11 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
 
   Widget registerButton(context) {
     return FilledButton(
+      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
       onPressed: () async {
         if (_isLoggedIn) {
           final result = await showDialog(
-            barrierLabel: 'Register',
+              barrierLabel: 'Register',
               barrierDismissible: true,
               context: context,
               builder: (context) {
@@ -176,49 +181,9 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
                 );
               });
           print(result);
-
-          // try {
-          final registration = Register(
-            studentId: await Supabase.instance.client
-                .from('student')
-                .select()
-                .eq('uuid',
-                    Supabase.instance.client.auth.currentSession?.user.id ?? "")
-                .single()
-                .withConverter((students) => Student.fromJson(students).id),
-            courseId: widget.course.id,
-            is_approved: false,
-          );
-
-          final response = await Supabase.instance.client
-              .from('registration')
-              .insert(registration.toJson());
-          if (response != null && response.error != null) {
-            Navigator.of(context).pop();
-            print(response.error!.message);
-            // } else {
-            // Navigator.of(context).pop();
-            // }
-            // } catch (e) {
-            //   print('Error: $e');
-          }
-
-          // if (result != null && result) {
-          //   final supabase = Supabase.instance.client;
-          //   final uuid = Supabase.instance.client.auth.currentSession?.user.id;
-          //   final register =  Register(
-          //     studentId: await supabase
-          //       .from('student')
-          //           .select()
-          //           .eq('uuid', uuid ?? "")
-          //           .withConverter((students) => Student.fromJson(students as Map<String, dynamic>) as int?),
-          //     courseId: widget.course.id,
-          //     is_approved: false,
-          //   );
-          // }
         } else {
           await showDialog(
-            barrierLabel: 'Pre-Register',
+              barrierLabel: 'Pre-Register',
               barrierDismissible: true,
               context: context,
               builder: (context) {
@@ -258,50 +223,53 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return CircularProgressIndicator();
               }
-      
+
               if (snapshot.hasData) {
                 final student = snapshot.data!;
-      
+
                 if (student.school == null && student.office == null) {
                   return AlertDialog(
-                    content: Container(
-                  width: MediaQuery.of(context).size.width * 0.3,
-                  height: MediaQuery.of(context).size.height * 0.5,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                          ProfileForm(student: student),
-                        ],
-                      ),)
-                    ));
+                      content: Container(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          height: MediaQuery.of(context).size.height * 0.5,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ProfileForm(student: student),
+                              ],
+                            ),
+                          )));
                 }
-      
+
                 return AlertDialog(
-                  titlePadding: EdgeInsets.fromLTRB(0, 32, 0, 0),
-                  title: Center(child: Text('Confirm Registration', 
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)
-                  
-                  ,)),
-                  actionsPadding: EdgeInsets.only(bottom: 0),
-                  contentPadding: EdgeInsets.only(top:0, right:40, left: 40, bottom: 0),
+                    titlePadding: EdgeInsets.fromLTRB(0, 32, 0, 0),
+                    title: Center(
+                        child: Text(
+                      'Confirm Registration',
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                    )),
+                    actionsPadding: EdgeInsets.only(bottom: 0),
+                    contentPadding:
+                        EdgeInsets.only(top: 0, right: 40, left: 40, bottom: 0),
                     content: Container(
-                  width: MediaQuery.of(context).size.width * 0.2,
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ConfirmDialog(
-                          course: widget.course, student: student),
-                    ],
-                  ),
-                ));
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ConfirmDialog(
+                              course: widget.course, student: student),
+                        ],
+                      ),
+                    ));
               }
-      
+
               return Text('Error');
             },
           ),

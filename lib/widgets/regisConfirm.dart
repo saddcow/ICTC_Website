@@ -90,7 +90,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
   }
 
   void _handleYesButton() async {
-    // try {
+    try {
     final registration = Register(
       studentId: widget.student.id,
       courseId: widget.course.id,
@@ -103,11 +103,11 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
     if (response != null && response.error != null) {
       Navigator.of(context).pop();
       print(response.error!.message);
-      // } else {
-      //   Navigator.of(context).pop();
-      // }
-      // } catch (e) {
-      //   print('Error: $e');
+      } else {
+        Navigator.of(context).pop();
+      }
+      } catch (e) {
+        print('Error: $e');
     }
   }
 }

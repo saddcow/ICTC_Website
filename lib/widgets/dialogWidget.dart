@@ -26,7 +26,7 @@ class _FormDialogState extends State<FormDialog> {
               surfaceTintColor: Colors.white,
               elevation: 0,
               child: Padding(
-                padding: const EdgeInsets.all(30.0),
+                padding: const EdgeInsets.all(5.0),
                 child: SizedBox(
                   width: 350,
                   child: Row(
@@ -40,13 +40,13 @@ class _FormDialogState extends State<FormDialog> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             SizedBox(
-                              width: 450,
+                              width: 300,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   const Padding(
                                     padding:
-                                        EdgeInsets.only(top: 35, bottom: 30),
+                                        EdgeInsets.only(bottom: 30),
                                     child: Image(
                                         image: AssetImage(
                                             "assets/images/logo_ictc.png"),

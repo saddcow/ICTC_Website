@@ -21,7 +21,7 @@ class CourseCard extends StatelessWidget {
         surfaceTintColor: Colors.white,
         elevation: 2,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+          padding: const EdgeInsets.fromLTRB(20, 5, 20, 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,6 +55,7 @@ class CourseCard extends StatelessWidget {
               // Text('${course.duration}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
               // SizedBox(height: 10),
               // Text('${course.venue}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
+              Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -72,8 +73,7 @@ class CourseCard extends StatelessWidget {
                       ))
                 ],
               ),
-              SizedBox(height: 20),
-              Expanded(child: Placeholder())              
+              //Expanded(child: Placeholder())              
               // Padding(
               //   padding: EdgeInsets.only(top: 40),
               //   child: AspectRatio(

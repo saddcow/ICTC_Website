@@ -41,6 +41,7 @@ class ProgramCardWidget extends StatelessWidget {
                     applyHeightToFirstAscent: true,
                     applyHeightToLastDescent: true),
               ),
+              Spacer(),
               SizedBox(height: 20),
               
               Row(
@@ -58,8 +59,8 @@ class ProgramCardWidget extends StatelessWidget {
                               fontWeight: FontWeight.w600)),
                     ),
                   ]),
-                SizedBox(height: 20),
-                Expanded(child: Placeholder())
+
+                //Expanded(child: Placeholder())
               // Padding(
               //   padding: EdgeInsets.only(top: 40),
               //   child: AspectRatio(
