@@ -106,6 +106,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
         print(response.error!.message);
       } else {
         Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Pre-registration successful!")));
       }
     } catch (e) {
       print('Error: $e');

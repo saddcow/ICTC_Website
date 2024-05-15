@@ -336,10 +336,16 @@ class _ProfileFormState extends State<ProfileForm> {
       newStudent.designation = designationCon.text;
     }
     final uuid = supabase.auth.currentSession!.user.id;
-//
+
     await supabase.from('student').update(newStudent.toJson()).eq('uuid', uuid);
 
     Navigator.pop(context, true);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Profile updated'),
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
 
   studentExtension() {
