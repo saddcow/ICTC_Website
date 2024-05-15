@@ -28,6 +28,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
           style: TextStyle(
               fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black87),
         ),
+        SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -91,23 +92,23 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
 
   void _handleYesButton() async {
     try {
-    final registration = Register(
-      studentId: widget.student.id,
-      courseId: widget.course.id,
-      is_approved: false,
-    );
+      final registration = Register(
+        studentId: widget.student.id,
+        courseId: widget.course.id,
+        is_approved: false,
+      );
 
-    final response = await Supabase.instance.client
-        .from('registration')
-        .insert(registration.toJson());
-    if (response != null && response.error != null) {
-      Navigator.of(context).pop();
-      print(response.error!.message);
+      final response = await Supabase.instance.client
+          .from('registration')
+          .insert(registration.toJson());
+      if (response != null && response.error != null) {
+        Navigator.of(context).pop();
+        print(response.error!.message);
       } else {
         Navigator.of(context).pop();
       }
-      } catch (e) {
-        print('Error: $e');
+    } catch (e) {
+      print('Error: $e');
     }
   }
 }

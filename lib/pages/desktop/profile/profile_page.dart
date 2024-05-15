@@ -156,14 +156,17 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
           SizedBox(width: 20),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ongoingCard(context, student),
-              pendingCard(context, student),
-              
-            ],
+          Padding(
+            padding: const EdgeInsets.only(top: 50),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ongoingCard(context, student),
+                pendingCard(context, student),
+                
+              ],
+            ),
           ),
         ],
       ),
@@ -233,7 +236,14 @@ class _ProfilePageState extends State<ProfilePage> {
           child: InkWell(
             onTap: () async {
               await showDialog<void>(
-                  context: context, builder: (context) => buildPendingDialog(course));
+                barrierLabel: 'Pending Course Details',
+                barrierDismissible: true,
+                context: context,
+                builder: (context) {
+                  return buildPendingDialog(course);
+                }
+                  //context: context, builder: (context) => buildPendingDialog(course)
+              );
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -261,10 +271,11 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget buildPendingDialog(Course course) {
     return AlertDialog(
       content: Container(
-        width: MediaQuery.of(context).size.width * 0.3,
-        height: MediaQuery.of(context).size.height * 0.3,
+        // width: MediaQuery.of(context).size.width * 0.3,
+        // height: MediaQuery.of(context).size.height * 0.3,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),

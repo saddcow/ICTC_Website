@@ -93,7 +93,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenTypeLayout.builder(
       desktop: (BuildContext context) => HomeDesktopPage(),
-      mobile: (BuildContext context) => HomeMobilePage(),
+      mobile: (BuildContext context) => HomeDesktopPage(),
       // tablet: (BuildContext context) => Container(color:Colors.yellow),
       // watch: (BuildContext context) => Container(color:Colors.purple),
     );

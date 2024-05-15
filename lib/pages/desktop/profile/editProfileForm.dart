@@ -228,14 +228,16 @@ class _ProfileFormState extends State<ProfileForm> {
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text("I am a: ",
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  )),
+              Text(
+                "I am a: ",
+                style: TextStyle(
+                  color: Colors.black87,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
               Expanded(
                 child: ListTile(
                   leading: Radio<ProfileType>(
@@ -282,7 +284,18 @@ class _ProfileFormState extends State<ProfileForm> {
           ),
           SizedBox(height: 20),
           buildExtension(),
-          OutlinedButton(onPressed: saveProfile, child: Text('Save'))
+          SizedBox(height: 20),
+          FilledButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.green),
+              ),
+              onPressed: saveProfile,
+              child: Text('Save',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  )))
         ],
       ),
     );
@@ -323,11 +336,10 @@ class _ProfileFormState extends State<ProfileForm> {
       newStudent.designation = designationCon.text;
     }
     final uuid = supabase.auth.currentSession!.user.id;
-// 
+//
     await supabase.from('student').update(newStudent.toJson()).eq('uuid', uuid);
 
     Navigator.pop(context, true);
-    
   }
 
   studentExtension() {

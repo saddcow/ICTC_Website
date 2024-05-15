@@ -154,13 +154,13 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
 
   Widget _buildButtons(BuildContext context) {
     final ButtonStyle filledStyle = ElevatedButton.styleFrom(
-      onPrimary: Theme.of(context).colorScheme.onSecondary,
-      primary: Theme.of(context).colorScheme.onPrimary,
+      foregroundColor: Theme.of(context).colorScheme.onSecondary,
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
     );
     final ButtonStyle outlinedStyle = OutlinedButton.styleFrom(
+      foregroundColor: Theme.of(context).colorScheme.onPrimary,
       side: BorderSide(width: 1, color: Color(0xff153faa)),
-      onSurface: Colors.white,
-      primary: Theme.of(context).colorScheme.onPrimary,
+      disabledForegroundColor: Colors.white.withOpacity(0.38),
       backgroundColor: Theme.of(context).colorScheme.onSecondary,
     );
 

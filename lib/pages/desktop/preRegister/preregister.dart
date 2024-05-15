@@ -38,6 +38,27 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
     }
   }
 
+  Future<bool> isRegistered() async {
+    final uuid = Supabase.instance.client.auth.currentSession?.user.id;
+    final studentId = await Supabase.instance.client
+        .from('student')
+        .select('id')
+        .eq('uuid', uuid ?? "")
+        .single()
+        .withConverter((data) => data['id'] as int);
+    final query = await Supabase.instance.client
+        .from('registration')
+        .select()
+        .eq('course_id', widget.course.id!)
+        .eq('student_id', studentId)
+        .limit(1)
+        .maybeSingle();
+
+    print(query);
+
+    return query != null && query.length > 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,41 +184,61 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
   }
 
   Widget registerButton(context) {
-    return FilledButton(
-      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
-      onPressed: () async {
-        if (_isLoggedIn) {
-          final result = await showDialog(
-              barrierLabel: 'Register',
-              barrierDismissible: true,
-              context: context,
-              builder: (context) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    registerDialog(context),
-                  ],
-                );
-              });
-          print(result);
-        } else {
-          await showDialog(
-              barrierLabel: 'Pre-Register',
-              barrierDismissible: true,
-              context: context,
-              builder: (context) {
-                return FormDialog();
-              });
-        }
+    return FutureBuilder(
+      future: isRegistered(),
+      builder: (context, snapshot) {
+        print(snapshot.data);
+        return FilledButton(
+          style: ButtonStyle(
+              backgroundColor: snapshot.data == null || snapshot.data == true
+                  ? MaterialStateProperty.all(Colors.grey)
+                  : MaterialStateProperty.all(Colors.green)),
+          onPressed: snapshot.data == null || snapshot.data == true
+              ? null
+              : () async {
+                  if (_isLoggedIn) {
+                    final result = await showDialog(
+                        barrierLabel: 'Register',
+                        barrierDismissible: true,
+                        context: context,
+                        builder: (context) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              registerDialog(context),
+                            ],
+                          );
+                        });
+                    print(result);
+                  } else {
+                    await showDialog(
+                        barrierLabel: 'Pre-Register',
+                        barrierDismissible: true,
+                        context: context,
+                        builder: (context) {
+                          return FormDialog();
+                        });
+                  }
 
-        checkLoggedIn();
+                  checkLoggedIn();
+                },
+          child: snapshot.data == null
+              ? Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircularProgressIndicator(),
+                )
+              : Text(
+                  snapshot.data == true
+                      ? 'Already preregistered'
+                      : 'Pre-register',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600),
+                ),
+        );
       },
-      child: Text(
-        'Pre-Register',
-        style: TextStyle(
-            color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
-      ),
     );
   }
 

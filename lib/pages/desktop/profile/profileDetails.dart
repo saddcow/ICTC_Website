@@ -42,16 +42,17 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             margin: EdgeInsets.only(top: 60),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Container(
                   // IMAGE
                   margin: EdgeInsets.only(bottom: 10),
                   width: MediaQuery.of(context).size.width * 0.2,
                   height: 360,
-                  decoration: BoxDecoration(color: Colors.white, border: Border.all(color: Colors.black12)),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.black12)),
                   child: FutureBuilder(
-                    // TODO: Implement image loading
                     future: avatarUrl,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -66,13 +67,14 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                           url,
                           fit: BoxFit.cover,
                         );
-                      } 
+                      }
 
                       return Center(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.error_outline_rounded),Text('Add a picture.')
+                            Icon(Icons.error_outline_rounded),
+                            Text('Add a picture.')
                           ],
                         ),
                       );
@@ -202,22 +204,55 @@ class _ProfileDetailsState extends State<ProfileDetails> {
     );
   }
 
-  Widget buildEditDialog(context) {
-    return AlertDialog(
-      surfaceTintColor: Colors.white,
+  Widget buildEditDialog(BuildContext context) {
+    return Dialog(
       backgroundColor: Colors.white,
-        content: Flexible(
-          flex: 2,
-          child: Container(
-              width: MediaQuery.of(context).size.width * 0.25,
-              height: MediaQuery.of(context).size.height * 0.5,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.30,
+        height: MediaQuery.of(context).size.height * 0.6,
+        child: Padding(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ProfileForm(student: widget.student),
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        'Edit Profile',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: Icon(Icons.close_rounded),
+                  )
                 ],
-              )),
-        ));
+              ),
+              SizedBox(height: 20),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: ProfileForm(student: widget.student),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

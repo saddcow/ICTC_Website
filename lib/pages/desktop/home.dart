@@ -23,7 +23,7 @@ class _HomeDesktopPageState extends State<HomeDesktopPage> {
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  _buildHero(context),
+                  _buildHeroSmallScreen(context),
                   _buildPrograms(context),
                   FooterWidget(),
                 ],
@@ -121,7 +121,7 @@ Widget _buildHeroSmallScreen(context) {
     alignment: Alignment.topLeft,
     width: MediaQuery.of(context).size.width,
     height: 750,
-    color: Color(0xff153faa),
+    color: Color(0xff19306B),
     child: Padding(
       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       child: Column(
