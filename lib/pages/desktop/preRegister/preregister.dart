@@ -188,12 +188,13 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
       future: isRegistered(),
       builder: (context, snapshot) {
         print(snapshot.data);
+        print(_isLoggedIn);
         return FilledButton(
           style: ButtonStyle(
-              backgroundColor: snapshot.data == null || snapshot.data == true
+              backgroundColor: snapshot.data == true
                   ? MaterialStateProperty.all(Colors.grey)
                   : MaterialStateProperty.all(Colors.green)),
-          onPressed: snapshot.data == null || snapshot.data == true
+          onPressed: snapshot.data == true
               ? null
               : () async {
                   if (_isLoggedIn) {
@@ -223,13 +224,21 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
 
                   checkLoggedIn();
                 },
-          child: snapshot.data == null
+          child: snapshot.data == null && _isLoggedIn == false
               ? Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: CircularProgressIndicator(),
+                  child: snapshot.data == null && _isLoggedIn == true
+                      ? CircularProgressIndicator()
+                      : Text(
+                          'Pre-register',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600),
+                        ),
                 )
               : Text(
-                  snapshot.data == true
+                  snapshot.data == true && snapshot.data != null
                       ? 'Already preregistered'
                       : 'Pre-register',
                   style: TextStyle(
