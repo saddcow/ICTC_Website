@@ -1,6 +1,6 @@
 import 'package:ICTC_Website/models/course.dart';
 import 'package:ICTC_Website/models/student.dart';
-// import 'package:ICTC_Website/pages/desktop/evaluation/eval_page.dart';
+import 'package:ICTC_Website/pages/desktop/evaluation/eval_page.dart';
 import 'package:ICTC_Website/pages/desktop/profile/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -115,11 +115,11 @@ class _ProfileCourseDialogState extends State<ProfileCourseDialog> {
   }
 
   void toEvaluation() {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) => EvaluationPage(),
-    //   )
-    // );
-  }
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => EvaluationPage(),
+  //     )
+  //   );
+  // }
 }

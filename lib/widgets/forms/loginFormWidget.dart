@@ -18,16 +18,19 @@ class _LoginWidgetState extends State<LoginWidget> {
     await Supabase.instance.client.auth
         .signInWithPassword(email: emailCon.text, password: passwordCon.text)
         .then((value) {
-          if (value.session?.user != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Successfully logged in!")));
+      if (value.session?.user != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Successfully logged in!")));
 
-            Navigator.pop(context);
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Invalid email and/or password!")));
-          }
-        });
+        Navigator.pop(context);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Invalid email and/or password!")));
+      }
+    }).onError((AuthException e, _) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message)));
+    });
   }
 
   @override
