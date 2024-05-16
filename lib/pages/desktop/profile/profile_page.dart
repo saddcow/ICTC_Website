@@ -3,6 +3,7 @@ import 'package:ICTC_Website/models/course.dart';
 import 'package:ICTC_Website/models/register.dart';
 import 'package:ICTC_Website/models/student.dart';
 import 'package:ICTC_Website/pages/desktop/home.dart';
+import 'package:ICTC_Website/pages/desktop/profile/course_dialog.dart';
 import 'package:ICTC_Website/pages/desktop/profile/profileDetails.dart';
 import 'package:ICTC_Website/widgets/appBarDesktop.dart';
 import 'package:flutter/material.dart';
@@ -51,61 +52,37 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<List<Course>> getPendingCourses(Student student) async {
-    final response = await Supabase.instance.client
-        .from('registration')
-        .select()
-        .eq('student_id', student.id)
-        .eq('is_approved', false)
+    final query = await Supabase.instance.client
+        .from('course')
+        .select('*, registration!inner(*)')
+        .eq('registration.student_id', student.id)
+        .eq('registration.is_approved', false)
         .withConverter(
-            (data) => data.map((e) => Register.fromJson(e)).toList());
-    if (response.isEmpty) {
-      return List.empty();
-    }
+          (data) => data
+              .map(
+                (e) => Course.fromJson(e),
+              )
+              .toList(),
+        );
 
-    final List<Course> courses = [];
-
-    for (Register r in response) {
-      final course = await Supabase.instance.client
-          .from('course')
-          .select()
-          .eq('id', r.courseId!)
-          .limit(1)
-          .single()
-          .withConverter((data) => Course.fromJson(data));
-
-      courses.add(course);
-    }
-
-    return courses;
+    return query;
   }
 
   Future<List<Course>> getOngoingCourses(Student student) async {
-    final response = await Supabase.instance.client
-        .from('registration')
-        .select()
-        .eq('student_id', student.id)
-        .eq('is_approved', true)
+    final query = await Supabase.instance.client
+        .from('course')
+        .select('*, registration!inner(*)')
+        .eq('registration.student_id', student.id)
+        .eq('registration.is_approved', true)
         .withConverter(
-            (data) => data.map((e) => Register.fromJson(e)).toList());
-    if (response.isEmpty) {
-      return List.empty();
-    }
+          (data) => data
+              .map(
+                (e) => Course.fromJson(e),
+              )
+              .toList(),
+        );
 
-    final List<Course> courses = [];
-
-    for (Register r in response) {
-      final course = await Supabase.instance.client
-          .from('course')
-          .select()
-          .eq('id', r.courseId!)
-          .limit(1)
-          .single()
-          .withConverter((data) => Course.fromJson(data));
-
-      courses.add(course);
-    }
-
-    return courses;
+    return query;
   }
 
   @override
@@ -162,7 +139,6 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               ongoingCard(context, student),
               pendingCard(context, student),
-              
             ],
           ),
         ],
@@ -194,21 +170,21 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: CircularProgressIndicator(),
                 );
               }
-    
+
               final courseList = snapshot.data!;
-    
+
               if (courseList.isEmpty) {
                 return Center(
                   child: Text("No registered courses!"),
                 );
               }
-    
+
               return ListView.builder(
                 shrinkWrap: true,
                 itemCount: courseList.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  return createPendingText(courseList[index]);
+                  return createPendingText(courseList[index], student);
                 },
               );
             },
@@ -218,7 +194,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget createPendingText(Course course) {
+  Widget createPendingText(Course course, Student student) {
     return Row(
       children: [
         Container(
@@ -233,7 +209,9 @@ class _ProfilePageState extends State<ProfilePage> {
           child: InkWell(
             onTap: () async {
               await showDialog<void>(
-                  context: context, builder: (context) => buildPendingDialog(course));
+                  context: context,
+                  builder: (context) =>
+                      ProfileCourseDialog(course: course, student: student));
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -255,79 +233,6 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget buildPendingDialog(Course course) {
-    return AlertDialog(
-      content: Container(
-        width: MediaQuery.of(context).size.width * 0.3,
-        height: MediaQuery.of(context).size.height * 0.3,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(Icons.arrow_back),
-                  ),
-                  Text(
-                    "Pending Course Details",
-                    style: TextStyle(fontSize: 30),
-                  ),
-                ],
-              ),
-            ),
-            Divider(),
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "${course.title}",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    "${course.schedule}",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    "Payment Status: Paid",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    "Certificate Status: Pending",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 
@@ -355,21 +260,21 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: CircularProgressIndicator(),
                 );
               }
-    
+
               final courseList = snapshot.data!;
-    
+
               if (courseList.isEmpty) {
                 return Center(
                   child: Text("No ongoing courses!"),
                 );
               }
-    
+
               return ListView.builder(
                 shrinkWrap: true,
                 itemCount: courseList.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  return createOngoingText(courseList[index]);
+                  return createOngoingText(courseList[index], student);
                 },
               );
             },
@@ -379,7 +284,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget createOngoingText(Course course) {
+  Widget createOngoingText(Course course, Student student) {
     return Row(
       children: [
         Container(
@@ -394,7 +299,8 @@ class _ProfilePageState extends State<ProfilePage> {
           child: InkWell(
             onTap: () async {
               await showDialog<void>(
-                  context: context, builder: (context) => buildOngoingDialog(course));
+                  context: context,
+                  builder: (context) => ProfileCourseDialog(course: course, student: student));
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
