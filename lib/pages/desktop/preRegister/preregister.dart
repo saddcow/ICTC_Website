@@ -1,6 +1,7 @@
 import 'package:ICTC_Website/models/register.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:ICTC_Website/models/course.dart';
 import 'package:ICTC_Website/models/student.dart';
 import 'package:ICTC_Website/pages/desktop/profile/editProfileForm.dart';
@@ -150,7 +151,7 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
                               fontSize: 18, fontWeight: FontWeight.w400),
                         ),
                         Text(
-                          '${widget.course.schedule}',
+                          " ${DateFormat.yMMMMd().format(widget.course.startDate!)} - ${DateFormat.yMMMMd().format(widget.course.endDate!)} ",
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w600),
                         ),
@@ -165,7 +166,7 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
                               fontSize: 18, fontWeight: FontWeight.w400),
                         ),
                         Text(
-                          '${widget.course.duration}',
+                          "${widget.course.endDate!.difference(widget.course.startDate!).inDays} days (${widget.course.endDate!.difference(widget.course.startDate!).inHours} hours)",
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w600),
                         ),

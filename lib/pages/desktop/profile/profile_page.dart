@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:intl/intl.dart';
 import 'package:ICTC_Website/models/course.dart';
 import 'package:ICTC_Website/models/register.dart';
 import 'package:ICTC_Website/models/student.dart';
@@ -202,7 +203,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Row(
       children: [
         Container(
-          width: MediaQuery.of(context).size.width * 0.1,
+          width: MediaQuery.of(context).size.width * 0.15,
           margin: EdgeInsets.only(top: 10, bottom: 0, left: 5),
           height: 80,
           decoration: BoxDecoration(
@@ -228,13 +229,22 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: Text(
-                    course.title!,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        course.title,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        " ${DateFormat.yMMMMd().format(course.startDate!)} - ${DateFormat.yMMMMd().format(course.endDate!)} "
+                      )
+                    ],
                   ),
                 ),
               ],
@@ -280,28 +290,28 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "${course.title}",
+                    "Title: ${course.title}",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
                   SizedBox(height: 20),
-                  Text(
-                    "${course.schedule}",
+                  Text( 
+                    "Schedule: ${DateFormat.yMMMMd().format(course.startDate!)} - ${DateFormat.yMMMMd().format(course.endDate!)}",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Text(
-                    "Payment Status: Paid",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
+                  //SizedBox(height: 20),
+                  // Text(
+                  //   "Payment Status: Paid",
+                  //   style: TextStyle(
+                  //     fontSize: 18,
+                  //     fontWeight: FontWeight.w400,
+                  //   ),
+                  // ),
                   SizedBox(height: 20),
                   Text(
                     "Certificate Status: Pending",
@@ -371,7 +381,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Row(
       children: [
         Container(
-          width: MediaQuery.of(context).size.width * 0.1,
+          width: MediaQuery.of(context).size.width * 0.15,
           margin: EdgeInsets.only(top: 10, bottom: 0, left: 5),
           height: 80,
           decoration: BoxDecoration(
@@ -397,13 +407,22 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: Text(
-                    course.title!,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        course.title,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                         " ${DateFormat.yMMMMd().format(course.startDate!)} - ${DateFormat.yMMMMd().format(course.endDate!)} "
+                      )
+                    ],
                   ),
                 ),
               ],
@@ -449,7 +468,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "${course.title}",
+                    "Title: ${course.title}",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
@@ -457,20 +476,20 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   SizedBox(height: 20),
                   Text(
-                    "${course.schedule}",
+                    "Schedule: ${DateFormat.yMMMMd().format(course.startDate!)} - ${DateFormat.yMMMMd().format(course.endDate!)}",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Text(
-                    "Payment Status: Paid",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
+                  //SizedBox(height: 20),
+                  // Text(
+                  //   "Payment Status: Paid",
+                  //   style: TextStyle(
+                  //     fontSize: 18,
+                  //     fontWeight: FontWeight.w400,
+                  //   ),
+                  // ),
                   SizedBox(height: 20),
                   Text(
                     "Certificate Status: Pending",

@@ -66,14 +66,14 @@ class _ProfileCourseDialogState extends State<ProfileCourseDialog> {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Text(
-                    "Payment Status: Paid",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
+                  //SizedBox(height: 20),
+                  // Text(
+                  //   "Payment Status: Paid",
+                  //   style: TextStyle(
+                  //     fontSize: 18,
+                  //     fontWeight: FontWeight.w400,
+                  //   ),
+                  // ),
                   SizedBox(height: 20),
                   Text(
                     "Certificate Status: Pending",
