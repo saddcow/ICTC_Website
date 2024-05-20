@@ -116,10 +116,12 @@ class _ProfileCourseDialogState extends State<ProfileCourseDialog> {
 
   void toEvaluation() {
     Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => EvaluationPage(),
-      )
-    );
+        context,
+        MaterialPageRoute(
+          builder: (context) => EvaluationPage(
+            courseId: widget.course.id!,
+            studentId: widget.student.id,
+          ),
+        ));
   }
 }
