@@ -21,7 +21,21 @@ class PreRegisterPage extends StatefulWidget {
 }
 
 class _PreRegisterPageState extends State<PreRegisterPage> {
+  late Future<String?> courseUrl = getCourseUrl();
   bool _isLoggedIn = false;
+
+  Future<String?> getCourseUrl() async {
+    try {
+      final url = await Supabase.instance.client.storage
+          .from('images')
+          .createSignedUrl(
+              '${widget.course.id}/image.png',
+              60);
+      return url;
+    } catch (e) {
+      return null;
+    }
+  }
 
   @override
   void initState() {
@@ -83,10 +97,49 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Container(
+            margin: EdgeInsets.only(top: 20),
+            width: MediaQuery.of(context).size.width * 0.3,
+            height: 500,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Colors.black12),
+            ),
+            child: FutureBuilder(
+              future: courseUrl, 
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                if (snapshot.hasData) {
+                  final url = snapshot.data!;
+                  return Image.network(
+                    url,
+                    fit: BoxFit.cover,
+                  );
+                }
+
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image(image: AssetImage('assets/images/logo_ictc.png'), fit: BoxFit.cover, height: 200, width: 150,),
+                      SizedBox(height:20  ,),
+                      Text('No image attached.', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.black54))
+                    ],
+                  ),
+                );
+              }
+            ),
+          ),
           Expanded(
             child: Container(
-              width: 840,
-              height: 800,
+              margin: EdgeInsets.only(top: 20),
+              width: MediaQuery.of(context).size.width * 0.3,
+              height: 500,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(
                   Radius.circular(20.0),
@@ -314,8 +367,7 @@ class _PreRegisterPageState extends State<PreRegisterPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          ConfirmDialog(
-                              course: widget.course, student: student),
+                          ConfirmDialog(course: widget.course, student: student),
                         ],
                       ),
                     ));

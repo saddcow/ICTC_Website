@@ -2,11 +2,33 @@ import 'package:ICTC_Website/models/program.dart';
 import 'package:ICTC_Website/widgets/programPage.dart';
 import 'package:flutter/material.dart';
 import 'package:html_unescape/html_unescape.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class ProgramCardWidget extends StatelessWidget {
+class ProgramCardWidget extends StatefulWidget {
   const ProgramCardWidget({Key? key, required this.program}) : super(key: key);
 
   final Program program;
+
+  @override
+  State<ProgramCardWidget> createState() => _ProgramCardWidgetState();
+}
+
+class _ProgramCardWidgetState extends State<ProgramCardWidget> {
+  late Future<String?> programUrl = getProgramUrl();
+
+  Future<String?> getProgramUrl() async {
+    try{
+      final url = await Supabase.instance.client.storage
+        .from('programs')
+        .createSignedUrl(
+          '${widget.program.id}/image.png',
+          60
+        );
+      return url;
+    } catch (e) {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +47,49 @@ class ProgramCardWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("PROGRAM",
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
-                      decoration: TextDecoration.underline)),
-              SizedBox(height: 30),
-              Text('${program.title}',
+              SizedBox(height: 20),
+              Container(
+                margin: EdgeInsets.only(bottom: 20),
+                width: MediaQuery.of(context).size.width * 0.2,
+                height: 250,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.black12)
+                ),
+                child: FutureBuilder(
+                  future: programUrl, 
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+
+                    if (snapshot.hasData) {
+                      final url = snapshot.data!;
+                      return Image.network(
+                        url,
+                        fit: BoxFit.cover,
+                      );
+                    }
+
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(image: AssetImage('assets/images/logo_ictc.png'), fit: BoxFit.cover, height: 50, width: 50,),SizedBox(height:20  ,),
+                      Text('No image attached.', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Colors.black54))
+                        ],
+                      ),
+                    );
+                  }
+                ),
+              ),
+              Text('${widget.program.title}',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
               SizedBox(height: 20),
               Text(
-                '${HtmlUnescape().convert(program.description ?? "No description provided.")}',
+                '${HtmlUnescape().convert(widget.program.description ?? "No description provided.")}',
                 maxLines: 3,
                 textHeightBehavior: TextHeightBehavior(
                     applyHeightToFirstAscent: true,
@@ -50,7 +104,7 @@ class ProgramCardWidget extends StatelessWidget {
                   children: [
                     FilledButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => ProgramPage(program: program)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ProgramPage(program: widget.program)));
                         // Navigator.of(context).pushNamed(program.route ?? "/home");
                       },  
                       child: Text("Explore Courses",

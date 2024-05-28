@@ -7,11 +7,26 @@ import 'package:ICTC_Website/widgets/programPage.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+// ignore: must_be_immutable
 class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(70);
 
-  const AppBarDesktop({Key? key});
+  AppBarDesktop({Key? key});
+
+  late Future<String?> avatarUrl = getAvatarUrl();
+  Future<String?> getAvatarUrl() async {
+    try {
+      final url = await Supabase.instance.client.storage
+          .from('avatars')
+          .createSignedUrl(
+              '${Supabase.instance.client.auth.currentSession!.user.id}/avatar.png',
+              60);
+      return url;
+    } catch (e) {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -178,10 +193,32 @@ class AppBarDesktop extends StatelessWidget implements PreferredSizeWidget {
                 elevation: 4,
                 offset: Offset.fromDirection(90, 10),
                 position: PopupMenuPosition.under,
-                icon: Icon(
-                  Icons.person,
-                  color: Color(0xff19306B),
-                ),
+                child: FutureBuilder(
+                    future: avatarUrl,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors.transparent,
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+
+                      if (snapshot.hasData) {
+                        final url = snapshot.data!;
+                        return CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors.transparent,
+                          backgroundImage: NetworkImage(url),
+                        );
+                      }
+
+                      return CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.transparent,
+                        child: Icon(Icons.person),
+                      );
+                    }),
                 itemBuilder: (BuildContext context) {
                   return [
                     PopupMenuItem(

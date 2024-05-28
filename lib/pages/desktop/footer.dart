@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/intl.dart';
 
 class FooterWidget extends StatelessWidget {
   const FooterWidget({Key? key});
 
   @override
   Widget build(BuildContext context) {
+    String currentYear = DateFormat('yyyy').format(DateTime.now());
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
@@ -67,7 +69,7 @@ class FooterWidget extends StatelessWidget {
                         ),
                         SizedBox(height: 20),
                         Text(
-                          "Copyright © 2024 ICTC • Ateneo de Naga University",
+                          "Copyright © $currentYear • Ateneo de Naga University",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 13,

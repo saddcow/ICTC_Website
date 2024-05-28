@@ -55,11 +55,11 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Ads
-              Column(
-                children: [
-                  buildAds(context),
-                ],
-              ),
+              // Column(
+              //   children: [
+              //     buildAds(context),
+              //   ],
+              // ),
               // Signin
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,

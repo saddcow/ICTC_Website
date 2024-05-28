@@ -2,11 +2,30 @@ import 'package:ICTC_Website/models/course.dart';
 import 'package:ICTC_Website/pages/desktop/preRegister/preregister.dart';
 import 'package:flutter/material.dart';
 import 'package:html_unescape/html_unescape.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class CourseCard extends StatelessWidget {
-  const CourseCard({super.key, required this.course});
-  
+class CourseCard extends StatefulWidget {
+  CourseCard({super.key, required this.course});
+
   final Course course;
+
+  @override
+  State<CourseCard> createState() => _CourseCardState();
+}
+
+class _CourseCardState extends State<CourseCard> {
+  late Future<String?> courseUrl = getCourseUrl();
+
+  Future<String?> getCourseUrl() async {
+    try {
+      final url = await Supabase.instance.client.storage
+          .from('images')
+          .createSignedUrl('${widget.course.id}/image.png', 60);
+      return url;
+    } catch (e) {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,17 +58,63 @@ class CourseCard extends StatelessWidget {
               //   ],
               // ),
               SizedBox(height: 20),
-              Text('${course.title}',
+              Container(
+                margin: EdgeInsets.only(bottom: 20),
+                width: MediaQuery.of(context).size.width * 0.2,
+                height: 250,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.black12)),
+                child: FutureBuilder(
+                    future: courseUrl,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+
+                      if (snapshot.hasData) {
+                        final url = snapshot.data!;
+                        return Image.network(
+                          url,
+                          fit: BoxFit.cover,
+                        );
+                      }
+
+                      return Center(
+                          child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(
+                            image: AssetImage('assets/images/logo_ictc.png'),
+                            fit: BoxFit.cover,
+                            height: 50,
+                            width: 50,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text('No image attached.',
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black54))
+                        ],
+                      ));
+                    }),
+              ),
+              Text('${widget.course.title}',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
               SizedBox(height: 20),
-              Text('${HtmlUnescape().convert(course.description ?? "No description provided.")}',
-                  maxLines: 3,
-                  textHeightBehavior: TextHeightBehavior(
-                      applyHeightToFirstAscent: true,
-                      applyHeightToLastDescent: true),
-                  //style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)
-                  ),
-              SizedBox(height: 20),
+              Text(
+                '${HtmlUnescape().convert(widget.course.description ?? "No description provided.")}',
+                maxLines: 3,
+                textHeightBehavior: TextHeightBehavior(
+                    applyHeightToFirstAscent: true,
+                    applyHeightToLastDescent: true),
+                //style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)
+              ),
               // Text('${course.schedule}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
               // SizedBox(height: 10),
               // Text('${course.duration}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
@@ -62,7 +127,9 @@ class CourseCard extends StatelessWidget {
                 children: [
                   FilledButton(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => PreRegisterPage(course: course)));
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                PreRegisterPage(course: widget.course)));
                       },
                       child: Text(
                         "Pre-Register",
@@ -73,7 +140,7 @@ class CourseCard extends StatelessWidget {
                       ))
                 ],
               ),
-              //Expanded(child: Placeholder())              
+              //Expanded(child: Placeholder())
               // Padding(
               //   padding: EdgeInsets.only(top: 40),
               //   child: AspectRatio(
