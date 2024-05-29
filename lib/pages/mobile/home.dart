@@ -1,6 +1,6 @@
-import 'package:ICTC_Website/pages/programs/google_certified_educators.dart';
-import 'package:ICTC_Website/pages/programs/microcredentials.dart';
-import 'package:ICTC_Website/pages/programs/skillup.dart';
+import 'package:ICTC_Website/pages/desktop/programs/google_certified_educators.dart';
+import 'package:ICTC_Website/pages/desktop/programs/microcredentials.dart';
+import 'package:ICTC_Website/pages/desktop/programs/skillup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

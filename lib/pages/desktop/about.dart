@@ -1,4 +1,4 @@
-import 'package:ICTC_Website/pages/desktop/home.dart';
+import 'package:ICTC_Website/widgets/appBarDesktop.dart';
 import 'package:flutter/material.dart';
 
 class AboutPage extends StatelessWidget {
@@ -6,6 +6,9 @@ class AboutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text("About"));
+    return Scaffold(
+      appBar: AppBarDesktop(),
+
+    );
   }
 }

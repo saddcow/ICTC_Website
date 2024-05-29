@@ -3,17 +3,21 @@ import 'package:ICTC_Website/pages/auth/signup_page.dart';
 import 'package:ICTC_Website/pages/desktop/about.dart';
 import 'package:ICTC_Website/pages/desktop/home.dart';
 import 'package:ICTC_Website/pages/mobile/home.dart';
-import 'package:ICTC_Website/pages/programs/google_certified_educators.dart';
-import 'package:ICTC_Website/pages/programs/microcredentials.dart';
-import 'package:ICTC_Website/pages/programs/skillup.dart';
+import 'package:ICTC_Website/pages/desktop/programs/google_certified_educators.dart';
+import 'package:ICTC_Website/pages/desktop/programs/microcredentials.dart';
+import 'package:ICTC_Website/pages/desktop/programs/skillup.dart';
+import 'package:ICTC_Website/supabase_options.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(
+    url: SupabaseOptions.SUPABASE_URL,
+    anonKey: SupabaseOptions.SUPABASE_ANON_KEY,
+    debug: true,
   );
 
   runApp(const MyApp());
@@ -26,14 +30,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Ateneo ICTC',
         theme: ThemeData(
+          pageTransitionsTheme: const PageTransitionsTheme(
+            builders: <TargetPlatform, PageTransitionsBuilder>{
+              TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
+              TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+            },
+          ),
           fontFamily: "Montserrat",
           colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color(0xff153faa),
-              onPrimary: const Color(0xff153faa),
+              seedColor: const Color(0xff19306B),
+              onPrimary: Color(0xFF19306B),
               onSecondary: Colors.white,
-              onPrimaryContainer: const Color(0xff153faa),
+              onPrimaryContainer: const Color(0xff19306B),
               onSecondaryContainer: Colors.white),
           textTheme: TextTheme(
             displayLarge: TextStyle(
@@ -53,10 +64,12 @@ class MyApp extends StatelessWidget {
             labelSmall: TextStyle(
                 fontSize: 12, fontWeight: FontWeight.w300, color: Colors.white),
             bodyLarge: TextStyle(
-                fontSize: 64, fontWeight: FontWeight.w600, color: Color(0xff153faa)),
+                fontSize: 32,
+                fontWeight: FontWeight.w600,
+                color: Color(0xff19306B)),
             bodyMedium: TextStyle(
                 fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black),
-            ),
+          ),
           useMaterial3: true,
         ),
         routes: {
@@ -66,9 +79,10 @@ class MyApp extends StatelessWidget {
           '/about': (context) => const AboutPage(),
           '/microcredentials': (context) => const MicrocredentialsPage(),
           '/skillup': (context) => const SkillUpPage(),
-          '/google_certified_educators': (context) => const GoogleCertifiedEducatorsPage(),
+          '/google_certified_educators': (context) =>
+              const GoogleCertifiedEducatorsPage(),
         },
-        home: const MainApp());
+        home: HomeDesktopPage());
   }
 }
 
@@ -79,9 +93,9 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenTypeLayout.builder(
       desktop: (BuildContext context) => HomeDesktopPage(),
-      mobile: (BuildContext context) => HomeMobilePage(),
-    // tablet: (BuildContext context) => Container(color:Colors.yellow),
-    // watch: (BuildContext context) => Container(color:Colors.purple),
+      mobile: (BuildContext context) => HomeDesktopPage(),
+      // tablet: (BuildContext context) => Container(color:Colors.yellow),
+      // watch: (BuildContext context) => Container(color:Colors.purple),
     );
   }
 }
